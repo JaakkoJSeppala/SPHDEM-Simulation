@@ -83,7 +83,7 @@ public class HybridSolver : ISimulationSolver
         _particles = new List<Particle>();
         _rigidBodies = new List<RigidBody>();
         _spatialHash = new SpatialHash(SmoothingLength * 2.0);
-        _boundaryForces = new BoundaryForceCalculator(SmoothingLength * 2.0);
+        _boundaryForces = new BoundaryForceCalculator(SmoothingLength, NeighborRadiusFactor, dragCoeff: 0.5);
         _targetStepTime = 1000.0 / TargetFPS;
     }
     
@@ -94,7 +94,18 @@ public class HybridSolver : ISimulationSolver
             _particles.Add(particle);
         }
     }
-    public void AddRigidBody(RigidBody body) => _rigidBodies.Add(body);
+    public void AddRigidBody(RigidBody body)
+    {
+        _rigidBodies.Add(body);
+        
+        // Initialize boundary shell for SPH-DEM coupling
+        if (body is ShipRigidBody ship)
+        {
+            // Generate boundary particles on hull surface
+            double spacing = SmoothingLength * 0.5; // Boundary particle spacing
+            _boundaryForces.InitializeBoundaryShell(body, ship.Length, ship.Beam, ship.Draft * 2.0, spacing);
+        }
+    }
     
     public void Step()
     {
@@ -147,11 +158,8 @@ public class HybridSolver : ISimulationSolver
         // 8. Integrate rigid bodies (6DOF)
         IntegrateRigidBodies();
         
-        // 9. Coupling: Rigid body → Fluid (drag particles with ship)
-        if (_rigidBodies.Count > 0)
-        {
-            _boundaryForces.ApplyRigidBodyMotionToFluid(_rigidBodies[0], _particles);
-        }
+        // Note: Rigid body → Fluid coupling is now handled in ApplyCouplingForces()
+        // via reaction forces (Newton's 3rd law), not kinematic velocity blending
         
             CurrentTime += TimeStep;
             StepCount++;
@@ -305,80 +313,51 @@ public class HybridSolver : ISimulationSolver
             body.Force = Vector3.Zero;
             body.Torque = Vector3.Zero;
             
-            // Gravity
+            // Gravity (only body force applied here)
             body.Force += Gravity * body.Mass;
             
-            // Buoyancy (Archimedes)
+            // Buoyancy and pressure forces are now computed from SPH pressure field
+            // via boundary particles in ApplyCouplingForces()
+            // This is the theoretically correct approach: F_buoy emerges from ∫ p·n dA
+            
+            // Hydrostatic restoring moment (optional, for added stability)
+            // Can be disabled if pressure integration is accurate enough
             if (body is ShipRigidBody ship)
             {
-                // Sample distributed water level under hull for excitation
                 double waveElevCenter = EnableWaves && WaveGenerator != null
                     ? WaveGenerator.GetElevation(ship.Position.X, ship.Position.Z, CurrentTime)
                     : 0.0;
                 double waterLevelCenter = BaseWaterLevel + waveElevCenter;
-                body.Force += ship.CalculateBuoyancy(waterLevelCenter);
-                body.Torque += ship.CalculateHydrostaticRestoringTorque(waterLevelCenter);
-
-                // Differential buoyancy for roll & pitch (four corner sampling)
-                // Theory: Wave elevation varies across hull → pressure differential → torque
-                // Τ = Σ_i r_i × F_i, where F_i = ρ g A_i Δh_i (local submergence)
-                // Net force removed (avg subtraction) to isolate pure torque excitation
-                if (EnableWaves && WaveGenerator != null)
-                {
-                    // Local hull corners (assume small angles → ignore rotation for sampling)
-                    double halfL = ship.Length / 2.0;
-                    double halfB = ship.Beam / 2.0;
-                    var corners = new (double dx, double dz)[] {
-                        (-halfL, -halfB), // aft-port
-                        (-halfL,  halfB), // aft-starboard
-                        ( halfL, -halfB), // fwd-port
-                        ( halfL,  halfB)  // fwd-starboard
-                    };
-                    double rhoWater = 1000.0;
-                    double g = 9.81;
-                    double panelArea = (ship.Length/2.0) * (ship.Beam/2.0); // coarse panel area
-                    // First compute local vertical forces at corners
-                    double[] F = new double[4];
-                    int idx = 0;
-                    foreach (var c in corners)
-                    {
-                        double wx = ship.Position.X + c.dx;
-                        double wz = ship.Position.Z + c.dz;
-                        double waveElev = WaveGenerator.GetElevation(wx, wz, CurrentTime);
-                        double localWaterLevel = BaseWaterLevel + waveElev;
-                        double hullBottom = ship.Position.Y - ship.Draft / 2.0;
-                        double subDepth = Math.Max(0.0, localWaterLevel - hullBottom);
-                        double localBuoyForceMag = subDepth > 0 ? rhoWater * g * subDepth * panelArea * 0.2 : 0.0;
-                        F[idx++] = localBuoyForceMag;
-                    }
-                    // Remove net force, keep only differential to produce torque without extra lift
-                    double avg = (F[0] + F[1] + F[2] + F[3]) / 4.0;
-                    idx = 0;
-                    foreach (var c in corners)
-                    {
-                        double dF = F[idx++] - avg;
-                        if (Math.Abs(dF) < 1e-9) continue;
-                        var rLocal = new Vector3(c.dx, 0, c.dz);
-                        var rWorld = ship.Orientation.Rotate(rLocal);
-                        var force = new Vector3(0, dF, 0);
-                        body.Torque += Vector3.Cross(rWorld, force);
-                    }
-                }
+                
+                // Add small restoring torque for numerical stability (can tune or disable)
+                body.Torque += ship.CalculateHydrostaticRestoringTorque(waterLevelCenter) * 0.1;
             }
         }
     }
     
     private void ApplyCouplingForces()
     {
+        // Theoretical SPH-DEM coupling (three steps):
+        // 1. Extrapolate SPH field to boundary particles
+        // 2. Compute forces on rigid body from boundary pressures/drag
+        // 3. Apply reaction forces to fluid (momentum conservation)
+        
         foreach (var body in _rigidBodies)
         {
             if (body.IsStatic) continue;
             
-            // Fluid → Rigid body: pressure and drag forces
-            var (fluidForce, fluidTorque) = _boundaryForces.CalculateFluidForces(body, _particles);
+            // Step 1: Update boundary particle transforms and extrapolate SPH field
+            _boundaryForces.UpdateBoundaryTransforms(body);
+            _boundaryForces.ExtrapolateSPHFieldToBoundary(_particles, _spatialHash);
+            
+            // Step 2: Calculate fluid forces on rigid body (pressure + drag)
+            var (fluidForce, fluidTorque) = _boundaryForces.CalculateFluidForces(body);
             
             body.Force += fluidForce;
             body.Torque += fluidTorque;
+            
+            // Step 3: Apply reaction forces to fluid particles (Newton's 3rd law)
+            _boundaryForces.ApplyReactionForcesToFluid(body, _particles, _spatialHash);
         }
     }
     
