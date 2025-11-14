@@ -236,7 +236,7 @@ Tämä projekti on kehitetty tutkimustarkoituksiin Helsingin yliopiston graduty�
 ## 👤 Tekijä
 
 **Jaakko Seppälä**  
-Computational Science, University of Helsinki  
+Computational Science, University of Jyväskylä  
 Gradu: "3D Ship Hydrodynamics using SPH-DEM Coupling"  
 GitHub: [@JaakkoJSeppala](https://github.com/JaakkoJSeppala)
 
