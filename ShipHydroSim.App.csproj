@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.*" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.*" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.*" />
+    <PackageReference Include="HelixToolkit.Avalonia.SharpDX" Version="3.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShipHydroSim.Core\ShipHydroSim.Core.csproj" />
+    <ProjectReference Include="..\ShipHydroSim.PluginAPI\ShipHydroSim.PluginAPI.csproj" />
+    <ProjectReference Include="..\ShipHydroSim.PluginHost\ShipHydroSim.PluginHost.csproj" />
+  </ItemGroup>
+
+</Project>

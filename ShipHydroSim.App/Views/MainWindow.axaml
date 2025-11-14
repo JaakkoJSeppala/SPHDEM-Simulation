@@ -1,0 +1,211 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ShipHydroSim.App.ViewModels"
+        xmlns:controls="using:ShipHydroSim.App.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="ShipHydroSim.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ShipHydroSim - SPH + DEM Simulator"
+        Width="1200" Height="800">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid ColumnDefinitions="*,300">
+        
+        <!-- 3D Viewport (Left side) -->
+        <Border Grid.Column="0" BorderBrush="#333" BorderThickness="2" Margin="4">
+            <controls:ParticleViewport x:Name="Viewport" />
+        </Border>
+
+        <!-- Control Panel (Right side) -->
+        <ScrollViewer Grid.Column="1" Margin="4">
+            <StackPanel Spacing="10" Margin="10">
+                
+                <!-- Title -->
+                <TextBlock Text="Ship Hydro Simulator" 
+                          FontSize="18" 
+                          FontWeight="Bold" 
+                          HorizontalAlignment="Center"/>
+                
+                <Separator/>
+                
+                <!-- Simulation Controls -->
+                <TextBlock Text="Simulation Controls" FontWeight="Bold"/>
+                
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <Button Content="▶ Start" 
+                           Command="{Binding StartCommand}"
+                           IsEnabled="{Binding !IsRunning}"
+                           Width="80"/>
+                    <Button Content="⏸ Pause" 
+                           Command="{Binding PauseCommand}"
+                           IsEnabled="{Binding IsRunning}"
+                           Width="80"/>
+                    <Button Content="⟲ Reset" 
+                           Command="{Binding ResetCommand}"
+                           Width="80"/>
+                </StackPanel>
+                
+                <Separator/>
+                
+                <!-- Statistics -->
+                <TextBlock Text="Statistics" FontWeight="Bold"/>
+                
+                <StackPanel Spacing="5">
+                    <TextBlock>
+                        <Run Text="Particles: "/>
+                        <Run Text="{Binding ParticleCount}" FontWeight="Bold"/>
+                    </TextBlock>
+                    
+                    <TextBlock>
+                        <Run Text="Time: "/>
+                        <Run Text="{Binding SimulationTime}" FontWeight="Bold"/>
+                        <Run Text=" s"/>
+                    </TextBlock>
+                    
+                    <TextBlock>
+                        <Run Text="Avg Height: "/>
+                        <Run Text="{Binding AverageHeight}" FontWeight="Bold"/>
+                        <Run Text=" m"/>
+                    </TextBlock>
+                    
+                    <TextBlock>
+                        <Run Text="Avg Velocity: "/>
+                        <Run Text="{Binding AverageVelocity}" FontWeight="Bold"/>
+                        <Run Text=" m/s"/>
+                    </TextBlock>
+                </StackPanel>
+                
+                <Separator/>
+                
+                <!-- Performance Settings -->
+                <TextBlock Text="Performance" FontWeight="Bold"/>
+                
+                <StackPanel Spacing="8">
+                    <StackPanel>
+                        <TextBlock Text="Max Particles"/>
+                        <NumericUpDown Value="{Binding MaxParticles}" 
+                                      Minimum="1000" Maximum="20000" 
+                                      Increment="500" FormatString="F0"/>
+                    </StackPanel>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Target FPS"/>
+                        <NumericUpDown Value="{Binding TargetFps}" 
+                                      Minimum="15" Maximum="60" 
+                                      Increment="5" FormatString="F0"/>
+                    </StackPanel>
+                    
+                    <CheckBox Content="Adaptive Time Step" 
+                             IsChecked="{Binding AdaptiveTimeStep}"/>
+                </StackPanel>
+                
+                <Separator/>
+                
+                <!-- SPH Parameters -->
+                <TextBlock Text="SPH Parameters" FontWeight="Bold"/>
+                
+                <StackPanel Spacing="8">
+                    <StackPanel>
+                        <TextBlock Text="Smoothing Length (h)"/>
+                        <NumericUpDown Value="{Binding SmoothingLength}" 
+                                      Minimum="0.05" Maximum="1.0" 
+                                      Increment="0.05" FormatString="F2"/>
+                    </StackPanel>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Rest Density (ρ₀)"/>
+                        <NumericUpDown Value="{Binding RestDensity}" 
+                                      Minimum="100" Maximum="2000" 
+                                      Increment="100" FormatString="F0"/>
+                    </StackPanel>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Stiffness (k)"/>
+                        <NumericUpDown Value="{Binding Stiffness}" 
+                                      Minimum="1000" Maximum="100000" 
+                                      Increment="1000" FormatString="F0"/>
+                    </StackPanel>
+                    
+                    <StackPanel>
+                        <TextBlock Text="Viscosity (μ)"/>
+                        <NumericUpDown Value="{Binding Viscosity}" 
+                                      Minimum="0.001" Maximum="0.5" 
+                                      Increment="0.01" FormatString="F3"/>
+                    </StackPanel>
+                    
+                    <Button Content="Apply Parameters" 
+                           Command="{Binding ApplyParametersCommand}"
+                           HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                
+                <Separator/>
+                
+                <!-- Wave Controls -->
+                <TextBlock Text="Wave Generator" FontWeight="Bold"/>
+                
+                <StackPanel Spacing="8">
+                    <StackPanel>
+                        <TextBlock Text="Wave Type"/>
+                        <ComboBox ItemsSource="{Binding WaveTypes}" 
+                                 SelectedItem="{Binding SelectedWaveType}"
+                                 HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                    
+                    <Button Content="Apply Waves" 
+                           Command="{Binding ApplyWavesCommand}"
+                           HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                
+                <Separator/>
+                
+                <!-- Ship Motion (6DOF) -->
+                <TextBlock Text="Ship Motion" FontWeight="Bold"/>
+                
+                <StackPanel Spacing="5">
+                    <TextBlock>
+                        <Run Text="Roll: "/>
+                        <Run Text="{Binding ShipRoll}" FontWeight="Bold"/>
+                    </TextBlock>
+                    
+                    <TextBlock>
+                        <Run Text="Pitch: "/>
+                        <Run Text="{Binding ShipPitch}" FontWeight="Bold"/>
+                    </TextBlock>
+                    
+                    <TextBlock>
+                        <Run Text="Heave: "/>
+                        <Run Text="{Binding ShipHeave}" FontWeight="Bold"/>
+                    </TextBlock>
+                </StackPanel>
+                
+                <Separator/>
+                
+                <!-- Camera Controls -->
+                <TextBlock Text="Camera Controls" FontWeight="Bold"/>
+                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#888">
+                    • Left Mouse: Rotate
+                    • Scroll: Zoom
+                    • Arrow Keys: Pan
+                </TextBlock>
+                
+                <Separator/>
+                
+                <!-- Info -->
+                <TextBlock Text="Info" FontWeight="Bold"/>
+                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#888">
+                    SPH + DEM hybrid simulator for ship hydrodynamics. 
+                    Dam break scenario with ~6500 particles.
+                </TextBlock>
+                
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+
+</Window>
