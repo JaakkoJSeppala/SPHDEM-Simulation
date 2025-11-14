@@ -1,0 +1,9 @@
+Test,Expected,Measured,Error_Percent,Status
+"Kernel Normalization (∫W dV = 1)",1,0,9999999999999994,5,551115123125783E-14,✓ PASS
+"Hydrostatic Pressure Formula",98100,98100,0,✓ PASS
+"Archimedes Buoyancy Principle",9810,9810,0,✓ PASS
+"Terminal Velocity (Stokes)",3,5969999999999995,3,5969999999999995,0,✓ PASS
+"Wave Dispersion (Deep Water)",6,245239966925974,6,245239966925974,0,✓ PASS
+"Newton's 3rd Law (F + (-F) = 0)",0,0,epäluku,✓ PASS
+"Drag Force Formula",28,7875,28,7875,0,✓ PASS
+"Quaternion Normalization (|q| = 1)",1,1,0,✓ PASS

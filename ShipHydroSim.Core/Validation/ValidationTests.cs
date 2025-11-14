@@ -25,6 +25,7 @@ public class ValidationTests
         public double Error { get; set; }
         public double Tolerance { get; set; }
         public string Details { get; set; } = "";
+        public double ErrorPercent => Expected != 0 ? Math.Abs(Error / Expected) * 100.0 : 0.0;
         
         public override string ToString()
         {

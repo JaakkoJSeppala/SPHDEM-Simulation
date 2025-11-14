@@ -69,6 +69,9 @@ dotnet run -c Release
 # Fast analytical tests (< 1 second)
 dotnet run --project ShipHydroSim.ValidationRunner
 
+# Generate thesis materials (LaTeX/CSV/Python)
+dotnet run --project ShipHydroSim.ValidationRunner -- --thesis
+
 # Full simulation tests (5-10 minutes)
 dotnet run --project ShipHydroSim.ValidationRunner -- --full
 ```
@@ -88,7 +91,14 @@ Full simulation tests compare against:
 - Analytical terminal velocity
 - Hydrostatic equilibrium theory
 
-See `ShipHydroSim.Core/Validation/README.md` for details.
+**Thesis materials:**  
+The `--thesis` flag generates ready-to-use thesis materials in `ThesisValidation/`:
+- `validation_section.tex` - LaTeX section with tables and equations
+- `validation_results.csv` - Data for Excel/analysis
+- `plot_validation.py` - Python script for publication figures
+- `validation_summary.txt` - Text summary
+
+See `ThesisValidation/README.md` for integration guide.
 
 ## 🧪 Implemented Features
 

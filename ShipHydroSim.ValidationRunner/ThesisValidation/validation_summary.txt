@@ -1,0 +1,52 @@
+VALIDATION TEST SUMMARY
+======================
+
+Date: 2025-11-14 15.20.26
+Total tests: 8
+Passed: 8
+Failed: 0
+Mean error: epäluku%
+Max error: 0,0000%
+
+Individual Results:
+-------------------
+✓ PASS | Kernel Normalization (∫W dV = 1)
+  Expected: 1,000000
+  Measured: 1,000000
+  Error: 0,00%
+
+✓ PASS | Hydrostatic Pressure Formula
+  Expected: 98100,000000
+  Measured: 98100,000000
+  Error: 0,00%
+
+✓ PASS | Archimedes Buoyancy Principle
+  Expected: 9810,000000
+  Measured: 9810,000000
+  Error: 0,00%
+
+✓ PASS | Terminal Velocity (Stokes)
+  Expected: 3,597000
+  Measured: 3,597000
+  Error: 0,00%
+
+✓ PASS | Wave Dispersion (Deep Water)
+  Expected: 6,245240
+  Measured: 6,245240
+  Error: 0,00%
+
+✓ PASS | Newton's 3rd Law (F + (-F) = 0)
+  Expected: 0,000000
+  Measured: 0,000000
+  Error: epäluku%
+
+✓ PASS | Drag Force Formula
+  Expected: 28,787500
+  Measured: 28,787500
+  Error: 0,00%
+
+✓ PASS | Quaternion Normalization (|q| = 1)
+  Expected: 1,000000
+  Measured: 1,000000
+  Error: 0,00%
+
