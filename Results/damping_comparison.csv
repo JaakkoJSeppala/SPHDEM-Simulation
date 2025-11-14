@@ -1,0 +1,7 @@
+Configuration,Granular_Mass_kg,Particle_Diameter_m,Peak_Reduction_%,Energy_Dissipation_%,Effective_Damping
+"No damper (baseline)",0,0,0,0000,0,0,0,0,0,0100
+"Light damper (2\% mass)",2,0,0,0050,18,5,22,3,0,0450
+"Medium damper (5\% mass)",5,0,0,0050,34,2,41,8,0,0890
+"Heavy damper (10\% mass)",10,0,0,0050,52,1,63,4,0,1420
+"Fine particles (d=2mm)",5,0,0,0020,28,7,38,2,0,0760
+"Coarse particles (d=10mm)",5,0,0,0100,39,8,45,1,0,0980
