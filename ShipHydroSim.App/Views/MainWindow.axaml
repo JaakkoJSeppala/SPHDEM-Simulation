@@ -25,6 +25,13 @@
         <!-- Control Panel (Right side) -->
         <ScrollViewer Grid.Column="1" Margin="4">
             <StackPanel Spacing="10" Margin="10">
+                <!-- Experimental Banner -->
+                <Border Background="#FFF8E1" BorderBrush="#FFC107" BorderThickness="1" Padding="8" CornerRadius="4">
+                    <TextBlock TextWrapping="Wrap">
+                        <Run Text="Experimental research prototype — results are illustrative. " />
+                        <Run Text="See DISCLAIMER and LIMITATIONS in repo." />
+                    </TextBlock>
+                </Border>
                 
                 <!-- Title -->
                 <TextBlock Text="Ship Hydro Simulator" 

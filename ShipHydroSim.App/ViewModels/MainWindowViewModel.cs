@@ -89,6 +89,19 @@ public partial class MainWindowViewModel : ViewModelBase
         if (!IsRunning)
         {
             System.Console.WriteLine("Starting simulation...");
+            // Stamp metadata for reproducibility / transparency
+            ExperimentLogger.StampRun(new
+            {
+                MaxParticles,
+                TargetFps,
+                AdaptiveTimeStep,
+                SmoothingLength,
+                RestDensity,
+                Stiffness,
+                Viscosity,
+                WavesEnabled = EnableWaves,
+                WaveType = SelectedWaveType
+            });
             
             // Apply performance settings
             if (_engine.Solver is ShipHydroSim.Core.Hybrid.HybridSolver solver)

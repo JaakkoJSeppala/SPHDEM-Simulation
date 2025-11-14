@@ -1,5 +1,7 @@
 # ShipHydroSim
 
+> Research Prototype — Results are illustrative and produced by a simplified theoretical model and synthetic simulations. See `DISCLAIMER.md` and `docs/LIMITATIONS.md`.
+
 **3D Ship Hydrodynamics Simulator: SPH + DEM Hybrid Method**
 
 A computational science Master's thesis project implementing a hybrid simulator combining:
@@ -38,6 +40,8 @@ ShipHydroSim/
 ```
 
 ## 🚀 Getting Started
+
+> Note: This code is a research prototype. For scope/assumptions and threats to validity, see `docs/LIMITATIONS.md`.
 
 ### Requirements
 - .NET 10.0 SDK
@@ -99,6 +103,13 @@ The `--thesis` flag generates ready-to-use thesis materials in `ThesisValidation
 - `validation_summary.txt` - Text summary
 
 See `ThesisValidation/README.md` for integration guide.
+
+## ✅ Reproducibility Checklist
+
+- Record random seed and parameters in an experiment manifest (see `Results/EXPERIMENT_MANIFEST.example.yaml`).
+- Keep solver parameters (h, Δt, ρ₀, ν, EOS, wave setup) consistent between runs.
+- Stamp runs with metadata (seed, version, timestamp). The GUI writes `Results/run_metadata_*.json` when starting.
+- Prefer trends/relative comparisons over absolute numbers.
 
 ## 🧪 Implemented Features
 
