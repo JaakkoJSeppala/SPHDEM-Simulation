@@ -107,6 +107,11 @@ public class HybridSolver : ISimulationSolver
         }
     }
     
+    // Public accessors for validation tests
+    public IReadOnlyList<Particle> GetParticles() => _particles;
+    public IReadOnlyList<RigidBody> GetRigidBodies() => _rigidBodies;
+    public BoundaryForceCalculator GetBoundaryForceCalculator() => _boundaryForces;
+    
     public void Step()
     {
         _stepTimer.Restart();

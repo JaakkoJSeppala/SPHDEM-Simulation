@@ -64,6 +64,32 @@ dotnet run -c Release
 4. Use mouse to rotate camera in viewport
 5. Monitor statistics: particle count, FPS, ship motion (roll/pitch/heave)
 
+### Running Validation Tests
+```powershell
+# Fast analytical tests (< 1 second)
+dotnet run --project ShipHydroSim.ValidationRunner
+
+# Full simulation tests (5-10 minutes)
+dotnet run --project ShipHydroSim.ValidationRunner -- --full
+```
+
+**Validation tests verify:**
+- ✅ Kernel normalization (∫W dV = 1)
+- ✅ Hydrostatic pressure (p = ρgh)
+- ✅ Archimedes principle
+- ✅ Terminal velocity (Stokes)
+- ✅ Wave dispersion relation
+- ✅ Newton's 3rd law (momentum conservation)
+- ✅ Drag force formula
+- ✅ Quaternion mathematics
+
+Full simulation tests compare against:
+- Martin & Moyce (1952) dam break experiments
+- Analytical terminal velocity
+- Hydrostatic equilibrium theory
+
+See `ShipHydroSim.Core/Validation/README.md` for details.
+
 ## 🧪 Implemented Features
 
 ### SPH (Smooth Particle Hydrodynamics)
