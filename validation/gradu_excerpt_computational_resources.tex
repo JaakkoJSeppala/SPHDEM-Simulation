@@ -1,0 +1,7 @@
+﻿\section{Computational Resources}
+\label{sec:computational_resources}
+
+All simulations presented in this thesis were performed on a desktop workstation equipped with an Intel Core i9-13900K (24 cores, 32 threads) and 64~GB DDR5 RAM. The SPH--DEM solver is implemented in C\# (.NET~8) and executes on CPU only; no GPU acceleration was used. A typical configuration for the small-scale validation case (Section~\ref{sec:data_code}) with $N_{\text{SPH}} \approx 15{,}000$ fluid particles and $N_{\text{DEM}} = 60$ granular particles ran for approximately 2--3 hours of wall time to simulate 10~seconds of physical time. Larger parametric studies with $N_{\text{SPH}} \approx 50{,}000$ required 8--12~hours per run. The explicit leapfrog integrator enforces a time step $\Delta t \approx 1\times10^{-4}$~s dictated by the CFL condition (Eq.~\ref{eq:cfl}), resulting in roughly $10^5$ time steps per second of simulated physics.
+
+All random-number generators used for optional initial particle jitter or minor perturbations were seeded with a fixed value (424242) to ensure bitwise-reproducible trajectories. Post-processing scripts (\texttt{Results/plot\_results.py}) are deterministic and produce identical figures when run on the same CSV input data.
+
