@@ -21,6 +21,10 @@ public class BoundaryForceCalculator
     
     /// <summary>
     /// Calculate pressure and viscous forces from SPH particles on rigid body
+    /// Theory: F_hyd = F_pressure + F_drag + F_buoyancy (buoyancy handled in ShipRigidBody)
+    /// Based on Adami et al. (2012) boundary pressure extrapolation, simplified
+    /// Limitation: Constant drag coefficient (no Reynolds-number correction)
+    /// For Re < 1000: C_d ≈ 24/Re * (1 + 0.15*Re^0.687) would be more accurate (Schiller-Naumann)
     /// </summary>
     public (Vector3 force, Vector3 torque) CalculateFluidForces(
         RigidBody body, 
@@ -57,7 +61,10 @@ public class BoundaryForceCalculator
     
     /// <summary>
     /// Apply rigid body motion to SPH particles (two-way coupling)
-    /// Particles near ship get velocity from ship motion
+    /// Particles near ship get velocity from ship motion (kinematic coupling)
+    /// Note: For strict momentum conservation, should use kernel-weighted force distribution:
+    ///       F_particle = -F_ship * W(r,h) / Σ_i W(r_i,h)
+    /// Current: Sufficient for wave-structure interaction, full porosity model is future work
     /// </summary>
     public void ApplyRigidBodyMotionToFluid(
         RigidBody body,

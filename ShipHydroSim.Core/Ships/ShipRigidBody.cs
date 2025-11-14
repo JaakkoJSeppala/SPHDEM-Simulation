@@ -69,6 +69,8 @@ public class ShipRigidBody : RigidBody
     
     /// <summary>
     /// Calculate buoyancy force (Archimedes principle)
+    /// F_b = ρ_water * g * V_submerged
+    /// Uses block coefficient C_b to account for hull shape (box approximation)
     /// </summary>
     public Vector3 CalculateBuoyancy(double waterLevel)
     {
@@ -98,8 +100,11 @@ public class ShipRigidBody : RigidBody
     }
 
     /// <summary>
-    /// Compute hydrostatic restoring torque for small angles using GM approximation.
-    /// τ = -Δ * g * GM * θ  (for roll and pitch separately)
+    /// Compute hydrostatic restoring torque using metacentric height
+    /// Theory: τ = -Δ * g * GM * θ  (small angle approximation)
+    /// GM = metacentric height (distance from G to M)
+    /// Larger GM → more stable (stronger righting moment)
+    /// Reference: Faltinsen (1990) "Sea Loads on Ships and Offshore Structures"
     /// </summary>
     public Vector3 CalculateHydrostaticRestoringTorque(double waterLevel)
     {

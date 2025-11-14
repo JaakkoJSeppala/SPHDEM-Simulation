@@ -12,6 +12,15 @@ namespace ShipHydroSim.Core.Hybrid;
 
 /// <summary>
 /// Hybrid solver: SPH (fluid) + DEM (rigid bodies) + Waves
+/// 
+/// VALIDATION TESTS (Planned):
+/// 1. Single particle sedimentation: v_terminal \u2248 \u221a(2mg/(\u03c1AC_d))
+/// 2. Hydrostatic pressure: p(y) = \u03c1g(h - y)  (tolerance ~1%)
+/// 3. Dam break: Compare to Martin & Moyce (1952) surge front position
+/// 4. Wave generation: Verify amplitude \u00b10.5%, frequency \u00b11%
+/// 5. Energy conservation: Monitor E_kin + E_pot drift over time
+/// 
+/// References: Monaghan (1992), Robinson (2014), Canelas et al. (2016)
 /// </summary>
 public class HybridSolver : ISimulationSolver
 {
@@ -44,6 +53,12 @@ public class HybridSolver : ISimulationSolver
     // Domain (tank) boundaries for fluid containment
     public Vector3 DomainMin { get; set; } = new Vector3(-10.0, 0.0, -10.0);
     public Vector3 DomainMax { get; set; } = new Vector3(10.0, 4.0, 10.0);
+    
+    // Porosity field (future improvement for solid volume fraction)
+    // φ(x): fraction of fluid at position x, φ=1 (pure fluid), φ=0 (solid)
+    // Modified density: ρ_eff = φ * ρ_fluid
+    // Currently: Not implemented (φ=1 everywhere), identified for future work
+    public bool EnablePorosityField { get; set; } = false; // Future: φ(x) near boundaries
     
     // Stability parameters
     public double MaxWaterHeight { get; set; } = 4.0; // Hard cap for splashes
@@ -85,7 +100,10 @@ public class HybridSolver : ISimulationSolver
     {
         _stepTimer.Restart();
         
-        // Adaptive time step based on performance
+        // Adaptive time step: min(dt_performance, dt_CFL, dt_DEM, MaxTimeStep)
+        // dt_CFL = CFL * h / max|v|  (stability, handled in ApplyStabilityConstraints)
+        // dt_DEM = sqrt(m/k)  (for contact mechanics, when implemented)
+        // Synchronization: Both SPH and DEM use same Δt for momentum conservation
         if (AdaptiveTimeStep && StepCount > 10)
         {
             double avgStepTime = _stepTimer.Elapsed.TotalMilliseconds;
@@ -180,6 +198,9 @@ public class HybridSolver : ISimulationSolver
     
     private void ComputeDensityAndPressure()
     {
+        // SPH density summation: ρᵢ = Σⱼ mⱼ W(rᵢⱼ, h)  (Monaghan 1992, Eq. 2)
+        // Note: Future improvement - porosity field φ(x) for solid volume fraction
+        //       Modified density: ρ_eff = φ * ρ_fluid (for porous media)
         double kernelRadius = SmoothingLength * NeighborRadiusFactor;
         foreach (var pi in _particles)
         {
@@ -210,6 +231,10 @@ public class HybridSolver : ISimulationSolver
     
     private void ComputeSPHForces()
     {
+        // SPH force computation (Monaghan 1992)
+        // Pressure: -m_j (p_i/ρ_i² + p_j/ρ_j²) ∇W (symmetric formulation, Eq. 10)
+        // Viscosity: XSPH variant (Eq. 14)
+        // Surface tension: Color field method (optional, Morris 2000)
         double kernelRadius = SmoothingLength * NeighborRadiusFactor;
         foreach (var pi in _particles)
         {
@@ -295,6 +320,9 @@ public class HybridSolver : ISimulationSolver
                 body.Torque += ship.CalculateHydrostaticRestoringTorque(waterLevelCenter);
 
                 // Differential buoyancy for roll & pitch (four corner sampling)
+                // Theory: Wave elevation varies across hull → pressure differential → torque
+                // Τ = Σ_i r_i × F_i, where F_i = ρ g A_i Δh_i (local submergence)
+                // Net force removed (avg subtraction) to isolate pure torque excitation
                 if (EnableWaves && WaveGenerator != null)
                 {
                     // Local hull corners (assume small angles → ignore rotation for sampling)
