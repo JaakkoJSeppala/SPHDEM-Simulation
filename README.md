@@ -2,27 +2,27 @@
 
 **3D Ship Hydrodynamics Simulator: SPH + DEM Hybrid Method**
 
-Tämä projekti on laskennallisen tieteen gradu-työtä varten kehitetty simulaattori, joka yhdistää:
-- **SPH (Smooth Particle Hydrodynamics)**: Nestemekaniikan partikkelisimulaatio
-- **DEM (Discrete Element Method)**: Jäykkien kappaleiden dynamiikka (6DOF)
-- **Wave Modeling**: Sine, Stokes, ja JONSWAP-spektri aallot
-- **Fluid-Structure Coupling**: Kahdensuuntainen SPH ↔ laiva vuorovaikutus
-- **Avalonia GUI**: Reaaliaikainen 3D-visualisointi
+A computational science Master's thesis project implementing a hybrid simulator combining:
+- **SPH (Smooth Particle Hydrodynamics)**: Fluid mechanics particle simulation
+- **DEM (Discrete Element Method)**: Rigid body dynamics (6DOF)
+- **Wave Modeling**: Sine, Stokes, and JONSWAP spectrum waves
+- **Fluid-Structure Coupling**: Two-way SPH ↔ ship interaction
+- **Avalonia GUI**: Real-time 3D visualization
 
-## 📁 Projektirakenne
+## 📁 Project Structure
 
 ```
 ShipHydroSim/
-├── ShipHydroSim.Core/           # Ydin: fysiikka-moottori
+├── ShipHydroSim.Core/           # Core: physics engine
 │   ├── Geometry/                # Vector3, Quaternion, Matrix3x3
-│   ├── SPH/                     # Partikkelit, kernel-funktiot, SPHSolver
+│   ├── SPH/                     # Particles, kernel functions, SPHSolver
 │   ├── DEM/                     # RigidBody, collision shapes
 │   ├── Ships/                   # ShipRigidBody (6DOF, buoyancy, hydrostatics)
 │   ├── Waves/                   # WaveGenerator (Sine, Stokes, Irregular/JONSWAP)
 │   ├── Coupling/                # BoundaryForceCalculator (SPH ↔ DEM)
-│   ├── Hybrid/                  # HybridSolver (integroitu SPH+DEM+Waves)
-│   ├── Spatial/                 # SpatialHash (naapurihaku O(1))
-│   └── HeightField.cs           # 2D pinnankorkeuskenttä
+│   ├── Hybrid/                  # HybridSolver (integrated SPH+DEM+Waves)
+│   ├── Spatial/                 # SpatialHash (neighbor search O(1))
+│   └── HeightField.cs           # 2D height field
 │
 ├── ShipHydroSim.App/            # Avalonia GUI (cross-platform)
 │   ├── Models/                  # SimulationEngine
@@ -31,53 +31,53 @@ ShipHydroSim/
 │   ├── Controls/                # ParticleViewport (Skia 3D rendering)
 │   └── Rendering/               # Custom draw operations
 │
-├── ShipHydroSim.PluginAPI/      # Plugin-rajapinnat
-├── ShipHydroSim.PluginHost/     # Plugin-latain
-├── ShipHydroSim.Demo/           # Konsoli-demo
-└── Example.WavePlugin/          # Esimerkki-plugin
+├── ShipHydroSim.PluginAPI/      # Plugin interfaces
+├── ShipHydroSim.PluginHost/     # Plugin loader
+├── ShipHydroSim.Demo/           # Console demo
+└── Example.WavePlugin/          # Example plugin
 ```
 
-## 🚀 Käyttöönotto
+## 🚀 Getting Started
 
-### Vaatimukset
+### Requirements
 - .NET 10.0 SDK
 - Windows/Linux/macOS (cross-platform)
-- GPU ei pakollinen (CPU-pohjainen, optimoitu)
+- GPU not required (CPU-based, optimized)
 
-### Rakentaminen
+### Building
 ```powershell
 git clone https://github.com/JaakkoJSeppala/SPHDEM-Simulation.git
 cd SPHDEM-Simulation
 dotnet build ShipHydroSim.sln -c Release
 ```
 
-### GUI-sovelluksen ajaminen
+### Running the GUI Application
 ```powershell
 cd ShipHydroSim.App
 dotnet run -c Release
 ```
 
-**Käyttö:**
-1. Valitse skenaario: "Dam Break" tai "Wave Scenario"
-2. Jos valitset "Wave Scenario", valitse aaltotyyppi (Sine/Stokes/Irregular)
-3. Paina **Start** aloittaaksesi simulaation
-4. Käytä hiirtä kameran pyörittämiseen viewportissa
-5. Seuraa tilastoja: partikkelimäärä, FPS, laivan keinunta (roll/pitch/heave)
+**Usage:**
+1. Select scenario: "Dam Break" or "Wave Scenario"
+2. If "Wave Scenario", choose wave type (Sine/Stokes/Irregular)
+3. Press **Start** to begin simulation
+4. Use mouse to rotate camera in viewport
+5. Monitor statistics: particle count, FPS, ship motion (roll/pitch/heave)
 
-## 🧪 Toteutetut ominaisuudet
+## 🧪 Implemented Features
 
 ### SPH (Smooth Particle Hydrodynamics)
-- **Kernel-funktiot**: Cubic Spline (M4 B-spline)
-- **Tiheys**: ρᵢ = Σⱼ mⱼ W(rᵢ - rⱼ, h)
-- **Paine**: Valittavissa Tait EOS (p = k((ρ/ρ₀)^γ - 1)) tai lineaarinen (p = c²(ρ - ρ₀))
-- **Voimat**: Paine (symmetrinen SPH), viskositeetti (XSPH), pintajännitys (valinnainen)
-- **Naapurihaku**: Spatial Hash (O(1) insertio, O(N_local) kysely)
-- **Integraatio**: Explicit Euler, adaptive timestep (CFL + performance)
-- **Rajaehdot**: Reflective tank walls (configurable domain boundaries)
+- **Kernel functions**: Cubic Spline (M4 B-spline)
+- **Density**: ρᵢ = Σⱼ mⱼ W(rᵢ - rⱼ, h)
+- **Pressure**: Choice of Tait EOS (p = k((ρ/ρ₀)^γ - 1)) or linear (p = c²(ρ - ρ₀))
+- **Forces**: Pressure (symmetric SPH), viscosity (XSPH), surface tension (optional)
+- **Neighbor search**: Spatial Hash (O(1) insertion, O(N_local) query)
+- **Integration**: Explicit Euler, adaptive timestep (CFL + performance)
+- **Boundary conditions**: Reflective tank walls (configurable domain boundaries)
 
 ### DEM (Discrete Element Method)
 - **6DOF Rigid Body**: Position, velocity, orientation (quaternion)
-- **Inertia tensor**: Box-approximation laivarungolle
+- **Inertia tensor**: Box-approximation for ship hull
 - **Angular motion**: Correct body-to-world inertia transform
 - **Damping**: Hydrodynamic damping coefficients
 
@@ -114,9 +114,9 @@ dotnet run -c Release
 - **Scenario selection**: Dam break, wave scenarios (Sine/Stokes/Irregular)
 - **Start/Pause/Reset controls**
 
-## ⚙️ Parametrit & säätö
+## ⚙️ Parameters & Tuning
 
-### Suorituskyky
+### Performance
 - `MaxParticles`: 10000 (memory limit)
 - `TargetFPS`: 30-45 (adaptive throttling)
 - `AdaptiveTimeStep`: true (performance + CFL)
@@ -124,27 +124,27 @@ dotnet run -c Release
 - `EnableSurfaceTension`: false (CPU savings)
 - `NeighborRadiusFactor`: 2.0 (reduce to 1.8 for speed)
 
-### SPH-parametrit
+### SPH Parameters
 - `SmoothingLength`: 0.16-0.25 (1.2-1.5 × spacing)
 - `RestDensity`: 1000 kg/m³
 - `Stiffness`: 20000 Pa (if using Tait)
 - `SoundSpeed`: 25 m/s (if using linear EOS)
 - `Viscosity`: 0.05 Pa·s
 
-### Laivan parametrit
+### Ship Parameters
 - `GM_Roll`: 0.5 m (metacentric height, roll stability)
 - `GM_Pitch`: 0.3 m (pitch stability)
 - `DampingCoeff`: 0.1 (hydrodynamic damping)
 - `BlockCoefficient`: 0.7 (hull fullness, mass/buoyancy)
 
-### Aallot
+### Waves
 - **Sine**: Amplitude 0.3m, λ=4m, T=2s
 - **Stokes**: Amplitude 0.4m, λ=4m, T=2s
 - **Irregular**: Hs=0.5m, Tp=2.5s, 20 components
 
-## 🔌 Plugin-arkkitehtuuri
+## 🔌 Plugin Architecture
 
-Luo oma plugin toteuttamalla `IShipSimPlugin`:
+Create your own plugin by implementing `IShipSimPlugin`:
 
 ```csharp
 public class MyPlugin : IShipSimPlugin
@@ -163,36 +163,36 @@ public class MyPlugin : IShipSimPlugin
 }
 ```
 
-Pluginit ladataan dynaamisesti `Plugins/`-kansiosta.
+Plugins are loaded dynamically from the `Plugins/` folder.
 
-## 📊 Seuraavat vaiheet
+## 📊 Future Work
 
-### Lähiajan parannukset
-- [ ] UI-liukusäätimet parametreille (GM, damping, wave amplitude)
-- [ ] Time-series plotting (roll/pitch/heave historia)
-- [ ] CSV-vienti simulaatiodatasta
-- [ ] Mesh-pohjainen laiva-geometria (STL/OBJ import)
+### Near-term Improvements
+- [ ] UI sliders for parameters (GM, damping, wave amplitude)
+- [ ] Time-series plotting (roll/pitch/heave history)
+- [ ] CSV export of simulation data
+- [ ] Mesh-based ship geometry (STL/OBJ import)
 
-### Fysiikan laajennukset
-- [ ] PCISPH (Predictive-Corrective, parempi inkompressibiliteetti)
-- [ ] Verlet/Leapfrog integraattori (energia-konservatiivisuus)
-- [ ] Turbulenssi-mallit (k-ε, LES)
-- [ ] Added mass -termit (lisämassa-efekti)
+### Physics Extensions
+- [ ] PCISPH (Predictive-Corrective, better incompressibility)
+- [ ] Verlet/Leapfrog integrator (energy conservation)
+- [ ] Turbulence models (k-ε, LES)
+- [ ] Added mass terms
 - [ ] Wave radiation damping
 
-### Suorituskyky
-- [ ] GPU-kiihdytys (CUDA/OpenCL/Compute Shaders)
-- [ ] Parallel.For SPH-loopeihin
+### Performance
+- [ ] GPU acceleration (CUDA/OpenCL/Compute Shaders)
+- [ ] Parallel.For in SPH loops
 - [ ] Adaptive smoothing length
 - [ ] Multi-level spatial hash
 
-### Validointi & Benchmarkit
-- [ ] Dam break: vertailu kokeelliseen dataan
-- [ ] Sloshing tank: oma-frekvenssi-analyysi
-- [ ] Ship roll decay: vaimennus-kerroin-estimaatio
-- [ ] Konvergenssi-testit (particle spacing, timestep)
+### Validation & Benchmarks
+- [ ] Dam break: comparison to experimental data
+- [ ] Sloshing tank: natural frequency analysis
+- [ ] Ship roll decay: damping coefficient estimation
+- [ ] Convergence tests (particle spacing, timestep)
 
-## 📚 Viitteet
+## 📚 References
 
 ### SPH Theory & Methods
 - Monaghan (1992): "Smoothed Particle Hydrodynamics"
@@ -213,35 +213,35 @@ Pluginit ladataan dynaamisesti `Plugins/`-kansiosta.
 - Dean & Dalrymple (1991): "Water Wave Mechanics"
 - Hasselmann et al. (1973): "JONSWAP spectrum measurements"
 
-## 🐛 Tunnetut rajoitukset
+## 🐛 Known Limitations
 
-- Tällä hetkellä vain laatikkopohjainen laiva-geometria (mesh tulossa)
-- Törmäykset vain laivan ja fluidin välillä (ei laiva-laiva)
-- CPU-pohjainen (GPU-kiihdytys kehityksessä)
-- Spatial hash fixed cell size (adaptive tulossa)
-- Ei periodiset rajaehdot (vain reflektoivat seinät)
+- Currently box-based ship geometry only (mesh support coming)
+- Collisions only between ship and fluid (no ship-ship)
+- CPU-based (GPU acceleration in development)
+- Spatial hash fixed cell size (adaptive coming)
+- No periodic boundary conditions (reflective walls only)
 
-## 🤝 Kontribuutiot
+## 🤝 Contributing
 
-Tämä on akateeminen tutkimusprojekti. Jos haluat ehdottaa parannuksia:
-1. Avaa issue GitHubissa
-2. Fork repository ja tee pull request
-3. Varmista, että koodi kääntyy (`dotnet build`)
-4. Lisää kommentit/dokumentaatio muutoksille
+This is an academic research project. To suggest improvements:
+1. Open an issue on GitHub
+2. Fork the repository and create a pull request
+3. Ensure code builds (`dotnet build`)
+4. Add comments/documentation for changes
 
-## 📝 Lisenssi
+## 📝 License
 
-Tämä projekti on kehitetty tutkimustarkoituksiin Helsingin yliopiston gradutyöhön.
+This project was developed for research purposes as part of a Master's thesis at the University of Jyväskylä.
 
-## 👤 Tekijä
+## 👤 Author
 
 **Jaakko Seppälä**  
 Computational Science, University of Jyväskylä  
-Gradu: "3D Ship Hydrodynamics using SPH-DEM Coupling"  
+Master's Thesis: "3D Ship Hydrodynamics using SPH-DEM Coupling"  
 GitHub: [@JaakkoJSeppala](https://github.com/JaakkoJSeppala)
 
 ---
 
-**Versio**: 1.0.0 (November 2025)  
+**Version**: 1.0.0 (November 2025)  
 **Status**: Active development  
 **Target**: M.Sc. Thesis (Computational Science)
