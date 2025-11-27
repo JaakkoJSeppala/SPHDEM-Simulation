@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SPHDEM_Simulation_New.MainWindow"
+        Title="SPHDEM_Simulation_New">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="10">
+            <TextBlock Text="Menetelmä:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <ComboBox x:Name="MethodComboBox" Width="120" SelectedIndex="2">
+                <ComboBoxItem Content="SPH"/>
+                <ComboBoxItem Content="DEM"/>
+                <ComboBoxItem Content="SPH-DEM"/>
+            </ComboBox>
+            <TextBlock Text="DEM partikkelikoko:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="DEMSizeUpDown" Minimum="2" Maximum="20" Value="6" Width="60"/>
+            <TextBlock Text="Wave Type:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <ComboBox x:Name="WaveTypeComboBox" Width="120" SelectedIndex="0">
+                <ComboBoxItem Content="None"/>
+                <ComboBoxItem Content="Sine"/>
+                <ComboBoxItem Content="Square"/>
+                <ComboBoxItem Content="Custom"/>
+            </ComboBox>
+            <TextBlock Text="Frequency:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="FrequencyUpDown" Minimum="0.1" Maximum="5" Value="1" Width="60"/>
+            <TextBlock Text="Amplitude:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="AmplitudeUpDown" Minimum="1" Maximum="100" Value="20" Width="60"/>
+            <TextBlock Text="Tankin pituus:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="TankLengthUpDown" Minimum="100" Maximum="760" Value="608" Width="60"/>
+            <TextBlock Text="Tankin korkeus:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="TankHeightUpDown" Minimum="50" Maximum="400" Value="200" Width="60"/>
+            <TextBlock Text="Veden korkeus:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="WaterHeightUpDown" Minimum="10" Maximum="200" Value="60" Width="60"/>
+            <TextBlock Text="Laivan massa:" VerticalAlignment="Center" Margin="16,0,8,0"/>
+            <NumericUpDown x:Name="ShipMassUpDown" Minimum="100" Maximum="2000" Value="500" Width="60"/>
+            <Button x:Name="RunTestsButton" Content="Aja testitapaukset" Width="140" Margin="16,0,0,0" />
+        </StackPanel>
+        <Canvas x:Name="SimulationCanvas"
+            Grid.Row="1"
+            Width="760"
+            Height="400"
+            Background="LightGray"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center" />
+    </Grid>
+</Window>
