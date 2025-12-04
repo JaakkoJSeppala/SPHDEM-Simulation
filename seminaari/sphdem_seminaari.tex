@@ -1,0 +1,152 @@
+\documentclass[aspectratio=169]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\usepackage{hyperref}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\title[SPH--DEM-mallinnus]{SPH--DEM-mallinnus rakeisten vaimentimien käytöstä painolastitankkien heilahduksen vaimentamisessa}
+\author[Jaakko Seppälä]{Jaakko Seppälä}
+\institute{Jyväskylän yliopisto \\ Pro gradu, laskennalliset tieteet}
+\date{Graduseminaari -- \today}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Sisältö}
+  \tableofcontents
+\end{frame}
+
+\section{Tausta ja tutkimusaukko}
+\begin{frame}{Tausta ja tutkimusaukko}
+\begin{itemize}
+  \item Osittain täytetyt painolastitankit aiheuttavat \textbf{sloshing-ilmiön}, joka synnyttää suuria dynaamisia kuormia.
+  \item Perinteiset menetelmät (välilevyt, TMD, TLD) ovat usein rajallisia tai monimutkaisia.
+  \item \textbf{Rakeiset vaimentimet} vaimentavat energiaa törmäysten ja kitkan kautta ilman aktiivista ohjausta.
+  \item Ongelmana: neste–rakeet-vuorovaikutuksen tarkka mallintaminen.
+  \item \textbf{Tutkimusaukko:} SPH--DEM-mallien validointi merellisissä sovelluksissa on vielä vähäistä.
+\end{itemize}
+\end{frame}
+
+\section{Tutkimuskysymykset ja tavoitteet}
+\begin{frame}{Tutkimuskysymykset ja tavoitteet}
+\begin{block}{Pääkysymys}
+Kuinka tehokas SPH--DEM-lähestymistapa on kuvaamaan neste–rakeet-vuorovaikutusta ja arvioimaan heilahduskuormien pienenemistä?
+\end{block}
+\begin{itemize}
+  \item Kehitetään ja verifioidaan yhdistetty SPH--DEM-mallinnuskehys.
+  \item Tarkastellaan rakeiden koon, täyttöasteen ja kitkan vaikutusta vaimennukseen.
+  \item Luodaan toistettava numeerinen asetus tulevaa kokeellista validointia varten.
+\end{itemize}
+\end{frame}
+
+\section{Menetelmä ja teoria}
+\begin{frame}{SPH--DEM-menetelmä}
+\begin{itemize}
+  \item \textbf{SPH (Smoothed Particle Hydrodynamics)}: neste mallinnetaan partikkelipohjaisesti.
+  \item \textbf{DEM (Discrete Element Method)}: yksittäisten rakeiden liike ja törmäykset.
+  \item Kytkentä: kahdensuuntainen voimanvaihto (paine, drag, noste).
+  \item Mahdollistaa vapaan pinnan dynamiikan ja energianvaimennuksen simuloinnin.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Laskentamenetelmä ja parametrit}
+Tarkentuu
+\begin{itemize}
+  \item \textbf{Geometria:} suorakaiteen muotoinen 2D-painolastitankki.
+  \item \textbf{Neste:} heikosti kokoonpuristuva SPH-menetelmä.
+  \item \textbf{Rakeet:} pallomaisia, halkaisija 1--3 mm, tiheys 2600 kg/m$^3$.
+  \item \textbf{Täyttöaste:} $\phi = 0.4$--0.7, aikasteppi määritetty CFL-ehdon mukaan.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Simulaatioparametrit}
+Tarkentuu
+\centering
+\begin{tabular}{lcc}
+\toprule
+Parametri & Symboli & Arvo / alue \\
+\midrule
+Tankin leveys & $L$ & 0.3--0.6 m \\
+Täyttöaste & $\phi$ & 0.4--0.7 \\
+Rakeen halkaisija & $d_p$ & 1--3 mm \\
+Kitkakerroin & $\mu$ & 0.3--0.6 \\
+Aika-askel & $\Delta t$ & CFL-rajoitettu \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\section{Verifiointi ja validointi}
+
+\begin{frame}{Verifiointi ja validointi}
+
+\begin{itemize}
+  \item \textbf{Verifiointi:} numeerinen oikeellisuus
+  \begin{itemize}
+    \item Hydrostaattinen tasapaino
+    \item Yksittäisen partikkelin laskeutuminen
+    \item Vapaan pinnan heilahtelu
+  \end{itemize}
+  \item \textbf{Validointi:} tuleva koeasetelma
+  \begin{itemize}
+    \item Läpinäkyvä tankki, paineanturit, high-speed kamera
+    \item Verrataan pinnankorkeuden ja paineen kehitystä
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\section{Tulokset ja keskustelu}
+\begin{frame}{Tulokset ja havainnot}
+Tarkentuu jos saan dataa
+\begin{itemize}
+  \item SPH--DEM toistaa keskeiset sloshing- ja vaimennusilmiöt.
+  \item Rakeiden määrän kasvu $\Rightarrow$ suurempi energianvaimennus.
+  \item Optimaalinen täyttöaste noin 50\,\%.
+  \item Painehuiput 20–30\,\% pienemmät kuin ilman vaimenninta.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Epävarmuudet ja rajoitukset}
+\begin{itemize}
+  \item Laskennallinen kustannus rajoittaa partikkelimäärää ja simuloinnin kestoa.
+  \item 2D-geometria ei täysin kata 3D-pyörteitä.
+  \item Materiaaliparametrien (kitka, restituutio) epävarmuudet.
+  \item Kokeellinen validointi vielä kesken.
+\end{itemize}
+\end{frame}
+
+\section{Etiikka ja vastuullisuus}
+\begin{frame}{Tutkimuseettiset periaatteet}
+\begin{itemize}
+  \item Tutkimus täysin laskennallinen — ei koehenkilöitä tai eläinkokeita.
+  \item Menetelmät ja parametrit raportoitu avoimesti ja toistettavasti.
+  \item FAIR-periaatteet ja avoin datanhallinta.
+  \item AI-työkaluja (ChatGPT, Mistral) käytetty vain tekstin ja koodin apuna; kaikki tieteellinen sisältö arvioitu manuaalisesti.
+\end{itemize}
+\end{frame}
+
+\section{Johtopäätökset}
+\begin{frame}{Johtopäätökset ja jatkotyö}
+\begin{enumerate}
+  \item SPH--DEM on lupaava menetelmä rakeisten vaimentimien mallintamiseen sloshing-ilmiöissä.
+  \item Tulokset tukevat passiivisen vaimennuksen käyttöä painolastitankeissa.
+  \item Jatkossa: kokeellinen validointi ja mallin skaalaus teolliseen mittakaavaan.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Kiitokset ja kysymykset}
+\centering
+\textbf{Ohjaajat:} Sampsa Kiiskinen \& Tytti Saksa \\[1em]
+
+Kysyttävää?
+\end{frame}
+\end{document}

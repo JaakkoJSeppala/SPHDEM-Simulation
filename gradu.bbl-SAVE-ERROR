@@ -1,0 +1,1483 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{cms/global//global/global/global}
+    \entry{avdic2024}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=d55c1c04a3ad0305e1f537bbe4e96f29}{%
+           family={Avdić},
+           familyi={A\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=20ebaea5f32e10d89a9eb5904ffb6bac}{%
+           family={Nagode},
+           familyi={N\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5a8533b5820526e35b6dd3b5ad8b516d}{%
+           family={Klemenc},
+           familyi={K\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4b9471d37b00acca94bb6135f8812a7b}{%
+           family={Oman},
+           familyi={O\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{431208b5982434bf98bda74cb3db4aea}
+      \strng{fullhash}{c8f2e3f7945952adbadc79550aec1611}
+      \strng{fullhashraw}{c8f2e3f7945952adbadc79550aec1611}
+      \strng{bibnamehash}{c8f2e3f7945952adbadc79550aec1611}
+      \strng{authorbibnamehash}{c8f2e3f7945952adbadc79550aec1611}
+      \strng{authornamehash}{431208b5982434bf98bda74cb3db4aea}
+      \strng{authorfullhash}{c8f2e3f7945952adbadc79550aec1611}
+      \strng{authorfullhashraw}{c8f2e3f7945952adbadc79550aec1611}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Polymers}
+      \field{number}{10}
+      \field{title}{Experimental Evaluation of a Granular Damping Element}
+      \field{volume}{16}
+      \field{year}{2024}
+      \field{pages}{1440}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/polym16101440
+      \endverb
+    \endentry
+    \entry{brennen2005}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d804855b7bda37a7d2c789dcfb59d9f1}{%
+           family={Brennen},
+           familyi={B\bibinitperiod},
+           given={C.E.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{fullhash}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{fullhashraw}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{bibnamehash}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{authorbibnamehash}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{authornamehash}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{authorfullhash}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \strng{authorfullhashraw}{d804855b7bda37a7d2c789dcfb59d9f1}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{title}{Fundamentals of Multiphase Flow}
+      \field{year}{2005}
+      \verb{urlraw}
+      \verb https://www.researchgate.net/publication/36721049_Fundamentals_of_Multiphase_Flow
+      \endverb
+      \verb{url}
+      \verb https://www.researchgate.net/publication/36721049_Fundamentals_of_Multiphase_Flow
+      \endverb
+    \endentry
+    \entry{cundall1979}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=d5dd574aba8f7acf574d7a33b2a3c9ed}{%
+           family={Cundall},
+           familyi={C\bibinitperiod},
+           given={P.\bibnamedelimi A.},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=73afe83d6beccacf41e0e0fd4b93130d}{%
+           family={Strack},
+           familyi={S\bibinitperiod},
+           given={O.\bibnamedelimi D.\bibnamedelimi L.},
+           giveni={O\bibinitperiod\bibinitdelim D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{95c063cb8336718e96baaceeced88d01}
+      \strng{fullhash}{95c063cb8336718e96baaceeced88d01}
+      \strng{fullhashraw}{95c063cb8336718e96baaceeced88d01}
+      \strng{bibnamehash}{95c063cb8336718e96baaceeced88d01}
+      \strng{authorbibnamehash}{95c063cb8336718e96baaceeced88d01}
+      \strng{authornamehash}{95c063cb8336718e96baaceeced88d01}
+      \strng{authorfullhash}{95c063cb8336718e96baaceeced88d01}
+      \strng{authorfullhashraw}{95c063cb8336718e96baaceeced88d01}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Géotechnique}
+      \field{number}{1}
+      \field{title}{A discrete numerical model for granular assemblies}
+      \field{volume}{29}
+      \field{year}{1979}
+      \field{pages}{47\bibrangedash 65}
+      \range{pages}{19}
+      \verb{doi}
+      \verb 10.1680/geot.1979.29.1.47
+      \endverb
+    \endentry
+    \entry{dominizio2024}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=f122be92fa1d79d30ebce9eab40af8d1}{%
+           family={Domizio},
+           familyi={D\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f76e371e984cb47518ec4f4e27e331d1}{%
+           family={Ambrosini},
+           familyi={A\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b921fdd16442fd88ed8a6b833a282e7e}{%
+           family={Campi},
+           familyi={C\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{fullhash}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{fullhashraw}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{bibnamehash}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{authorbibnamehash}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{authornamehash}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{authorfullhash}{16d4094e14f1d0088ad471829c9bad27}
+      \strng{authorfullhashraw}{16d4094e14f1d0088ad471829c9bad27}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Engineering Structures}
+      \field{title}{A novel tuned liquid damper for vibration control in high-frequency structures}
+      \field{volume}{301}
+      \field{year}{2024}
+      \field{pages}{117350}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.engstruct.2023.117350
+      \endverb
+    \endentry
+    \entry{faltinsen2000}{book}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=8c76bd362a36da6d36530e825de4f7fd}{%
+           family={Faltinsen},
+           familyi={F\bibinitperiod},
+           given={O.\bibnamedelimi M.},
+           giveni={O\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1645ccb404cd989dff0642fa06082d53}{%
+           family={Timokha},
+           familyi={T\bibinitperiod},
+           given={A.\bibnamedelimi N.},
+           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{fullhash}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{fullhashraw}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{bibnamehash}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{authorbibnamehash}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{authornamehash}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{authorfullhash}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \strng{authorfullhashraw}{d5c27f7ce0a9bdf2adb31df49ea21665}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Sloshing}
+      \field{year}{2000}
+      \verb{doi}
+      \verb 10.1017/CBO9780511735026
+      \endverb
+    \endentry
+    \entry{gagnon2019particle}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=b2200c188b46d202a00550a1d78d4701}{%
+           family={Gagnon},
+           familyi={G\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4d6a9028d06732fa511209e7a5a8a721}{%
+           family={Morandini},
+           familyi={M\bibinitperiod},
+           given={Michele},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=dfa270a28b49eea96f56bb64a86555ee}{%
+           family={Ghiringhelli},
+           familyi={G\bibinitperiod},
+           given={Gian\bibnamedelima L.},
+           giveni={G\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{fullhash}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{fullhashraw}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{bibnamehash}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{authorbibnamehash}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{authornamehash}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{authorfullhash}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \strng{authorfullhashraw}{1e6b5d2f2e8c6139d838ec1f3fa23b0e}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Journal of Sound and Vibration}
+      \field{title}{A review of particle damping modeling and testing}
+      \field{volume}{460}
+      \field{year}{2019}
+      \field{pages}{114915}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.jsv.2019.114915
+      \endverb
+    \endentry
+    \entry{gao2020frequency}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=f51012d08701067ab094224f68671282}{%
+           family={Gao},
+           familyi={G\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e2e65bc31792929cfaa15cecf7f23965}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={H.},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=30ff3ef4a89e0c6777f480da5386b053}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{85c66058d86c2c9d454c813e45511f40}
+      \strng{fullhash}{ef048a353cf16efae79f294de7dd4749}
+      \strng{fullhashraw}{ef048a353cf16efae79f294de7dd4749}
+      \strng{bibnamehash}{ef048a353cf16efae79f294de7dd4749}
+      \strng{authorbibnamehash}{ef048a353cf16efae79f294de7dd4749}
+      \strng{authornamehash}{85c66058d86c2c9d454c813e45511f40}
+      \strng{authorfullhash}{ef048a353cf16efae79f294de7dd4749}
+      \strng{authorfullhashraw}{ef048a353cf16efae79f294de7dd4749}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Shock and Vibration}
+      \field{title}{Development of a Frequency-Adjustable Tuned Mass Damper (FATMD) for Structural Vibration Control}
+      \field{volume}{2020}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.1155/2020/9605028
+      \endverb
+    \endentry
+    \entry{gnanasambandham2019}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=23a3d21493be7002b11f5a639d21041f}{%
+           family={Gnanasambandham},
+           familyi={G\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b19f2ce9fccd66928d3eec8e09f363cf}{%
+           family={Eberhard},
+           familyi={E\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{fullhash}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{fullhashraw}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{bibnamehash}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{authorbibnamehash}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{authornamehash}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{authorfullhash}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \strng{authorfullhashraw}{f5da38ce2c1adc126773bb60d5b60bb1}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Granular Matter}
+      \field{title}{Investigating the dissipative effects of liquid-filled particle dampers using coupled DEM--SPH methods}
+      \field{volume}{21}
+      \field{year}{2019}
+      \field{pages}{61}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1007/s10035-019-0917-7
+      \endverb
+    \endentry
+    \entry{altomare2018investigating}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=51c0d855e1ed8af00dedcf086c9c0a10}{%
+           family={Gnanasambandham},
+           familyi={G\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=aa26cf21aae1ad30e7190783bfa991df}{%
+           family={Schönle},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b19f2ce9fccd66928d3eec8e09f363cf}{%
+           family={Eberhard},
+           familyi={E\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{fullhash}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{fullhashraw}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{bibnamehash}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{authorbibnamehash}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{authornamehash}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{authorfullhash}{99dc37904b9d258d278b8832d5ebc4c7}
+      \strng{authorfullhashraw}{99dc37904b9d258d278b8832d5ebc4c7}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Computational Particle Mechanics}
+      \field{title}{Investigating the dissipative effects of liquid-filled particle dampers using coupled DEM–SPH methods}
+      \field{volume}{6}
+      \field{year}{2019}
+      \field{pages}{257\bibrangedash 269}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1007/s40571-018-0212-9
+      \endverb
+    \endentry
+    \entry{heckel2012}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=ec86189fb3cb9554a39b191ac3fa0c0d}{%
+           family={Heckel},
+           familyi={H\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=47a6b05e7d750580fd11490f886e706c}{%
+           family={Sack},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cae072bb097a53f033436724af018468}{%
+           family={Kollmer},
+           familyi={K\bibinitperiod},
+           given={J.\bibnamedelimi E.},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4334b2eef7a5131d8e7b219bee890d96}{%
+           family={Pöschel},
+           familyi={P\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{a2a41ab3529b1d59558d00a7d8b6d8ed}
+      \strng{fullhash}{b2571c5d870a6a6e14ba396fa2a6541b}
+      \strng{fullhashraw}{b2571c5d870a6a6e14ba396fa2a6541b}
+      \strng{bibnamehash}{b2571c5d870a6a6e14ba396fa2a6541b}
+      \strng{authorbibnamehash}{b2571c5d870a6a6e14ba396fa2a6541b}
+      \strng{authornamehash}{a2a41ab3529b1d59558d00a7d8b6d8ed}
+      \strng{authorfullhash}{b2571c5d870a6a6e14ba396fa2a6541b}
+      \strng{authorfullhashraw}{b2571c5d870a6a6e14ba396fa2a6541b}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Physica A}
+      \field{number}{19}
+      \field{title}{Granular dampers for the reduction of vibrations of an oscillatory saw}
+      \field{volume}{391}
+      \field{year}{2012}
+      \field{pages}{4442\bibrangedash 4447}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1016/j.physa.2012.04.007
+      \endverb
+    \endentry
+    \entry{huadams2006}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=0759110aae1a8818e2ece48dd7eaba54}{%
+           family={Hu},
+           familyi={H\bibinitperiod},
+           given={X.\bibnamedelimi Y.},
+           giveni={X\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e77df22f865b327edf41941aa19f4ca1}{%
+           family={Adams},
+           familyi={A\bibinitperiod},
+           given={N.\bibnamedelimi A.},
+           giveni={N\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{30e01312abecc844a72031774a67455e}
+      \strng{fullhash}{30e01312abecc844a72031774a67455e}
+      \strng{fullhashraw}{30e01312abecc844a72031774a67455e}
+      \strng{bibnamehash}{30e01312abecc844a72031774a67455e}
+      \strng{authorbibnamehash}{30e01312abecc844a72031774a67455e}
+      \strng{authornamehash}{30e01312abecc844a72031774a67455e}
+      \strng{authorfullhash}{30e01312abecc844a72031774a67455e}
+      \strng{authorfullhashraw}{30e01312abecc844a72031774a67455e}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Journal of Computational Physics}
+      \field{number}{2}
+      \field{title}{A multi-phase SPH method for macroscopic and mesoscopic flows}
+      \field{volume}{213}
+      \field{year}{2006}
+      \field{pages}{844\bibrangedash 861}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1016/j.jcp.2005.09.001
+      \endverb
+    \endentry
+    \entry{ibrahim2005}{book}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=6c5710eacf1412d59a5f1ed5914c338d}{%
+           family={Ibrahim},
+           familyi={I\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{fullhash}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{fullhashraw}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{bibnamehash}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{authorbibnamehash}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{authornamehash}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{authorfullhash}{6c5710eacf1412d59a5f1ed5914c338d}
+      \strng{authorfullhashraw}{6c5710eacf1412d59a5f1ed5914c338d}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Liquid Sloshing Dynamics: Theory and Applications}
+      \field{year}{2005}
+      \verb{doi}
+      \verb 10.1017/CBO9780511536654
+      \endverb
+    \endentry
+    \entry{konar2023deep}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=8a9fc86039c2c28034cbcd308462eec0}{%
+           family={Konar},
+           familyi={K\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9da74cdb7cd29c447aa50fb0ab7cf7dd}{%
+           family={Ghosh},
+           familyi={G\bibinitperiod},
+           given={A.D.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{8a89b056f097d45e20497a79770752c2}
+      \strng{fullhash}{8a89b056f097d45e20497a79770752c2}
+      \strng{fullhashraw}{8a89b056f097d45e20497a79770752c2}
+      \strng{bibnamehash}{8a89b056f097d45e20497a79770752c2}
+      \strng{authorbibnamehash}{8a89b056f097d45e20497a79770752c2}
+      \strng{authornamehash}{8a89b056f097d45e20497a79770752c2}
+      \strng{authorfullhash}{8a89b056f097d45e20497a79770752c2}
+      \strng{authorfullhashraw}{8a89b056f097d45e20497a79770752c2}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Lecture Notes in Civil Engineering}
+      \field{title}{Deep-Tuned Sloshing Damper with Multiple Horizontal Baffles for Structural Vibration Control}
+      \field{volume}{1}
+      \field{year}{2023}
+      \field{pages}{33\bibrangedash 42}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1007/978-981-99-1608-5_3
+      \endverb
+    \endentry
+    \entry{konar2025}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=8a9fc86039c2c28034cbcd308462eec0}{%
+           family={Konar},
+           familyi={K\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1f34bcb26f5d07144d8786d338fc64d3}{%
+           family={Pal},
+           familyi={P\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=17d777989c89ecf12f1ff3b51386964b}{%
+           family={Chakraborty},
+           familyi={C\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{fullhash}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{fullhashraw}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{bibnamehash}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{authorbibnamehash}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{authornamehash}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{authorfullhash}{ed9a6ce013fc40516fbed7c54220a66b}
+      \strng{authorfullhashraw}{ed9a6ce013fc40516fbed7c54220a66b}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Ships and Offshore Structures}
+      \field{number}{1}
+      \field{title}{A review of numerical modelling of liquid sloshing in partially filled tanks}
+      \field{volume}{20}
+      \field{year}{2025}
+      \field{pages}{1\bibrangedash 34}
+      \range{pages}{34}
+      \verb{doi}
+      \verb 10.1080/17445302.2025.2491080
+      \endverb
+    \endentry
+    \entry{Krabbenhoft2011}{thesis}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=756dd92c8ef57c7f8c44af49245cd660}{%
+           family={Krabbenh{ø}ft},
+           familyi={K\bibinitperiod},
+           given={J{ø}rgen},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Technical University of Denmark}%
+      }
+      \strng{namehash}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{fullhash}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{fullhashraw}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{bibnamehash}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{authorbibnamehash}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{authornamehash}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{authorfullhash}{756dd92c8ef57c7f8c44af49245cd660}
+      \strng{authorfullhashraw}{756dd92c8ef57c7f8c44af49245cd660}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Shallow Water Tuned Liquid Dampers: Modeling, Simulation and Experiments}
+      \field{type}{phdthesis}
+      \field{year}{2011}
+      \verb{urlraw}
+      \verb https://orbit.dtu.dk/en/publications/shallow-water-tuned-liquid-dampers-modeling-simulation-and-experi
+      \endverb
+      \verb{url}
+      \verb https://orbit.dtu.dk/en/publications/shallow-water-tuned-liquid-dampers-modeling-simulation-and-experi
+      \endverb
+    \endentry
+    \entry{krata2013}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=30e50a1f7ebc994f3c7b5594b46db79e}{%
+           family={Krata},
+           familyi={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {MDPI}%
+      }
+      \strng{namehash}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{fullhash}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{fullhashraw}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{bibnamehash}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{authorbibnamehash}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{authornamehash}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{authorfullhash}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \strng{authorfullhashraw}{30e50a1f7ebc994f3c7b5594b46db79e}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{TransNav, the International Journal on Marine Navigation and Safety of Sea Transportation}
+      \field{number}{4}
+      \field{title}{The Impact of Sloshing Liquids on Ship Stability for Various Dimensions of Partly Filled Tanks}
+      \field{volume}{7}
+      \field{year}{2013}
+      \field{pages}{481\bibrangedash 489}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.12716/1001.07.04.02
+      \endverb
+    \endentry
+    \entry{Liu2024}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=0cf6dc3904f4a63270b0d4aead055aad}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Cheng},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=01877ad3bd70f4fa81bbe54d6e24aba1}{%
+           family={Xiao},
+           familyi={X\bibinitperiod},
+           given={Shaofei},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d330fcad100aff751eedfef715689ba8}{%
+           family={Ding},
+           familyi={D\bibinitperiod},
+           given={Yanhui},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c6bb304455e203802559e27fad5b248d}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Jin},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{25e60d810366217a9386f565ca138f69}
+      \strng{fullhash}{e9c57975fdbdaadc94f9bab8be4f6e26}
+      \strng{fullhashraw}{e9c57975fdbdaadc94f9bab8be4f6e26}
+      \strng{bibnamehash}{e9c57975fdbdaadc94f9bab8be4f6e26}
+      \strng{authorbibnamehash}{e9c57975fdbdaadc94f9bab8be4f6e26}
+      \strng{authornamehash}{25e60d810366217a9386f565ca138f69}
+      \strng{authorfullhash}{e9c57975fdbdaadc94f9bab8be4f6e26}
+      \strng{authorfullhashraw}{e9c57975fdbdaadc94f9bab8be4f6e26}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Water}
+      \field{number}{11}
+      \field{title}{Experimental Study on the Sloshing of a Rectangular Tank under Pitch Excitations}
+      \field{volume}{16}
+      \field{year}{2024}
+      \field{pages}{1551}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/w16111551
+      \endverb
+      \verb{urlraw}
+      \verb https://www.mdpi.com/2073-4441/16/11/1551
+      \endverb
+      \verb{url}
+      \verb https://www.mdpi.com/2073-4441/16/11/1551
+      \endverb
+    \endentry
+    \entry{liu2022}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=764caa9b1ba77be7a568d5390279a255}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c9667b22c99aad50bf67c2b9c7a7e6e3}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=774376ab3fd1a37acbfd458eec959b7b}{%
+           family={Ji},
+           familyi={J\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{fullhash}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{fullhashraw}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{bibnamehash}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{authorbibnamehash}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{authornamehash}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{authorfullhash}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \strng{authorfullhashraw}{2697eb3b62fd3cc67b2f67c274a129e4}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Powder Technology}
+      \field{title}{DEM–SPH coupling method for the interaction between irregularly shaped granular materials and fluids}
+      \field{volume}{400}
+      \field{year}{2022}
+      \field{pages}{117249}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1016/j.powtec.2022.117249
+      \endverb
+    \endentry
+    \entry{lu2018particle}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=933e3b984da957e7da537f3734587bf8}{%
+           family={Lu},
+           familyi={L\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cc4aadc875d7abdbaf96dfa4a83d8b77}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Z.},
+           giveni={Z\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bedceb7013e26aed5877b0ed36b7a305}{%
+           family={M.},
+           familyi={M\bibinitperiod},
+           given={Sami\bibnamedelima F.},
+           giveni={S\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=583118bcdce8bd887283e311b95ef384}{%
+           family={Lu},
+           familyi={L\bibinitperiod},
+           given={X},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a9c3c115f54565d8f9efba7131abe55c}
+      \strng{fullhash}{cedd2678f915fe9938fe83050fbe3f1d}
+      \strng{fullhashraw}{cedd2678f915fe9938fe83050fbe3f1d}
+      \strng{bibnamehash}{cedd2678f915fe9938fe83050fbe3f1d}
+      \strng{authorbibnamehash}{cedd2678f915fe9938fe83050fbe3f1d}
+      \strng{authornamehash}{a9c3c115f54565d8f9efba7131abe55c}
+      \strng{authorfullhash}{cedd2678f915fe9938fe83050fbe3f1d}
+      \strng{authorfullhashraw}{cedd2678f915fe9938fe83050fbe3f1d}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Structural Control and Health Monitoring}
+      \field{number}{7}
+      \field{title}{Particle impact dampers: Past, present, and future}
+      \field{volume}{25}
+      \field{year}{2018}
+      \field{pages}{e2058}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1002/stc.2058
+      \endverb
+    \endentry
+    \entry{lyu2019}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=b4bb309c95aa7cda009c655c5fdc70d4}{%
+           family={Lyu},
+           familyi={L\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5b087866cc69e475a5131084f2feefdc}{%
+           family={Riesner},
+           familyi={R\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=efb76abe574326721ce69fe8bf29cdc7}{%
+           family={El\bibnamedelima Moctar},
+           familyi={E\bibinitperiod\bibinitdelim M\bibinitperiod},
+           given={O.},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier}%
+      }
+      \strng{namehash}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{fullhash}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{fullhashraw}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{bibnamehash}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{authorbibnamehash}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{authornamehash}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{authorfullhash}{a48ea85ddd36332aaeaf791e9686aef8}
+      \strng{authorfullhashraw}{a48ea85ddd36332aaeaf791e9686aef8}
+      \field{sortinit}{L}
+      \field{sortinithash}{7c47d417cecb1f4bd38d1825c427a61a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Marine Structures}
+      \field{title}{A hybrid method for ship response coupled with sloshing in partially filled tanks}
+      \field{volume}{67}
+      \field{year}{2019}
+      \verb{doi}
+      \verb 10.1016/j.marstruc.2019.102643
+      \endverb
+    \endentry
+    \entry{martin1952}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=e06e3aa122b299bf9968f42b565431f5}{%
+           family={Martin},
+           familyi={M\bibinitperiod},
+           given={J.\bibnamedelimi C.},
+           giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=903ff55b9af8c18217126fc63c86c92d}{%
+           family={Moyce},
+           familyi={M\bibinitperiod},
+           given={W.\bibnamedelimi J.},
+           giveni={W\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9244fa430281e1cf92443853b8001107}
+      \strng{fullhash}{9244fa430281e1cf92443853b8001107}
+      \strng{fullhashraw}{9244fa430281e1cf92443853b8001107}
+      \strng{bibnamehash}{9244fa430281e1cf92443853b8001107}
+      \strng{authorbibnamehash}{9244fa430281e1cf92443853b8001107}
+      \strng{authornamehash}{9244fa430281e1cf92443853b8001107}
+      \strng{authorfullhash}{9244fa430281e1cf92443853b8001107}
+      \strng{authorfullhashraw}{9244fa430281e1cf92443853b8001107}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society of London. Series A, Mathematical and Physical Sciences}
+      \field{number}{882}
+      \field{title}{An experimental study of the collapse of liquid columns on a rigid horizontal plane}
+      \field{volume}{244}
+      \field{year}{1952}
+      \field{pages}{312\bibrangedash 324}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1098/rsta.1952.0006
+      \endverb
+    \endentry
+    \entry{monaghan1992}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=441fe88aa55fb5b33be74d8641d0d091}{%
+           family={Monaghan},
+           familyi={M\bibinitperiod},
+           given={J.\bibnamedelimi J.},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{fullhash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{fullhashraw}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{bibnamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorbibnamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authornamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorfullhash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorfullhashraw}{441fe88aa55fb5b33be74d8641d0d091}
+      \field{extraname}{1}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Annual Review of Astronomy and Astrophysics}
+      \field{title}{Smoothed Particle Hydrodynamics}
+      \field{volume}{30}
+      \field{year}{1992}
+      \field{pages}{543\bibrangedash 573}
+      \range{pages}{31}
+      \verb{doi}
+      \verb 10.1146/annurev.aa.30.090192.002551
+      \endverb
+    \endentry
+    \entry{monaghan1994sph}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=441fe88aa55fb5b33be74d8641d0d091}{%
+           family={Monaghan},
+           familyi={M\bibinitperiod},
+           given={J.\bibnamedelimi J.},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{fullhash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{fullhashraw}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{bibnamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorbibnamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authornamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorfullhash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorfullhashraw}{441fe88aa55fb5b33be74d8641d0d091}
+      \field{extraname}{2}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Meshfree Particle Methods}
+      \field{title}{Smoothed particle hydrodynamics (SPH)}
+      \field{volume}{32}
+      \field{year}{1994}
+      \field{pages}{503\bibrangedash 540}
+      \range{pages}{38}
+      \verb{doi}
+      \verb 10.1007/978-3-540-71471-2_2
+      \endverb
+    \endentry
+    \entry{monaghan2005}{article}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=441fe88aa55fb5b33be74d8641d0d091}{%
+           family={Monaghan},
+           familyi={M\bibinitperiod},
+           given={J.\bibnamedelimi J.},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{fullhash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{fullhashraw}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{bibnamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorbibnamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authornamehash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorfullhash}{441fe88aa55fb5b33be74d8641d0d091}
+      \strng{authorfullhashraw}{441fe88aa55fb5b33be74d8641d0d091}
+      \field{extraname}{3}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Reports on Progress in Physics}
+      \field{number}{8}
+      \field{title}{Smoothed particle hydrodynamics}
+      \field{volume}{68}
+      \field{year}{2005}
+      \field{pages}{1703\bibrangedash 1759}
+      \range{pages}{57}
+      \verb{doi}
+      \verb 10.1088/0034-4885/68/8/R01
+      \endverb
+    \endentry
+    \entry{prasad2024}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=41a9d9985250aa5a072ed3beba000f1d}{%
+           family={Prasad},
+           familyi={P\bibinitperiod},
+           given={B.\bibnamedelimi B.},
+           giveni={B\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=36952d62f9d72a6805d5ab60670d2c46}{%
+           family={Duvigneau},
+           familyi={D\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=57f223537313b08ec79c5d46f3ea5feb}{%
+           family={Reinboth},
+           familyi={R\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c569d0274e655b5be13e253e21e4e320}{%
+           family={Juhre},
+           familyi={J\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=25e9a8e0c2d754a50c86c386ede34a2d}{%
+           family={Wochke},
+           familyi={W\bibinitperiod},
+           given={E.},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7c563c7720fd3e7cddd758a0f642a198}
+      \strng{fullhash}{73e0af544115d0b2c92f6836bbac2d16}
+      \strng{fullhashraw}{73e0af544115d0b2c92f6836bbac2d16}
+      \strng{bibnamehash}{73e0af544115d0b2c92f6836bbac2d16}
+      \strng{authorbibnamehash}{73e0af544115d0b2c92f6836bbac2d16}
+      \strng{authornamehash}{7c563c7720fd3e7cddd758a0f642a198}
+      \strng{authorfullhash}{73e0af544115d0b2c92f6836bbac2d16}
+      \strng{authorfullhashraw}{73e0af544115d0b2c92f6836bbac2d16}
+      \field{sortinit}{P}
+      \field{sortinithash}{ff3bcf24f47321b42cb156c2cc8a8422}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Journal of Vibration Engineering \& Technologies}
+      \field{title}{Design Strategies of Particle Dampers for Large-Scale Applications}
+      \field{volume}{12}
+      \field{year}{2024}
+      \field{pages}{5715\bibrangedash 5746}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1007/s42417-023-01214-x
+      \endverb
+    \endentry
+    \entry{rawson2001ship}{book}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=eff3ac0d553c62f46361456e1c927e42}{%
+           family={Rawson},
+           familyi={R\bibinitperiod},
+           given={K.J.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9e664d7a27b1845e06bfa077a98e1b1f}{%
+           family={Tupper},
+           familyi={T\bibinitperiod},
+           given={E.C.},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Butterworth-Heinemann}%
+      }
+      \strng{namehash}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{fullhash}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{fullhashraw}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{bibnamehash}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{authorbibnamehash}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{authornamehash}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{authorfullhash}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \strng{authorfullhashraw}{b2c3c6e23cdf12e70517089936a5d5ed}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{5th}
+      \field{isbn}{978-0750653985}
+      \field{title}{Basic Ship Theory}
+      \field{year}{2001}
+    \endentry
+    \entry{robinson2014}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=a47054238a96962b5fb612812edb5164}{%
+           family={Robinson},
+           familyi={R\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de92a4a25188443cbf9dc367d35c1ee8}{%
+           family={Luding},
+           familyi={L\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=355a7de933029880413933a4eb86931d}{%
+           family={Ramaioli},
+           familyi={R\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{7a55ce535e4d7876761a5619e245826d}
+      \strng{fullhash}{7a55ce535e4d7876761a5619e245826d}
+      \strng{fullhashraw}{7a55ce535e4d7876761a5619e245826d}
+      \strng{bibnamehash}{7a55ce535e4d7876761a5619e245826d}
+      \strng{authorbibnamehash}{7a55ce535e4d7876761a5619e245826d}
+      \strng{authornamehash}{7a55ce535e4d7876761a5619e245826d}
+      \strng{authorfullhash}{7a55ce535e4d7876761a5619e245826d}
+      \strng{authorfullhashraw}{7a55ce535e4d7876761a5619e245826d}
+      \field{sortinit}{R}
+      \field{sortinithash}{5e1c39a9d46ffb6bebd8f801023a9486}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Applied Mathematical Modelling}
+      \field{number}{21-22}
+      \field{title}{Coupling Smoothed Particle Hydrodynamics with the Discrete Element Method for the simulation of fluid–particle systems}
+      \field{volume}{38}
+      \field{year}{2014}
+      \field{pages}{5160\bibrangedash 5176}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1016/j.apm.2014.03.040
+      \endverb
+    \endentry
+    \entry{schonle2022}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=aa26cf21aae1ad30e7190783bfa991df}{%
+           family={Schönle},
+           familyi={S\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=51c0d855e1ed8af00dedcf086c9c0a10}{%
+           family={Gnanasambandham},
+           familyi={G\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b19f2ce9fccd66928d3eec8e09f363cf}{%
+           family={Eberhard},
+           familyi={E\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{119d8d467c31e07872693190370e0173}
+      \strng{fullhash}{119d8d467c31e07872693190370e0173}
+      \strng{fullhashraw}{119d8d467c31e07872693190370e0173}
+      \strng{bibnamehash}{119d8d467c31e07872693190370e0173}
+      \strng{authorbibnamehash}{119d8d467c31e07872693190370e0173}
+      \strng{authornamehash}{119d8d467c31e07872693190370e0173}
+      \strng{authorfullhash}{119d8d467c31e07872693190370e0173}
+      \strng{authorfullhashraw}{119d8d467c31e07872693190370e0173}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Experimental Mechanics}
+      \field{title}{Broadband Damping Properties of Particle Dampers Mounted to Dynamic Structures}
+      \field{volume}{62}
+      \field{year}{2022}
+      \field{pages}{1569\bibrangedash 1578}
+      \range{pages}{10}
+      \verb{doi}
+      \verb 10.1007/s11340-022-00882-2
+      \endverb
+    \endentry
+    \entry{letouzecolagrossi2025}{article}{}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=7ed4c8661c6cecc8ff05ab30b152047c}{%
+           family={Touzé},
+           familyi={T\bibinitperiod},
+           given={David\bibnamedelima Le},
+           giveni={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=29801d4418d5a181343463050d5f1844}{%
+           family={Colagrossi},
+           familyi={C\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b43113c62e218277e23f83fdf8255879}
+      \strng{fullhash}{b43113c62e218277e23f83fdf8255879}
+      \strng{fullhashraw}{b43113c62e218277e23f83fdf8255879}
+      \strng{bibnamehash}{b43113c62e218277e23f83fdf8255879}
+      \strng{authorbibnamehash}{b43113c62e218277e23f83fdf8255879}
+      \strng{authornamehash}{b43113c62e218277e23f83fdf8255879}
+      \strng{authorfullhash}{b43113c62e218277e23f83fdf8255879}
+      \strng{authorfullhashraw}{b43113c62e218277e23f83fdf8255879}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Reports on Progress in Physics}
+      \field{note}{Open access}
+      \field{number}{3}
+      \field{title}{Smoothed particle hydrodynamics for free-surface and multiphase flows: a review}
+      \field{volume}{88}
+      \field{year}{2025}
+      \field{pages}{037001}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1088/1361-6633/ada80f
+      \endverb
+    \endentry
+    \entry{trujillo2020sphdem}{article}{}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=a3cb21afa49e9a424701d24f019e3551}{%
+           family={Trujillo-Vela},
+           familyi={T\bibinithyphendelim V\bibinitperiod},
+           given={\{Mario\bibnamedelimb Germán\}},
+           giveni={\\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ddf409536af487645fbe81675856d88d}{%
+           family={Galindo-Torres},
+           familyi={G\bibinithyphendelim T\bibinitperiod},
+           given={\{Sergio\bibnamedelimb Andrés\}},
+           giveni={\\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=540fd7ad08a8ef19104f391d459eb321}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Xue},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f5c1cd6bda1786e6a003e1943cdf5e3f}{%
+           family={Ramos-Cañón},
+           familyi={R\bibinithyphendelim C\bibinitperiod},
+           given={\{Alfonso\bibnamedelimb Mariano\}},
+           giveni={\\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=72fc612c096b49e5a3ed84c97f94b0aa}{%
+           family={Escobar-Vargas},
+           familyi={E\bibinithyphendelim V\bibinitperiod},
+           given={\{Jorge\bibnamedelimb Alberto\}},
+           giveni={\\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier B.V.}%
+      }
+      \strng{namehash}{d30270cd7374d82b2b00d7d866f9ee01}
+      \strng{fullhash}{de7266bf0ed60ae12a9a59ace21857b6}
+      \strng{fullhashraw}{de7266bf0ed60ae12a9a59ace21857b6}
+      \strng{bibnamehash}{de7266bf0ed60ae12a9a59ace21857b6}
+      \strng{authorbibnamehash}{de7266bf0ed60ae12a9a59ace21857b6}
+      \strng{authornamehash}{d30270cd7374d82b2b00d7d866f9ee01}
+      \strng{authorfullhash}{de7266bf0ed60ae12a9a59ace21857b6}
+      \strng{authorfullhashraw}{de7266bf0ed60ae12a9a59ace21857b6}
+      \field{sortinit}{T}
+      \field{sortinithash}{9af77f0292593c26bde9a56e688eaee9}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{abstract}{Debris flows have been widely researched during the last decades since they are catastrophic events with significant infrastructure and environmental impacts. Typically, they are composed of various materials which interactions are worth for studying, to improve the prediction of some variables, such as velocities, forces and affected areas. Constitutive models and numerical methods are fundamental in broadening the knowledge of the behaviour of these phenomena. Thus, the coupling of numerical techniques, for the different constituents of debris flow is becoming indispensable to describe the behaviour of these natural events. The coupling of Smooth Particle Hydrodynamics (SPH) and Discrete Element Method (DEM) is presented in this paper to show the capacity to represent the interaction of several materials at the same time. SPH is employed to represent the fluid and soil by using different constitutive models from a continuum approach. In contrast, DEM is used to represent immersed objects such as boulders and boundary conditions. In this sense, we can couple the behaviour that occurs at very different scales in a unified framework more suitable to describe the heterogeneity of debris flows. Benchmark cases were solved to validate this new approach. The simulations show good agreement with analytical solutions, experimental results and field data.}
+      \field{issn}{0266-352X}
+      \field{journaltitle}{Computers and Geotechnics}
+      \field{month}{9}
+      \field{note}{Publisher Copyright: {©} 2020 Elsevier Ltd}
+      \field{title}{Smooth particle hydrodynamics and discrete element method coupling scheme for the simulation of debris flows}
+      \field{volume}{125}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.1016/j.compgeo.2020.103669
+      \endverb
+      \keyw{Benchmark validation cases,Debris flows,SPH-DEM coupling}
+    \endentry
+    \entry{wu2016}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=40a59624a39c3678ed9e7c77fe3e1216}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c8fdd55388190a28eaf7696d1254822a}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a88942d17b21b72db849d585b18f564d}{%
+           family={Wright},
+           familyi={W\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a4f66d783972ec378d104bccd6517556}
+      \strng{fullhash}{a4f66d783972ec378d104bccd6517556}
+      \strng{fullhashraw}{a4f66d783972ec378d104bccd6517556}
+      \strng{bibnamehash}{a4f66d783972ec378d104bccd6517556}
+      \strng{authorbibnamehash}{a4f66d783972ec378d104bccd6517556}
+      \strng{authornamehash}{a4f66d783972ec378d104bccd6517556}
+      \strng{authorfullhash}{a4f66d783972ec378d104bccd6517556}
+      \strng{authorfullhashraw}{a4f66d783972ec378d104bccd6517556}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Computers \& Structures}
+      \field{title}{A coupled SPH–DEM model for fluid–structure interaction problems with free-surface flow and structural failure}
+      \field{volume}{177}
+      \field{year}{2016}
+      \field{pages}{141\bibrangedash 161}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1016/j.compstruc.2016.08.012
+      \endverb
+    \endentry
+    \entry{zhu2008}{article}{}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=05cab72fa356bde8bc5f71c90bb2d9b2}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={H.\bibnamedelimi P.},
+           giveni={H\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=91cf92ef0169cea24414532d647e95e9}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Z.\bibnamedelimi Y.},
+           giveni={Z\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9d4f7e2144ab5b45479cb1a4a19462ca}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={R.\bibnamedelimi Y.},
+           giveni={R\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6ca11a8a3e59fdda0c2a953b1f929a26}{%
+           family={Yu},
+           familyi={Y\bibinitperiod},
+           given={A.\bibnamedelimi B.},
+           giveni={A\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e52627b72236a59035e0af4c72ee4ced}
+      \strng{fullhash}{8a5683e7a8096dbab0b50e18d810fee8}
+      \strng{fullhashraw}{8a5683e7a8096dbab0b50e18d810fee8}
+      \strng{bibnamehash}{8a5683e7a8096dbab0b50e18d810fee8}
+      \strng{authorbibnamehash}{8a5683e7a8096dbab0b50e18d810fee8}
+      \strng{authornamehash}{e52627b72236a59035e0af4c72ee4ced}
+      \strng{authorfullhash}{8a5683e7a8096dbab0b50e18d810fee8}
+      \strng{authorfullhashraw}{8a5683e7a8096dbab0b50e18d810fee8}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{Chemical Engineering Science}
+      \field{number}{23}
+      \field{title}{Discrete particle simulation of particulate systems: A review of major applications and findings}
+      \field{volume}{63}
+      \field{year}{2008}
+      \field{pages}{5728\bibrangedash 5770}
+      \range{pages}{43}
+      \verb{doi}
+      \verb 10.1016/j.ces.2008.08.006
+      \endverb
+    \endentry
+    \entry{zhu2025}{article}{}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=280dc4c18f682e47f79d502f0e89f614}{%
+           family={Zhu},
+           familyi={Z\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d1cf3b5875e193af09fb48f09d5f8c55}{%
+           family={Guo},
+           familyi={G\bibinitperiod},
+           given={X.},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b060addab68cee5f8310d9596aaaecb8}{%
+           family={Cao},
+           familyi={C\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{fullhash}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{fullhashraw}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{bibnamehash}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{authorbibnamehash}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{authornamehash}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{authorfullhash}{670a06d2c340c3a8a98e27a9f4cea983}
+      \strng{authorfullhashraw}{670a06d2c340c3a8a98e27a9f4cea983}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{author}
+      \field{journaltitle}{European Journal of Mechanics - A/Solids}
+      \field{title}{Research progress on tuned particle dampers: A review of modeling, energy dissipation mechanisms, and applications}
+      \field{volume}{113}
+      \field{year}{2025}
+      \verb{doi}
+      \verb 10.1016/j.euromechsol.2025.105720
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

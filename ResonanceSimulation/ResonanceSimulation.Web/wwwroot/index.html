@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resonance Simulation Visualizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    body { font-family: sans-serif; background: #f8f8fa; margin: 0; }
+    .container { max-width: 900px; margin: 2em auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #0001; padding: 2em; }
+    h1 { color: #117733; }
+    #canvas { background: #e9f5f9; border: 1px solid #bbb; border-radius: 6px; display: block; margin: 1em auto; }
+    .info { margin-top: 1em; font-size: 1.1em; }
+    .progress { width: 100%; background: #eee; border-radius: 4px; height: 18px; margin: 1em 0; }
+    .progress-bar { height: 100%; background: #117733; border-radius: 4px; transition: width 0.2s; }
+    .status { font-weight: bold; color: #117733; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Resonanssivasteen simulaatio (SPH–DEM)</h1>
+    <form id="paramForm" style="margin-bottom:1em;">
+        <label>Taajuus f (Hz): <input type="number" step="0.01" id="freqInput" value="0.6" min="0.1" max="2.0"></label>
+        <label style="margin-left:1em;">Vaimennin: <input type="checkbox" id="damperInput" checked></label>
+        <label style="margin-left:1em;">Aika (s): <input type="number" step="1" id="timeInput" value="10" min="1" max="60"></label>
+        <button type="submit">Käynnistä simulaatio</button>
+    </form>
+    <div style="margin-bottom:1em;">
+      <label>Tank width (m): <input type="range" id="tankWidthSlider" min="0.10" max="0.60" step="0.01" value="0.30" style="width:120px;"> <span id="tankWidthValue">0.30</span></label>
+      <label style="margin-left:1em;">Tank height (m): <input type="range" id="tankHeightSlider" min="0.10" max="0.60" step="0.01" value="0.40" style="width:120px;"> <span id="tankHeightValue">0.40</span></label>
+    </div>
+    <div class="progress"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <canvas id="canvas" width="800" height="400"></canvas>
+    <div class="info">
+      <div id="modelInfo"></div>
+      <div id="simInfo"></div>
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+
+    function drawTank(state) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // Laivan siluetti (yksinkertainen)
+        ctx.save();
+        ctx.translate(400, 30);
+        ctx.beginPath();
+        ctx.moveTo(-120, 0);
+        ctx.lineTo(120, 0);
+        ctx.lineTo(80, 25);
+        ctx.lineTo(-80, 25);
+        ctx.closePath();
+        ctx.fillStyle = '#444';
+        ctx.globalAlpha = 0.25;
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+        ctx.restore();
+
+        // Tank geometry
+        ctx.strokeStyle = '#117733';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(100, 50, 600, 300);
+        // Damper (bottom)
+        ctx.fillStyle = '#CC6677';
+        ctx.fillRect(100, 320, 600, 30);
+        // Water fill
+        ctx.fillStyle = '#66B2FF';
+        ctx.fillRect(100, 50 + 300 * 0.5, 600, 300 * 0.5);
+
+        // Selittävä teksti canvasin päälle
+        ctx.font = '16px sans-serif';
+        ctx.fillStyle = '#117733';
+        ctx.fillText('Aframax-laivan ballastitankin 1:50 poikkileikkaus', 250, 45);
+        ctx.font = '13px sans-serif';
+        ctx.fillStyle = '#333';
+        ctx.fillText('Granulaarivaimennin pohjalla (punainen)', 250, 370);
+        ctx.fillText('Vesitäyttö (sininen), tankin liike: x(t) = A·sin(2πft)', 250, 390);
+
+        // Piirrä partikkelit (jos state mukana)
+        if (state && state.sphParticles) {
+          ctx.fillStyle = '#3399FF';
+          for (const p of state.sphParticles) {
+            // Skaalaa simulaation koordinaatit canvasille
+            const px = 100 + p.x * 600 / 0.30;
+            const py = 350 - p.y * 300 / 0.40;
+            ctx.beginPath();
+            ctx.arc(px, py, 2, 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        }
+        if (state && state.demParticles) {
+          ctx.fillStyle = '#CC6677';
+          for (const p of state.demParticles) {
+            const px = 100 + p.x * 600 / 0.30;
+            const py = 350 - p.y * 300 / 0.40;
+            const r = p.r * 600 / 0.30;
+            ctx.beginPath();
+            ctx.arc(px, py, Math.max(2, r), 0, 2 * Math.PI);
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    function updateInfo(state) {
+      modelInfo.innerHTML = `
+        <b>Tutkimuskysymys:</b> <br>
+        Kuinka hyvin granulaarivaimennin (SPH–DEM) vaimentaa sloshauksen aiheuttamia kuormia resonanssissa?<br><br>
+        <b>Simulaation teoria:</b><br>
+        - <b>SPH</b>: mallintaa nesteen (vesi) liikettä ja paineita<br>
+        - <b>DEM</b>: mallintaa vaimentimen partikkelit (pallot pohjalla)<br>
+        - <b>Tankin liike</b>: x(t) = A·sin(2πft), A=0.02 m, f=0.6 Hz<br>
+        - <b>Mittaukset</b>: seinämäpaine p(t), vapaan pinnan korkeus h(t), energia Ek(t), vaimennussuhde ζ<br>
+        <br>
+        <b>Mallinnusasetelma:</b><br>
+        Tankki: 0.30 m × 0.40 m (1:50 Aframax)<br>
+        Täyttöaste: 50%<br>
+        Damper: pohjakotelo, d=5 mm, massa 12%<br>
+        Liike: x(t) = 0.02·sin(2π·0.6·t)`;
+      simInfo.innerHTML = `<b>Laskennan eteneminen:</b><br>
+        Aika: ${state.time.toFixed(2)} s<br>
+        Askel: ${state.step}<br>
+        Seinämäpaine: ${state.wallPressure.toFixed(1)} Pa<br>
+        Vapaa pinta: ${state.freeSurface.toFixed(3)} m<br>
+        Energia: ${state.kineticEnergy.toFixed(3)} J<br>
+        Tankin siirtymä: ${state.tankDisplacement.toFixed(3)} m`;
+      statusDiv.textContent = state.status === 'running' ? 'Simulaatio käynnissä...' : 'Valmis!';
+      progressBar.style.width = Math.min(100, state.progress * 100) + '%';
+    }
+
+    async function startSimulation(params) {
+      running = true;
+      statusDiv.textContent = 'Käynnistetään...';
+      await fetch('/api/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params)
+      });
+      statusDiv.textContent = 'Simulaatio käynnissä...';
+      loop();
+    }
+
+    async function loop() {
+      if (!running) return;
+      const res = await fetch('/api/state');
+      const state = await res.json();
+      drawTank(state);
+      updateInfo(state);
+      if (state.progress < 1) {
+        setTimeout(loop, 100);
+      } else {
+        statusDiv.textContent = 'Simulaatio valmis!';
+        running = false;
+      }
+    }
+
+    paramForm.onsubmit = (e) => {
+      alert('Form submitted!');
+      console.log('Form submitted!');
+      e.preventDefault();
+      if (running) return;
+      const params = {
+        frequency: parseFloat(freqInput.value),
+        damper: damperInput.checked,
+        time: parseFloat(timeInput.value)
+      };
+      startSimulation(params);
+    };
+
+    drawTank();
+    statusDiv.textContent = 'Valmis odottamaan simulaatiota.';
+  </script>
+</body>
+</html>
