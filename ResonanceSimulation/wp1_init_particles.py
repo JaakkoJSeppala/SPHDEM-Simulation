@@ -11,23 +11,30 @@ fluid_height = 0.3 * H    # Initial fluid height
 cube_size = 0.08          # Cube side length (meters)
 cube_x, cube_y = 0.7, 0.1 # Cube bottom-left corner
 
-# --- Fluid particles ---
+# --- Cube (rigid body) particles (offset grid to avoid overlap) ---
+cube_particles = []
+for i in range(int(cube_size/dx)):
+    for j in range(int(cube_size/dx)):
+        x = cube_x + dx/2 + i*dx
+        y = cube_y + dx/2 + j*dx
+        if x < cube_x + cube_size and y < cube_y + cube_size:
+            cube_particles.append([x, y])
+
+# --- Fluid particles (skip those overlapping with cube) ---
 fluid_particles = []
+min_dist = dx * 0.9
+def is_far_from_cube(x, y):
+    for cx, cy in cube_particles:
+        if np.hypot(x-cx, y-cy) < min_dist:
+            return False
+    return True
 for i in range(int(L/dx)):
     for j in range(int(fluid_height/dx)):
         x = dx/2 + i*dx
         y = dx/2 + j*dx
-        if x < L and y < fluid_height:
+        if x < L and y < fluid_height and is_far_from_cube(x, y):
             fluid_particles.append([x, y])
 
-# --- Cube (rigid body) particles ---
-cube_particles = []
-for i in range(int(cube_size/dx)):
-    for j in range(int(cube_size/dx)):
-        x = cube_x + i*dx
-        y = cube_y + j*dx
-        if x < cube_x + cube_size and y < cube_y + cube_size:
-            cube_particles.append([x, y])
 
 # --- Wall particles (bottom, left, right, top) ---
 wall_particles = []

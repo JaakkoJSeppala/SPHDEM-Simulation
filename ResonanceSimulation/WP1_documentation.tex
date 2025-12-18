@@ -1,0 +1,78 @@
+% WP1: Geometry and Particle Initialization for SPH Dam-Break + Cube Benchmark
+% Author: [Your Name]
+% Date: December 18, 2025
+
+\section{WP1: Geometry and Particle Initialization}
+
+\subsection{Objective}
+The goal of WP1 is to robustly and reproducibly initialize the geometry and particle positions for the SPH dam-break + cube benchmark, following best practices for automated validation and documentation.
+
+\subsection{Domain and Parameters}
+\begin{itemize}
+    \item Tank width: $L = 1.0$ m
+    \item Tank height: $H = 0.5$ m
+    \item Particle spacing: $\Delta x = 0.02$ m
+    \item Initial fluid height: $h_{fluid} = 0.3H = 0.15$ m
+    \item Cube side length: $l_{cube} = 0.08$ m
+    \item Cube bottom-left corner: $(x_{cube}, y_{cube}) = (0.7, 0.1)$ m
+\end{itemize}
+
+\subsection{Particle Types}
+\begin{itemize}
+    \item \textbf{Fluid particles:} Fill the region $0 < x < L$, $0 < y < h_{fluid}$, excluding those within $0.9\Delta x$ of any cube particle.
+    \item \textbf{Cube (rigid body) particles:} Placed on a grid of spacing $\Delta x$, offset by $\Delta x/2$ in both $x$ and $y$ to avoid alignment with the fluid grid. The cube occupies $x_{cube} < x < x_{cube} + l_{cube}$, $y_{cube} < y < y_{cube} + l_{cube}$.
+    \item \textbf{Wall particles:} Placed along the tank boundaries (bottom, left, right, top) at spacing $\Delta x$.
+\end{itemize}
+
+\subsection{Initialization Algorithm}
+\begin{enumerate}
+    \item Generate cube particles on an offset grid:
+    \begin{align*}
+        x_{cube,i} &= x_{cube} + \frac{\Delta x}{2} + i\Delta x \\
+        y_{cube,j} &= y_{cube} + \frac{\Delta x}{2} + j\Delta x
+    \end{align*}
+    for $i, j$ such that $x_{cube,i} < x_{cube} + l_{cube}$ and $y_{cube,j} < y_{cube} + l_{cube}$.
+    \item For each fluid grid point, include the particle only if its distance to all cube particles is at least $0.9\Delta x$.
+    \item Place wall particles along all four boundaries at $\Delta x$ spacing.
+\end{enumerate}
+
+\subsection{Automated Validation}
+\begin{itemize}
+    \item \textbf{No overlap:} All fluid particles are at least $0.9\Delta x$ from any cube particle.
+    \item \textbf{Domain check:} All particles are within $0 \leq x \leq L$, $0 \leq y \leq H$.
+    \item \textbf{Wall clearance:} Cube particles are at least $0.9\Delta x$ from any wall particle.
+    \item \textbf{Counts:} Fluid, cube, and wall particle counts are reported and checked.
+\end{itemize}
+
+\subsection{Python Implementation}
+The initialization and validation are implemented in the following scripts:
+\begin{itemize}
+    \item \texttt{wp1_init_particles.py}: Initializes and visualizes all particles.
+    \item \texttt{wp1_test.py}: Automated test for overlap, domain, and counts.
+\end{itemize}
+
+\subsection{Results}
+\begin{itemize}
+    \item \textbf{Fluid particles:} 342
+    \item \textbf{Cube particles:} 16
+    \item \textbf{Wall particles:} 150
+    \item \textbf{No overlap:} True
+    \item \textbf{All in domain:} True
+    \item \textbf{Cube not touching wall:} True
+\end{itemize}
+
+\subsection{Visualization}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{wp1_particles.png}
+    \caption{Initial particle configuration for the dam-break + cube benchmark.}
+\end{figure}
+
+\subsection{Reproducibility}
+All steps are version-controlled and fully automated. The test script ensures that any change in initialization logic is immediately detected.
+
+\subsection{References}
+\begin{itemize}
+    \item Benchmark description: \textit{(add reference to literature benchmark here)}
+    \item SPH method: \textit{(add reference to SPH method here)}
+\end{itemize}
