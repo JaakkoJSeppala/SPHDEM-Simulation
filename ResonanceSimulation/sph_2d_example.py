@@ -17,6 +17,7 @@ G = np.array([0, -9.81]) # Gravity
 dt = 0.001             # Time step
 steps = 200            # Number of steps
 
+
 # DEM & Granular Damper Parameters
 DEM_N = 20             # Number of DEM particles (granular damper)
 damper_width = 0.2
@@ -25,6 +26,9 @@ damper_x = 0.7         # Damper box x-position (left)
 damper_y = 0.3         # Damper box y-position (bottom, will move)
 damper_vy = 0.0        # Damper vertical velocity
 damper_mass = 1.0
+damper_k_spring = 100.0  # Damperin "jousivakio" (spring constant)
+damper_c_damp = 2.0      # Damperin vaimennuskerroin (damping)
+damper_y0 = 0.3          # Damperin tasapainoasema
 dem_r = 0.015          # DEM particle radius
 dem_m = 0.01           # DEM particle mass
 dem_k = 5000           # DEM contact stiffness
@@ -76,6 +80,8 @@ def gradW(r, h):
     return sigma * grad
 
 
+damper_kin_energy_hist = []  # Tallennetaan granular damperin kineettinen energia
+
 # Main loop
 for step in range(steps):
     # --- SPH ---
@@ -97,9 +103,20 @@ for step in range(steps):
     vel[(pos == 0) | (pos == L)] *= -0.5
 
     # --- DEM (Granular damper) ---
-    # Satunnainen damperin pystysuuntainen liike (esim. "värähtely")
-    if step % 10 == 0:
-        damper_vy = 0.05 * (2 * random.random() - 1)  # satunnainen nopeus [-0.05, 0.05]
+
+    # --- Damperin fysikaalinen liike (jousi-massa-vaimennin) ---
+    # Lasketaan DEM-partikkelien reaktiovoima damperin pohjaan (summa kaikista pohjaan kohdistuvista voimista)
+    dem_react_force = 0.0
+    for i in range(DEM_N):
+        if dem_pos[i, 1] - dem_r < damper_y + 1e-8:
+            # Lasketaan voima, jolla partikkeli painaa damperin pohjaa
+            dem_react_force += dem_k * (damper_y - (dem_pos[i, 1] - dem_r))
+
+    # Damperin liikkeen differentiaaliyhtälö: m*a = -k*(y-y0) - c*v + F_react
+    damper_ay = (-damper_k_spring * (damper_y - damper_y0)
+                 - damper_c_damp * damper_vy
+                 + dem_react_force) / damper_mass
+    damper_vy += damper_ay * dt
     damper_y += damper_vy * dt
     # Pidä damper laatikko kentän sisällä
     if damper_y < 0:
@@ -111,7 +128,20 @@ for step in range(steps):
 
     # DEM partikkelien voimat
     dem_acc = np.zeros_like(dem_pos)
+    sph_acc_extra = np.zeros_like(pos)  # SPH-partikkeleihin kohdistuvat DEM-voimat
     for i in range(DEM_N):
+        # SPH-DEM vuorovaikutus (yksinkertainen elastinen repulsio)
+        for k in range(N):
+            rij = pos[k] - dem_pos[i]
+            dist = np.linalg.norm(rij)
+            contact_dist = dem_r + h*0.5  # "kontaktietäisyys" (SPH-partikkelin vaikutussäde)
+            if dist < contact_dist and dist > 1e-8:
+                n = rij / dist
+                overlap = contact_dist - dist
+                force = 0.5 * dem_k * overlap  # pienempi kerroin, ettei voima kasva liian suureksi
+                # Voima vaikuttaa molempiin
+                dem_acc[i] -= force * n / dem_m
+                sph_acc_extra[k] += force * n / m
         # Painovoima
         dem_acc[i, 1] += G[1]
         # Seinät (laatikko)
@@ -146,12 +176,29 @@ for step in range(steps):
                 dem_acc[i] -= f_total * n / dem_m
                 dem_acc[j] += f_total * n / dem_m
 
+        # SPH-DEM vuorovaikutus (yksinkertainen elastinen repulsio)
+        for k in range(N):
+            rij = pos[k] - dem_pos[i]
+            dist = np.linalg.norm(rij)
+            contact_dist = dem_r + h*0.5  # "kontaktietäisyys" (SPH-partikkelin vaikutussäde)
+            if dist < contact_dist and dist > 1e-8:
+                n = rij / dist
+                overlap = contact_dist - dist
+                force = 0.5 * dem_k * overlap  # pienempi kerroin, ettei voima kasva liian suureksi
+                # Voima vaikuttaa molempiin
+                dem_acc[i] -= force * n / dem_m
+                sph_acc_extra[k] += force * n / m
+
     # Päivitä DEM partikkelien liike
     dem_vel += dem_acc * dt
     dem_pos += dem_vel * dt
     # Pidä partikkelit damperin sisällä (ylimääräinen varmistus)
     dem_pos[:, 0] = np.clip(dem_pos[:, 0], damper_x + dem_r, damper_x + damper_width - dem_r)
     dem_pos[:, 1] = np.clip(dem_pos[:, 1], damper_y + dem_r, damper_y + damper_height - dem_r)
+
+    # Tallennetaan granular damperin kineettinen energia
+    dem_kin_energy = 0.5 * dem_m * np.sum(dem_vel**2)
+    damper_kin_energy_hist.append(dem_kin_energy)
 
     # --- Visualisointi ---
     if step % 20 == 0:
@@ -168,6 +215,17 @@ for step in range(steps):
         plt.title(f"Step {step}")
         plt.legend()
         plt.pause(0.01)
+
+plt.show()
+
+# --- Granular damperin kineettisen energian käyrä ---
+plt.figure()
+plt.plot(np.arange(steps), damper_kin_energy_hist)
+plt.xlabel("Aika-askel")
+plt.ylabel("Granular damperin kineettinen energia")
+plt.title("Granular damperin energian kehitys")
+plt.tight_layout()
+plt.savefig(r'C:/Users/jaakk/Desktop/Gradu/granular_damper_energy.png', dpi=300)
 plt.show()
 
 # --- Analysis ---
