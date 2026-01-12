@@ -1,0 +1,186 @@
+@article{avdic2024,
+  author  = {Avdić, J. and others},
+  title   = {Experimental study of granular dampers in vibrational environments},
+  journal = {Journal of Sound and Vibration},
+  year    = {2024},
+  volume  = {571},
+  pages   = {117589},
+  doi     = {10.1016/j.jsv.2023.117589}
+}
+
+@article{yan2023,
+  author  = {Yan, S. and others},
+  title   = {Floating balls for sloshing suppression: A review},
+  journal = {Ocean Engineering},
+  year    = {2023},
+  volume  = {287},
+  pages   = {115645},
+  doi     = {10.1016/j.oceaneng.2023.115645}
+}
+
+@article{prasad2022,
+  author  = {Prasad, B. B. and others},
+  title   = {Damping performance of particle dampers with different granular materials},
+  journal = {Applied Acoustics},
+  year    = {2022},
+  volume  = {200},
+  pages   = {109059},
+  doi     = {10.1016/j.apacoust.2022.109059}
+}
+
+@book{lamport94:_latex,
+  author    = {Leslie Lamport},
+  title     = {{\LaTeX}},
+  subtitle  = {A Document Preparation System},
+  publisher = {Addison--Wesley},
+  year      = 1994,
+  edition   = 2,
+  address   = {Reading, MA}
+}
+
+@book{poschelschwager,
+  author    = {Thorsten Pöschel and Thomas Schwager},
+  title     = {Computational Granular Dynamics},
+  year      = {2005},
+  publisher = {Springer}
+}
+
+@article{sciencedirect1,
+  title     = {Research progress on tuned particle dampers: A review of modeling, energy dissipation mechanisms, and applications},
+  author    = {Veeramuthuvel, M. and Badri, A. and Wang, K.},
+  journal   = {Mechanical Systems and Signal Processing},
+  volume    = {204},
+  pages     = {110123},
+  year      = {2025},
+  publisher = {Elsevier},
+  doi       = {10.1016/j.ymssp.2025.110123},
+  url       = {https://www.sciencedirect.com/science/article/abs/pii/S0997753825001548}
+}
+
+@article{sciencedirect2,
+  title     = {Damping performance of particle dampers with different granular materials and their mixtures},
+  author    = {Braj Bhushan Prasad, Fabian Duvigneau, Daniel Juhre, Elmar Woschke},
+  journal   = {Applied Acoustics},
+  volume    = {197},
+  pages     = {108901},
+  year      = {2022},
+  publisher = {Elsevier},
+  doi       = {10.1016/j.apacoust.2022.108901},
+  url       = {https://www.sciencedirect.com/science/article/pii/S0003682X22004339}
+}
+
+@article{heckel2012,
+  author    = {Heckel, M. and Sack, A. and Kollmer, J. E. and Pöschel, T.},
+  title     = {Granular dampers for the reduction of vibrations of an oscillatory saw},
+  journal   = {Physica A},
+  volume    = {391},
+  number    = {19},
+  pages     = {4442--4447},
+  year      = {2012},
+  publisher = {Elsevier}
+}
+
+@article{varela2023,
+  author    = {Varela-Rosales, N. R. and Santarossa, A. and Engel, M. and Pöschel, T.},
+  title     = {Granular binary mixtures improve energy dissipation efficiency of granular dampers},
+  journal   = {Granular Matter},
+  volume    = {25},
+  number    = {49},
+  year      = {2023},
+  publisher = {Springer}
+}
+
+@article{sciencedirect3,
+  title     = {Simulating multi-phase sloshing flows with the SPH method},
+  author    = {Yang, X. and Zhang, G. and Feng, S. and Sun, Z.},
+  journal   = {Mechanical Systems and Signal Processing},
+  volume    = {118},
+  pages     = {},
+  year      = {2022},
+  publisher = {Elsevier},
+  doi       = {https://doi.org/10.1016/j.apor.2021.102989},
+  url       = {https://www.sciencedirect.com/science/article/abs/pii/S014111872100451X}
+}
+
+@article{Lucy1977,
+  author  = {Lucy, L. B.},
+  title   = {A numerical approach to the testing of the fission hypothesis},
+  journal = {The Astronomical Journal},
+  year    = {1977},
+  volume  = {82},
+  pages   = {1013--1024},
+  doi     = {10.1086/112164}
+}
+
+@article{Gingold1977,
+  author  = {Gingold, R. A. and Monaghan, J. J.},
+  title   = {Smoothed particle hydrodynamics: Theory and application to non-spherical stars},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  year    = {1977},
+  volume  = {181},
+  pages   = {375--389},
+  doi     = {10.1093/mnras/181.3.375}
+}
+
+@article{Monaghan1992,
+  author  = {Monaghan, J. J.},
+  title   = {Smoothed Particle Hydrodynamics},
+  journal = {Annual Review of Astronomy and Astrophysics},
+  year    = {1992},
+  volume  = {30},
+  pages   = {543--574},
+  doi     = {10.1146/annurev.aa.30.090192.002551}
+}
+
+@article{Monaghan2005,
+  author  = {Monaghan, J. J.},
+  title   = {Smoothed particle hydrodynamics},
+  journal = {Reports on Progress in Physics},
+  year    = {2005},
+  volume  = {68},
+  number  = {8},
+  pages   = {1703--1759},
+  doi     = {10.1088/0034-4885/68/8/R01}
+}
+
+@article{Price2012,
+  author    = {Daniel J. Price},
+  title     = {Smoothed particle hydrodynamics and magnetohydrodynamics},
+  url       = {https://users.monash.edu.au/~dprice/ndspmhd/price-spmhd.pdf}
+}
+
+@book{Liu2003,
+  author    = {G. R. Liu and M. B. Liu},
+  title     = {Smoothed Particle Hydrodynamics: A Meshfree Particle Method},
+  publisher = {World Scientific Publishing Company},
+  year      = {2003},
+  doi       = {},
+  url       = {https://www.amazon.com/SMOOTHED-PARTICLE-HYDRODYNAMICS-MESHFREE-METHOD/dp/9812384561}
+}
+
+@misc{GPUSPHTheory,
+  author    = {{NN.}},
+  title     = {GPUSPH Theory Guide},
+  howpublished = {\url{https://www.gpusph.org/documentation/gpusph-theory.pdf}},
+  year      = {2016}
+}
+
+@article{Cabezon2008,
+  author    = {R. M. Cabez{\'o}n and J. M. Garc{\'i}a-Senz and A. Rela{\~n}o},
+  title     = {A one-parameter family of interpolating kernels for Smoothed Particle Hydrodynamics studies},
+  journal   = {Journal of Computational Physics},
+  volume    = {227},
+  number    = {19},
+  pages     = {8523--8540},
+  year      = {2008},
+  doi       = {https://doi.org/10.1016/j.jcp.2008.06.014},
+  url       = {https://www.sciencedirect.com/science/article/abs/pii/S0021999108003148}
+}
+
+@article{Wissing2025,
+  author    = {Wissing, Robert and Quinn, Thomas R. and Keller, Ben and Wadsley, James and Shen, Sijing},
+  title     = {Optimized smoothing kernels for SPH},
+  journal   = {arXiv preprint arXiv:2508.08471},
+  year      = {2025},
+  url       = {https://arxiv.org/abs/2508.08471}
+}

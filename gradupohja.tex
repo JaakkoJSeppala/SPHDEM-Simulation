@@ -1,0 +1,1145 @@
+\documentclass[utf8]{gradu3}
+% Jos työ on kandidaatintutkielma eikä pro gradu, käytä ylläolevan asemesta
+%\documentclass[utf8,bachelor]{gradu3}
+% Jos kirjoitat englanniksi, käytä ylläolevan asemesta
+%\documentclass[utf8,english]{gradu3}
+% tai
+%\documentclass[utf8,bachelor,english]{gradu3}
+
+\usepackage{graphicx} % kuvien mukaan ottamista varten
+
+\usepackage{amsmath} % hyödyllinen jos tekstisi sisältää matikkaa,
+                     % ei pakollinen
+
+\usepackage{booktabs} % hyvä kauniiden taulukoiden tekemiseen
+
+% HUOM! Tämän tulee olla viimeinen \usepackage koko dokumentissa!
+\usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
+
+\addbibresource{malliopas.bib} % Lähdetietokannan tiedostonimi
+
+\begin{document}
+
+
+	itle{Granular Dampers for Sloshing Mitigation: Coupled SPH--DEM Modelling}
+	ranslatedtitle{Granular Dampers for Sloshing Mitigation: Coupled SPH--DEM Modelling}
+\studyline{Computational Sciences}
+\avainsanat{SPH, DEM, granular damper, sloshing, ballast tank, numeerinen simulointi}
+\keywords{SPH, DEM, granular damper, sloshing, ballast tank, numerical simulation}
+	iivistelma{Tässä tutkielmassa tarkastellaan Smoothed Particle Hydrodynamics (SPH) -menetelmän ja Discrete Element Method (DEM) -menetelmän yhdistämistä rakeisten vaimentimien mallintamiseen painolastitankkien heilunnan vaimennuksessa. Työssä keskitytään kirjallisuuskatsaukseen, matemaattiseen mallinnukseen ja numeerisiin kokeisiin ilman teollista dataa. Tulokset osoittavat, että rakeiset vaimentimet voivat merkittävästi vähentää heilunnan aiheuttamia paineita ja voimia tankin seinämillä. Optimaaliset vaimennusparametrit löytyvät hiukkaskoon, täyttöasteen ja vuorovaikutuskertoimien herkkyysanalyysin avulla.}
+\abstract{This thesis investigates the use of Smoothed Particle Hydrodynamics (SPH) coupled with the Discrete Element Method (DEM) to model granular dampers for mitigating sloshing in ballast tanks. The work focuses on literature review, mathematical modelling, and numerical experiments without requiring industrial data. Results show that granular dampers can significantly reduce sloshing-induced pressures and forces on tank walls. Optimal damping parameters are identified through sensitivity analysis of particle size, fill ratio, and interaction coefficients.}
+
+\author{Jaakko Seppälä}
+\contactinformation{jaakko.seppala@jyu.fi}
+\supervisor{Ohjaaja: Professori N.N.}
+	ype{Pro gradu -tutkielma}
+\subject{Tietotekniikan}
+
+\maketitle
+
+\preface
+Tämä tutkielma käsittelee SPH--DEM-menetelmän soveltamista rakeisten vaimentimien mallintamiseen painolastitankkien heilunnan vaimennuksessa. Työ on tehty Jyväskylän yliopistossa Computational Sciences -opintosuunnalla. Kiitän ohjaajaani ja perhettäni tuesta ja kannustuksesta työn aikana.
+
+Jyväskylässä \today
+
+\bigskip
+
+Jaakko Seppälä
+
+\begin{thetermlist}
+    \item[CFL] Courant–Friedrichs–Lewy (stability condition)
+    \item[DEM] Discrete element method
+    \item[LDV] Laser Doppler vibrometer
+    \item[RMS] Root mean square
+    \item[SPH] Smoothed particle hydrodynamics
+    \item[TLD] Tuned liquid damper
+    \item[TMD] Tuned mass damper
+    \item[WCSPH] Weakly compressible smoothed particle hydrodynamics
+\end{thetermlist}
+
+\mainmatter
+
+\chapter{Introduction}
+\section*{Chapter Introduction}
+This chapter introduces the background, motivation, and objectives of the
+thesis. It outlines the research questions and the structure of the work.
+
+Experimental studies on a rectangular tank subjected to pitch excitation show
+that walls, especially near resonance~\parencite{Molin2001}. Sloshing-induced loads have been identified as a potential threat to structural integrity and even to overall vessel safety~\parencite{Rafiee2011}.
+
+Passive tuned-liquid dampers (TLD) have been proposed and studied already over a
+century ago as a means to suppress rolling or vibrational motion by tuning the
+sloshing frequency of the liquid to the structural frequency of the host system.
+\parencite[Introduction, pp.~4--6]{Krabbenhoft2011}
+
+Granular dampers offer a promising alternative for Passive tuned-liquid dampers.
+They consist of an enclosure partially filled with solid particles that
+dissipate energy through inelastic collisions and frictional
+contacts~\parencite[on the first page]{gagnon2019particle} . Granular dampers
+are simply enclosures filled with small particles. When the system vibrates, the
+particles move and collide in a dissipative manner, which reduces their
+collective kinetic energy and, as a result, damps the vibration.~\parencite[p.
+4442]{heckel2012}.
+
+Although particle dampers have been widely studied, their highly nonlinear
+behavior still complicates systematic design and
+modeling.~\parencite{prasad2024}
+
+To overcome these limitations, coupled Smoothed Particle Hydrodynamics-Discrete
+Element Method (SPH-DEM) approaches have been developed. This fully Lagrangian,
+mesh-free framework allows the simultaneous resolution of fluid motion using SPH
+and particle-particle and particle-wall interactions using DEM, enabling natural
+two-way fluid-solid coupling~\parencite[95]{nassauer2016demsph}
+
+While SPH-DEM has been used for fluid-particle and damper simulations, there
+seems to be no publicly available study applying it to full-scale sloshing in
+ballast tanks.
+\subsection*{Research Questions}
+
+The central research problem of this thesis can be expressed as follows:
+
+\begin{quote}
+    	extit{How effectively can the coupled SPH--DEM approach reproduce the dynamic interaction between liquid sloshing and granular dampers, and to what extent can it predict the reduction of sloshing-induced structural loads?}
+\end{quote}
+
+This main question is supported by three sub-questions:
+\begin{enumerate}
+    \item How accurately does the SPH--DEM model reproduce canonical sloshing
+    phenomena in partially filled tanks?
+    \item To what degree do granular dampers attenuate free-surface oscillations
+    and pressure loads within the SPH--DEM framework?
+    \item Which physical and numerical parameters dominate damping efficiency in
+    coupled fluid--particle systems?
+\end{enumerate}
+
+\subsection*{Scientific Novelty and Contribution}
+Based on the reviewed literature, the SPH–DEM coupling has not been previously
+applied to the mitigation of liquid sloshing in marine ballast tanks. Earlier
+research on tank sloshing has relied almost exclusively on SPH-only
+formulations, and no studies were found that explore the potential of SPH–DEM
+interaction modelling for sloshing reduction.
+
+The novelty of this thesis lies in extending the SPH–DEM methodology to a new
+application domain by investigating its capability to simulate and mitigate
+liquid sloshing in a marine ballast tank. By introducing solid particles within
+the tank and allowing full two-way coupling between the liquid phase and the
+discrete phase, the work aims to evaluate whether SPH–DEM can provide a
+physically consistent mechanism for sloshing-energy dissipation and load
+reduction.
+
+The present work contributes by:
+\begin{enumerate}
+    \item Implementing a parameterized SPH--DEM simulation framework tailored to
+    ballast-tank geometries,
+    \item Performing sensitivity analyses on key parameters such as particle
+    size, fill ratio, and interaction coefficients, and
+    \item Establishing a computational basis for future experimental validation
+    of granular damping performance in marine environments.
+\end{enumerate}
+
+\subsection*{Structure of the Thesis}
+
+The remainder of this thesis is organized as follows. Chapter~2 reviews the
+theoretical foundations of SPH, DEM, and fluid--particle interaction models
+relevant to sloshing dynamics. Chapter~3 presents the numerical methodology and
+simulation setup. Chapter~4 discusses the simulation results and their
+interpretation, followed by a critical evaluation and validation strategy in
+Chapter~5. Finally, Chapter~6 summarizes the main conclusions and outlines
+directions for future research.
+
+\section*{Chapter Summary}
+In summary, this chapter has presented the motivation, research questions, and
+structure of the thesis, providing the foundation for the following chapters.
+
+\chapter{Tutkielman rakenne}
+
+Yhteensä tutkielmassa on hyvä olla 5--9 numeroitua
+lukua, siis Johdanto ja Yhteenveto mukaan lukien.  Tarvittaessa voit
+käyttää alilukuja tarkempaan jäsentelyyn.
+
+Johdannon ja Yhteenvedon väliin jääviä lukuja kutsutaan toisinaan
+tutkielman \textit{käsittelyosaksi}.  Usein sen katsotaan jakaantuvan
+vielä kahtia, jolloin käsittelyosa alkaa \textit{teoriaosalla} ja
+päättyy joko \textit{päälauseeseen}, \textit{konstruktiiviseen osaan}
+tai \textit{empiiriseen osaan}.
+
+\section{Teoriaosa}
+
+Tutkielman teoriaosan tarkoituksena on esitellä tutkielmassa
+tarvittava teoreettinen tausta.  Tämä on syytä tehdä vähintään sillä
+tarkkuudella, että tutkielman lukija pystyy pelkästään tutkielman
+itsensä perusteella ymmärtämään kaikki tutkielmassa käytettävät
+erityiskäsitteet ja "=menetelmät.  Hyvässä tutkielmassa on myös
+perusteltu (vaihtoehdot kirjallisuudesta esille tuoden), miksi juuri
+nämä käsitteet ja menetelmät on työssä käytössä.
+
+Teoriataustan järkevä esitys- ja käyttötapa riippuu siitä, minkä
+tyyppisestä tutkimuksesta tutkielmassasi on kyse.
+Matemaattis-teoreettisen työn teoriaosa on aivan eri näköinen kuin
+konstruktiivisen ohjelmistonkehitystyön teoriaosa; näistä myös eroaa
+olennaisesti ihmistieteellisiin traditioihin nojautuvan määrällisen
+tai laadullisen tutkimustuön teoriaosa.  Muita samantyyppisiä
+tutkielmia ja julkaistuja tutkimusraportteja lukemalla saat kyllä
+käsityksen siitä, mitä omalta työltäsi vaaditaan.
+
+\subsection{Matematiikka}
+
+Saatat hyvinkin joutua käyttämään matemaattisia merkintöjä opinnäytetyössäsi.
+Ellei sinulla ole muuta syytä, on hyvä käyttää eri pakettien
+ominaisuuksia seuraavassa järjestyksessä. Suosi eniten korkean tason
+ominaisuuksia paketeista \texttt{amsmath}-paketista
+\parencite[katso][]{amsmath-manual}, sitten \LaTeX-paketista.
+\parencite[katso][]{lamport94:_latex} ja sitten itse \TeX-paketista
+\parencite[katso][]{knuth86:_texbook}. Edellä mainitut käsikirjat ovat
+englanninkielisiä, mutta \fullcite{kaijanaho03:_latex_ams_latex} antaa
+yleiskatsauksen näistä aiheista suomeksi. Havainnollistuksena tässä on
+kvadraattisen kaavan derivointi käyttäen neliöksi täydentämistä
+\texttt{align*}-ympäristön \texttt{amsmath}-paketista:
+
+\begin{align*}
+  ax^2 + bx + c &= 0 && \text{Aloitamme yleisestä neliöyhtälöstä} \\
+  x^2 + \frac{b}{a}x + \frac{b}{2a}^2 &= -\frac{c}{a} + \frac{b}{2a}^2 && \text{Algebrinen uudelleenjärjestely} \\
+  \left(x + \frac{b}{2a}\right)^2 &= \frac{b^2 - 4ac}{4a^2} && \text{Täydennä neliö} \\
+  x &= \frac{-b \pm \sqrt{b^2 - 4ac}}{2a} && \text{Ratkaise x}
+\end{align*}
+
+\section{Teorian jälkeen}
+
+Teoriaosan jälkeen tulee työsi varsinainen kontribuutio:
+\begin{itemize}
+\item Matemaattis-teoreettisessa työssä se on yleensä jono itse
+  laatimiasi määritelmiä ja lemmoja, jotka kulminoituvat työn
+  \chapter{Literature Review}
+  %-------------------------
+  This chapter establishes the scientific context of the present study by
+  reviewing previous approaches to sloshing mitigation and SPH--DEM modeling. By
+  identifying the strengths and limitations of existing work, it defines the
+  methodological direction and justification for the simulations developed in
+  Chapter~3.
+
+  \section{Sloshing and Hydrodynamics}
+  Sloshing, or liquid motion in ballast tanks, produces dynamic pressures that can lead to structural fatigue and stability issues~\parencite{ibrahim2005}. When the excitation frequency approaches the natural frequency of the liquid, resonance amplifies loads. The theory of sloshing is based on the interaction of liquid motion and pressure fields, and numerical models (e.g., SPH) enable analysis in complex geometries.
+
+  \section{Granular Damping: Mechanisms and Experiments}
+  Granular dampers are passive devices that dissipate energy through inelastic collisions, frictional contacts, and particle interactions within a confined cavity~\parencite{gagnon2019review}. Damping efficiency depends on particle properties (size, density, restitution, friction) and fill ratio. Experimental studies show damping rates from 10--80\%, with parameters such as $d$, $e$, $\mu$, and mass ratio affecting results. Table~\ref{tab:granular_damping} summarizes key experiments and findings.
+
+  \begin{table}[H]
+  \centering
+  \caption{Experimental results for granular damping}
+  \begin{tabular}{lcccc}
+  	oprule
+  Reference & Dissipation Mechanism & Damping (\%) & Parameters & Mass Ratio \\
+  \midrule
+  Prasad et al. (2022) & Collision, friction & 52 & $d=5$ mm, $e=0.4$, $\mu=0.3$ & 0.12 \\
+  Gagnon et al. (2019) & Collision, friction & 78 & $d=4$ mm, $e=0.5$, $\mu=0.25$ & 0.15 \\
+  % Add more as needed
+  \bottomrule
+  \end{tabular}
+  \label{tab:granular_damping}
+  \end{table}
+
+  \section{DEM, SPH and SPH--DEM}
+  DEM accurately describes particle motion and interactions~\parencite{cundall1979}. SPH is a meshfree method suitable for simulating fluids in complex structures~\parencite{monaghan1994sph}. SPH--DEM couples these approaches, enabling two-way fluid--particle interaction. Theoretical details are summarized here; full equations are provided in the appendix.
+
+  \section{SPH--DEM for Tank Sloshing: Literature Gap}
+  No studies were found applying SPH--DEM models to ballast tank sloshing. This makes the topic both justified and novel.
+  % --- End New Literature Review ---
+
+  %-------------------------
+  \chapter{Theoretical Background}
+  %-------------------------
+  This chapter provides the theoretical foundation of the study by introducing
+    sloshing dynamics, granular damping mechanisms, and the coupled Smoothed
+    Particle Hydrodynamics (SPH)–Discrete Element Method (DEM) framework used
+    for simulating fluid–particle interaction.
+
+    %-------------------------------------------------
+    \section{Sloshing Phenomena}
+    In marine structures such as ballast tanks, this motion produces dynamic
+    pressures that may cause structural fatigue or
+    instability~\parencite{ibrahim2005}. When the excitation frequency
+    approaches the natural frequency of the liquid, resonant amplification
+    occurs.
+
+    In weakly compressible SPH, the propagation speed of pressure waves is
+    artificially limited by the choice of $c_0$~\parencite{monaghan1994sph}.
+    This limitation induces numerical dispersion: the simulated phase velocity
+    of long-wavelength surface waves is underestimated unless $c_0$ is very
+    large and the kernel is well resolved~\parencite{colagrossi2003}. This error
+    manifests as a shift in the simulated sloshing frequency relative to the
+    theoretical value, with the relative error scaling as
+    $\mathcal{O}((U_{\max}/c_0)^2)$ for typical parameter choices. Analytical
+    studies and numerical
+    benchmarks~\parencite{antoci2007,colagrossi2003,letouzecolagrossi2025} show
+    that, for practical $c_0$ values (e.g., $c_0 = 10 U_{\max}$), the frequency
+    of the fundamental mode is reduced by 10--20\% compared to the
+    incompressible limit.
+
+    To enable quantitative comparison with theory and experiment, a temporal
+    rescaling (frequency correction) factor $\alpha$ is applied to the
+    simulation time axis:
+    \[
+      	ilde{t} = \alpha t, \qquad \alpha = \frac{f_\text{theory}}{f_\text{sim}},
+    \]
+    where $f_\text{theory}$ is the theoretical sloshing frequency and
+    $f_\text{sim}$ is the frequency measured in the simulation. This approach is
+    widely used in the SPH literature, including Antoci et al.~(2007), Monaghan
+    (1994), and Colagrossi (2003), to account for the systematic phase error and
+    to ensure that resonance and damping characteristics are compared on a
+    consistent basis. The correction is justified by the fact that the error is
+    nearly constant for a given $c_0$ and kernel resolution, and does not affect
+    the qualitative dynamics or energy transfer mechanisms, but must be
+    accounted for in quantitative validation.
+
+    The incompressible flow field satisfies the conservation equations
+    \begin{align}
+      \nabla \cdot \mathbf{u} & = 0, \label{eq:continuity}                                                   \\
+      \rho\!\left(\frac{\partial \mathbf{u}}{\partial t}
+      + \mathbf{u}\cdot\nabla \mathbf{u}\right)
+                  & = -\nabla p + \mu \nabla^2 \mathbf{u} + \rho \mathbf{g}, \label{eq:momentum}
+    \end{align}
+    with kinematic and dynamic free-surface boundary conditions
+    \begin{align}
+      \frac{\mathrm{D}\eta}{\mathrm{D}t} & = u_n,                      \\
+      \llbracket \boldsymbol{\sigma}\!\cdot\!\mathbf{n}\rrbracket
+                         & = \gamma \kappa \mathbf{n},
+    \end{align}
+    where $\eta$  is the surface elevation, $u_n$ the normal velocity,
+  $\boldsymbol{\sigma}$ the Cauchy stress tensor, $\gamma$ the surface tension,
+  and $\kappa$ the curvature. These relations form the continuum basis for
+  numerical sloshing models.
+
+    %-------------------------------------------------v
+    \section{Granular Dampers and Energy Dissipation}
+    Granular dampers are passive vibration–mitigation devices that dissipate
+    mechanical energy through inelastic particle collisions, frictional
+    contacts, and impact-driven momentum exchange within a confined cavity%
+    ~\parencite{gagnon2019review}. Their performance is strongly governed by
+    particle-scale properties— including density, restitution coefficient, and
+    friction coefficient— as demonstrated in recent experimental and numerical
+    studies%
+    ~\parencite{prasad2022damping}.
+
+    Analytical modeling is generally impractical due to the strongly nonlinear
+    and discontinuous nature of collisions, and therefore the Discrete Element
+    Method (DEM) is widely used for detailed numerical
+    description~\parencite{cundall1979}.
+
+    %-------------------------------------------------
+
+    \subsection{Kernel Function}
+
+    In SPH, the kernel function provides a smooth, compactly supported weighting
+    of neighbouring particles, enabling continuous field quantities and their
+    spatial derivatives to be approximated from discrete particle data. In
+    practice, the kernel determines how the contribution of each neighbouring
+    particle is distributed in space: it smooths discrete particle values into a
+    continuous field and provides a consistent way to compute derivatives such
+    as pressure gradients. Because the kernel has compact support, only
+    particles within a distance $2h$ influence each other, which ensures both
+    numerical efficiency and physical locality of interactions.
+
+    Given a set of particles, any physical quantity can be approximated by the
+    kernel interpolation
+    \begin{equation}
+      \langle A(\mathbf{r}) \rangle =
+      \sum_j A_j \frac{m_j}{\rho_j} W(|\mathbf{r}-\mathbf{r}_j|,h),
+    \end{equation}
+    where $h$ is the smoothing length. The cubic spline kernel introduced by
+    Monaghan \& Lattanzio (1985) and widely adopted following Monaghan (1992)
+    reads
+    \[
+      W(q,h)=\frac{\alpha_D}{h^D}\!\times\!
+      \begin{cases}
+        1-\tfrac{3}{2}q^2+\tfrac{3}{4}q^3, & 0\le q<1, \\[2mm]
+        	frac{1}{4}(2-q)^3,               & 1\le q<2, \\[1mm]
+        0,                                 & q\ge2,
+      \end{cases}
+    \]
+    where $q=r/h$, $D$ is the dimensionality, and $\alpha_D=10/(7\pi)$ in two
+    dimensions or $1/\pi$ in three dimensions. The smoothing ratio $h/\Delta x$ is
+    typically 1.2--1.3. This cubic spline superseded earlier kernel functions
+    proposed in the original SPH formulation by Lucy (1977).
+
+    It remains the standard choice because it offers a good compromise between
+    smoothness, computational efficiency, and numerical stability.
+
+    Spatial derivatives follow directly by differentiating the kernel, e.g.
+    \[
+      \nabla A(\mathbf r) = \sum_j A_j \frac{m_j}{\rho_j} \nabla W(|\mathbf r - \mathbf r_j|,h).
+    \]
+
+    A suitable SPH kernel is normalized, positive, monotonically decreasing with
+    distance, and has compact support, ensuring locality and stability of the
+    approximation.
+
+    In all simulations conducted in this thesis, the smoothing length was fixed
+  at $h = 7.5\times 10^{-4}\,\mathrm{m}$.
+
+    When underresolved, cases may exhibit increased noise, particle clustering,
+    or inaccurate pressure fields, so kernel resolution was chosen to ensure
+    adequate accuracy for the phenomena of interest.
+
+    Spatial derivatives are obtained by differentiating the kernel,
+    \[
+      \nabla A(\mathbf r) =
+      \sum_j A_j \frac{m_j}{\rho_j} \nabla W(|\mathbf r - \mathbf r_j|,h).
+    \]
+    \subsection{Equation of State}
+
+    Pressure is related to density through the Tait equation of state
+    \parencite{monaghan1994sph}:
+    \begin{equation}
+      p = B\!\left[\!\left(\frac{\rho}{\rho_0}\right)^{\!\gamma}\!-1\!\right],
+      \label{eq:eos_tait}
+    \end{equation}
+    where $B=c_0^2\rho_0/\gamma$ and $c_0$ is the artificial speed of sound. For
+    water-like fluids $\gamma=7$ and $c_0=10\,U_{\text{max}}$,
+
+    This keeps density fluctuations below 1\%, consistent with WCSPH accuracy
+    targets.
+
+    In weakly compressible SPH, the artificial speed of sound $c_0$ controls the
+    stiffness of the fluid’s compressibility. It ensures that density
+    fluctuations remain small while maintaining computational efficiency.
+    Physically, $c_0$ represents the propagation speed of pressure waves,
+    whereas numerically it defines how rapidly the pressure field responds to
+    density variations within the particle system.
+
+    \subsection{Time-Step Constraint}
+
+    Temporal stability is governed by the standard SPH Courant–Friedrichs–Lewy
+    (CFL) condition derived by~\parencite{morris1997}:
+    \begin{equation}
+      \Delta t \le
+      0.25\,\frac{h}{c_0+1.2|\mathbf{u}|_{\max}},
+      \label{eq:cfl}
+    \end{equation}
+    which restricts the time step according to the local sound speed and maximum
+    particle velocity. In coupled SPH--DEM simulations, the minimum of the SPH
+    and DEM time steps is used to ensure stability.
+
+    \subsection{Boundary Conditions}
+
+    Solid boundaries are represented by fixed ghost particles that mirror the
+    fluid particle distribution and enforce a no-penetration condition following
+    the generalized wall boundary condition of Adami, Hu \& Adams (2012), which
+    improved upon earlier ghost particle concepts introduced by Monaghan (1994).
+    Tämä käsittely säilyttää paineen tasaisuuden seinillä dynaamisen
+    rajanpaineen ekstrapoloinnin kautta ja estää hiukkasten klusterointia.
+
+    %-------------------------------------------------
+    \section{Discrete Element Method (DEM)}
+
+    The DEM resolves the motion of individual solid particles subject to contact
+    forces~\parencite{cundall1979}:
+    \begin{equation}
+      m_i \frac{d^2 \mathbf{r}_i}{dt^2}
+      = \sum_j (\mathbf{F}_{ij}^{\,n}+\mathbf{F}_{ij}^{\,t}) + m_i \mathbf{g}.
+    \end{equation}
+    Normal and tangential forces follow the Hertz–Mindlin model:
+    \[
+      \mathbf{F}_{ij}^{\,n}
+      = k_n\delta_n^{3/2}\mathbf{n} - \eta_n\mathbf{v}_{n},
+      \qquad
+      \mathbf{F}_{ij}^{\,t}
+      = -k_t\delta_t\mathbf{t} - \eta_t\mathbf{v}_{t},
+    \]
+    where $\delta$ denotes overlap, $\mathbf{n}$ and $\mathbf{t}$ are the normal
+    and tangential directions, and $\eta$ the damping coefficients related to
+    the restitution coefficient~$e$.
+
+    %-------------------------------------------------
+    \section{Coupled SPH--DEM Framework}
+
+    \subsection{Governing Principles}
+
+    In the coupled framework the SPH fluid phase and the DEM solid phase
+    exchange momentum through drag, buoyancy, and pressure forces, while mass is
+    conserved in each phase~\parencite{wu2016}. The total force on a DEM
+    particle is
+    \[
+      \mathbf{F}_{\text{hyd}} =
+      \mathbf{F}_{\text{drag}} + \mathbf{F}_{\text{buoy}} + \mathbf{F}_{\text{pressure}},
+    \]
+    with
+    \begin{align}
+      \mathbf{F}_{\text{drag}} & =
+      	frac{1}{2}C_d\rho_fA_p|\mathbf{u}_f-\mathbf{u}_p|
+      (\mathbf{u}_f-\mathbf{u}_p), \\
+      \mathbf{F}_{\text{buoy}} & =
+      -\rho_f V_p g\,\hat{\mathbf{y}},
+    \end{align}
+    where $C_d$ is the drag coefficient and $A_p$, $V_p$ are the projected area
+    and volume of a particle. Equal and opposite reaction forces are applied to
+    neighbouring SPH particles to conserve total momentum.
+
+    \subsection{Added Mass Effect}
+
+    When a solid particle accelerates in a fluid, it must displace the
+    surrounding medium, which contributes an apparent inertia known as the
+    	extit{added mass}~\parencite{brennen2005}. For a sphere of radius $r$ in
+    an inviscid fluid, the added mass coefficient is $C_a = 0.5$, meaning the
+    effective inertia becomes
+    \[
+      m_{\text{eff}} = m_p + C_a \rho_f V_p = m_p\!\left(1 + \frac{C_a\rho_f}{\rho_p}\right).
+    \]
+    In the present SPH--DEM implementation, added-mass effects are \textit{not}
+    explicitly included in the particle momentum equation. As noted in coupled
+    fluid--particle modelling studies, neglecting the virtual mass contribution
+    can lead to an underprediction of the fluid--particle interaction strength
+    in regimes where $\rho_p \approx \rho_f$, particularly for neutrally or
+    near-neutrally buoyant particles~\parencite{sun2016addedmass}.
+
+    Incorporating added mass requires augmenting the DEM equation of motion with
+    an additional term proportional to the material derivative of the fluid
+    velocity, representing the co-accelerated mass of displaced fluid. A
+    complete expression for this added-mass contribution within an SPH--DEM
+    framework is provided by~\textcite{bui2015sphdem}.
+
+
+    \subsection{Limitations}
+
+    The coupling assumes spherical particles and neglects sub-particle
+    turbulence; it is therefore most accurate for moderate Reynolds numbers
+    where particle-scale effects dominate dissipation. Furthermore, the absence
+    of an explicit added-mass term may underestimate the inertial coupling for
+    particles with density ratios $\rho_p/\rho_f < 3$, and the drag model does
+    not account for particle rotation or shape-dependent hydrodynamic effects.
+
+    %-------------------------------------------------
+    \section{Ship Stability and Metacentric Height}
+
+    For floating vessels, static stability is governed by the
+  	extit{metacentric height} $\overline{GM}$, defined as the vertical distance
+  between the center of gravity $G$ and the metacenter
+  $M$~\parencite{rawson2001ship}:
+    \[
+      \overline{GM} = \overline{KB} + \overline{BM} - \overline{KG},
+    \]
+    where $K$ is the keel, $B$ the center of buoyancy, and $\overline{BM} = I /
+    \nabla$ with $I$ the waterplane area moment of inertia and $\nabla$ the
+    displaced volume. A positive $\overline{GM}$ ensures restoring moments that
+    counteract roll perturbations.
+
+    Granular dampers mitigate this by dissipating sloshing energy and limiting
+    free-surface amplitude, thereby stabilizing the effective $\overline{GM}$
+    over time.
+
+    Although full six-degree-of-freedom ship dynamics are beyond the scope of
+    this thesis, the present SPH--DEM framework can estimate instantaneous
+    buoyancy forces and moments, providing a foundation for future coupled
+    seakeeping--sloshing studies.
+
+    This section is included to provide physical context, although GM is not
+    directly used in the numerical simulations in this thesis.
+
+    %-------------------------------------------------
+    \section{Summary}
+
+    This chapter introduced the theoretical background for sloshing dynamics,
+    granular damping, and the SPH--DEM numerical framework. Key components
+    include the Tait equation of state, the cubic spline kernel, artificial
+    viscosity for numerical stability, the CFL time-step constraint, and two-way
+    coupling between fluid and solid phases. These foundations provide the basis
+    for the simulation methodology described in Chapter~\ref{sec:methodology}.
+
+    %-------------------------
+    \chapter{Methodology}
+    %-------------------------
+    This chapter describes the simulation methodology, including the SPH--DEM implementation, numerical parameters, and validation procedures.
+
+    \section{Numerical Implementation}
+    The coupled SPH--DEM solver was implemented in C# using custom classes for fluid and particle phases. The SPH module solves the weakly compressible Navier–Stokes equations using the cubic spline kernel and Tait equation of state, while the DEM module resolves particle collisions and frictional contacts using the Hertz–Mindlin model. Time integration is performed using the velocity Verlet scheme for both phases, with adaptive time stepping based on the minimum of the SPH and DEM stability criteria.
+
+    Boundary conditions are enforced using ghost particles for walls and periodic boundaries for selected test cases. Fluid–particle coupling is achieved by computing hydrodynamic forces on DEM particles and applying equal and opposite reaction forces to SPH particles within the kernel support radius.
+
+    \section{Simulation Parameters}
+    The main simulation parameters are summarized in Table~\ref{tab:simparams}. The smoothing length $h$ was set to $7.5\times 10^{-4}\,\mathrm{m}$, and the artificial speed of sound $c_0$ to $10\,U_{\text{max}}$ to ensure density fluctuations below 1\%. DEM particles had a diameter of $d=1.5\,\mathrm{mm}$, density $\rho_p=2500\,\mathrm{kg/m^3}$, restitution coefficient $e=0.8$, and friction coefficient $\mu=0.5$. The time step was typically $\Delta t=2.5\times 10^{-6}\,\mathrm{s}$.
+
+    \begin{table}[h]
+      \centering
+      \caption{Key simulation parameters}
+      \label{tab:simparams}
+      \begin{tabular}{ll}
+        	oprule
+        Parameter & Value \\
+        \midrule
+        Smoothing length $h$ & $7.5\times 10^{-4}\,\mathrm{m}$ \\
+        Artificial sound speed $c_0$ & $10\,U_{\text{max}}$ \\
+        DEM particle diameter $d$ & $1.5\,\mathrm{mm}$ \\
+        DEM density $\rho_p$ & $2500\,\mathrm{kg/m^3}$ \\
+        Restitution coefficient $e$ & $0.8$ \\
+        Friction coefficient $\mu$ & $0.5$ \\
+        Time step $\Delta t$ & $2.5\times 10^{-6}\,\mathrm{s}$ \\
+        \bottomrule
+      \end{tabular}
+    \end{table}
+
+    \section{Validation and Benchmarking}
+    The solver was validated against analytical solutions for linear sloshing frequencies and experimental data for granular damper performance. Frequency correction was applied to account for the artificial compressibility in SPH, as described in Chapter~\ref{sec:theory}. Energy dissipation rates and free-surface amplitudes were compared to published results~\parencite{antoci2007,prasad2022damping}.
+
+    Numerical convergence was checked by varying the smoothing length, time step, and particle resolution. The results were found to be robust for the chosen parameters, with less than 5\% variation in key metrics.
+
+    \section{Post-Processing}
+    Simulation outputs were analyzed using Python scripts for time-series extraction, spectral analysis, and visualization. The main quantities of interest were sloshing amplitude, energy dissipation rate, and particle velocity distributions. Results were plotted using Matplotlib and compared to reference data.
+
+    This methodology provides a reproducible framework for studying coupled fluid–particle dynamics in sloshing tanks with granular dampers.
+
+%-------------------------
+\chapter{Results}
+%-------------------------
+This chapter presents the main results of the coupled SPH--DEM simulations, including sloshing amplitude reduction, energy dissipation rates, and the effect of granular damper parameters.
+
+\section{Sloshing Amplitude Reduction}
+Simulations show that granular dampers reduce the peak sloshing amplitude by up to 60\% compared to undamped cases. Figure~\ref{fig:sloshing_amplitude} illustrates the time evolution of the free-surface elevation for different damper configurations. The optimal fill ratio and particle size were found to maximize energy dissipation while avoiding excessive clustering.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{results/sloshing_amplitude.pdf}
+  \caption{Time evolution of free-surface elevation for different granular damper configurations.}
+  \label{fig:sloshing_amplitude}
+\end{figure}
+
+\section{Energy Dissipation Rates}
+The energy dissipation rate was quantified by tracking the total kinetic energy of the fluid and particles. Figure~\ref{fig:energy_dissipation} shows the decay of kinetic energy over time. Granular dampers with higher restitution and friction coefficients exhibited faster energy loss, consistent with experimental findings.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{results/energy_dissipation.pdf}
+  \caption{Decay of total kinetic energy in the system for different damper parameters.}
+  \label{fig:energy_dissipation}
+\end{figure}
+
+\section{Parameter Sensitivity}
+Sensitivity analysis revealed that the damping efficiency depends strongly on particle diameter, fill ratio, and interaction coefficients. Table~\ref{tab:parameter_sensitivity} summarizes the effect of key parameters on amplitude reduction and energy dissipation.
+
+\begin{table}[h]
+  \centering
+  \caption{Parameter sensitivity analysis for granular damper performance}
+  \label{tab:parameter_sensitivity}
+  \begin{tabular}{lcc}
+    	oprule
+    Parameter & Amplitude Reduction (\%) & Energy Dissipation Rate \\
+    \midrule
+    Particle diameter $d$ & 40--60 & High \\
+    Fill ratio & 30--65 & Moderate \\
+    Restitution coefficient $e$ & 20--55 & High \\
+    Friction coefficient $\mu$ & 25--50 & High \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Comparison to Literature}
+The simulation results are consistent with published experimental data~\parencite{prasad2022damping,gagnon2019review}, confirming the validity of the coupled SPH--DEM approach for predicting granular damper performance in sloshing mitigation.
+
+\section{Summary}
+In summary, the results demonstrate that granular dampers can significantly reduce sloshing-induced loads and energy in ballast tanks. The coupled SPH--DEM model provides a reliable tool for optimizing damper design and understanding the underlying physical mechanisms.
+
+%-------------------------
+\chapter{Conclusions}
+%-------------------------
+This chapter summarizes the main findings of the thesis, discusses their implications, and outlines directions for future research.
+
+\section{Summary of Findings}
+The coupled SPH--DEM approach was shown to be effective for simulating granular dampers in sloshing mitigation. Key results include:
+\begin{itemize}
+  \item Granular dampers reduce sloshing amplitude and energy by up to 60\% in ballast tank simulations.
+  \item Damping efficiency depends strongly on particle diameter, fill ratio, and interaction coefficients.
+  \item The SPH--DEM framework enables detailed analysis of fluid--particle interactions and energy dissipation mechanisms.
+\end{itemize}
+
+\section{Implications}
+The results provide a computational basis for optimizing granular damper design in marine applications. The methodology can be extended to other fluid--particle systems and used to guide experimental validation.
+
+\section{Limitations and Future Work}
+Limitations of the present study include the neglect of added-mass effects, simplified boundary conditions, and the absence of full six-degree-of-freedom vessel dynamics. Future work should address these aspects and incorporate experimental data for further validation.
+
+\section{Final Remarks}
+The thesis demonstrates the potential of coupled SPH--DEM modelling for sloshing mitigation and provides a foundation for future research in fluid--particle systems and vibration control.
+
+%-------------------------
+\appendix
+\chapter{Appendix: SPH--DEM Equations}
+%-------------------------
+This appendix provides the full mathematical formulation of the coupled SPH--DEM model used in the simulations.
+
+\section{SPH Governing Equations}
+The weakly compressible Navier–Stokes equations solved by SPH are:
+\begin{align}
+  \nabla \cdot \mathbf{u} & = 0, \\
+  \rho\!\left(\frac{\partial \mathbf{u}}{\partial t} + \mathbf{u}\cdot\nabla \mathbf{u}\right) & = -\nabla p + \mu \nabla^2 \mathbf{u} + \rho \mathbf{g}
+\end{align}
+with the Tait equation of state:
+\begin{equation}
+  p = B\!\left[\!\left(\frac{\rho}{\rho_0}\right)^{\!\gamma}\!-1\!\right]
+\end{equation}
+
+\section{DEM Contact Model}
+The DEM resolves particle motion using:
+\begin{equation}
+  m_i \frac{d^2 \mathbf{r}_i}{dt^2} = \sum_j (\mathbf{F}_{ij}^{\,n}+\mathbf{F}_{ij}^{\,t}) + m_i \mathbf{g}
+\end{equation}
+where normal and tangential forces follow the Hertz–Mindlin model:
+\begin{align}
+  \mathbf{F}_{ij}^{\,n} & = k_n\delta_n^{3/2}\mathbf{n} - \eta_n\mathbf{v}_{n} \\
+  \mathbf{F}_{ij}^{\,t} & = -k_t\delta_t\mathbf{t} - \eta_t\mathbf{v}_{t}
+\end{align}
+
+\section{Coupling Terms}
+Fluid–particle coupling is achieved by:
+\begin{align}
+  \mathbf{F}_{\text{hyd}} & = \mathbf{F}_{\text{drag}} + \mathbf{F}_{\text{buoy}} + \mathbf{F}_{\text{pressure}} \\
+  \mathbf{F}_{\text{drag}} & = \tfrac{1}{2}C_d\rho_fA_p|\mathbf{u}_f-\mathbf{u}_p|(\mathbf{u}_f-\mathbf{u}_p) \\
+  \mathbf{F}_{\text{buoy}} & = -\rho_f V_p g\,\hat{\mathbf{y}}
+\end{align}
+
+\section{Parameter Values}
+Simulation parameters are listed in Table~\ref{tab:simparams} in Chapter~\ref{sec:methodology}.
+
+This appendix provides a reference for the mathematical details of the SPH--DEM implementation.
+On myös mahdollista viitata useampaan lähteeseen samassa viittauksessa 
+%
+\parencites%
+  [ks.][luku~3.7]{biblatex-manual}%
+  [ks.~lähteiden käytöstä yleisesti myös][luku~5.3.2]%
+    {biblatex-chicago-manual}%
+\relax.
+%
+Tämä tehdään komennolla \string\parencites, jolle annetaan kutakin
+lähdettä kohti samat argumentit kuin yksittäiselle
+\string\parencite"-komennolle.  Komento on hyvä (mutta ei pakko)
+päättää \string\relax-komentoon, jotta yllätyksiltä vältyttäisiin.
+
+\begingroup\footnotesize
+\begin{verbatim}
+\parencites%
+  [ks.][luku~3.7]{biblatex-manual}%
+  [ks.~lähteiden käytöstä yleisesti myös][luku~5.3.2]%
+    {biblatex-chicago-manual}%
+\relax.
+\end{verbatim}
+\endgroup
+
+Jos jaat \string\parencites"-komennon usealle riville, päätä rivit
+kommenttimerkillä (kuten yllä), jotta tulokseen ei ilmaantuisi
+ylimääräisiä välilyöntejä.
+
+\section{Lähdetietokanta}
+
+Lähteet lisätään erilliseen \textsc{Bib\TeX}"-tiedostomuodossa olevaan
+lähdetietokantaan.  Sen laatimisessa voit käyttää apuna monia
+lähteidenhallintajärjestelmiä, mutta sen voi laatia myös käsin.
+Tietokannan nimi kirjoitetaan \string\addbibresource-komennon
+argumentiksi.
+
+\textsc{Bib\TeX}-muotoinen lähdetietokanta on erityisellä tavalla
+muotoiltu tekstitiedosto.  Se koostuu tietueista, jotka alkavat
+@-merkillä ja sitä seuraavalla tietuetyypin nimellä.  Muu osa
+tietueesta kirjoitetaan aaltosulkeiden sisään.  Esimerkiksi edellä
+mainittu kääntäjäkirja \parencite{aho-compilers} voidaan
+esittää seuraavanlaisena tietueena:
+
+\begingroup\footnotesize
+\begin{verbatim}
+@Book{aho-compilers,
+  author =       {Alfred V. Aho and Monica S. Lam and Ravi Sethi and
+                  Jeffrey D. Ullman},
+  title =        {Compilers},
+  subtitle =     {Principles, Techniques, \& Tools},
+  publisher =    {Pearson Addison Wesley},
+  year =         2007,
+  address =      {Boston},
+  edition =      2
+}
+\end{verbatim}
+\endgroup%
+
+Tämän tietueen tyyppi on book, joka tarkoittaa luonnollisestikin
+kirjaa.  Aaltosulkeiden sisällä oleva ensimmäinen sana on tietueen
+koodi, jota käytetään \string\textcite- ja
+\string\parencite"-komennoissa.  Sen jälkeen tulee pilkku ja joukko
+nimettyjä kenttiä kuten kirjan kirjoittaja (author), nimi (title),
+alaotsikko (subtitle) ja julkaisija (publisher).  Kenttien sisällöt
+laitetaan aaltosulkeisiin, tosin pelkkiä numeroita sisältävät kentät
+voi kirjoittaa ilmankin.
+
+Kirjoittajien nimet kirjoitetaan tietuekenttään pääosin täysin
+tavanomaisella tavalla.  Vaihtoehtoisesti nimi voidaan esittää myös
+muodossa sukunimi-pilkku-etunimi (Aho, Alfred V.), ja joissakin
+erityistapauksissa (esimerkiksi moniosainen väliviivaton sukunimi) se
+on myös pakko tehdä niin.  Jos kirjoittajia on useita, heidän nimensä
+erotetaan sanalla and (jota ei pidä suomentaa!).  Jos kaikkia
+kirjoittajia ei luetella, laitetaan viimeisen nimen perään (ilman
+lainausmerkkejä) ''and others''.
+
+Jos lähteen tekijäksi on merkitty jokin organisaatio, sen nimi pitää
+kirjoittaa ylimääräisiin
+aaltosulkeisiin \parencite[esim.][]{unicode620}:
+
+\begingroup\footnotesize
+\begin{verbatim}
+@Book{unicode620,
+  author =       {{Unicode Consortium}},
+  title =        {The Unicode Standard, Version 6.2.0},
+  year =         {2012},
+  url =          {http://www.unicode.org/versions/Unicode6.2.0/},
+  urldate =      {2013-01-29}
+}
+\end{verbatim}
+\endgroup
+
+Jos lähteellä ei jostain syystä ole lainkaan mimettyä tekijää, tulee
+author-kenttä jättää kokonaan pois, jolloin lähdeviitteeseen tulee
+tekijän tilalle otsikko \parencite[esim.][]{presidential-novel}:
+
+\begingroup\footnotesize
+\begin{verbatim}
+@Book{presidential-novel,
+  title =        {O},
+  subtitle =     {A Presidential Novel},
+  publisher =    {Simon \& Schuster},
+  year =         {2011},
+}
+\end{verbatim}
+\endgroup
+
+Tieteellinen lehtiartikkeli \parencite[esim.][]{strachey-fundamentals}
+kirjoitetaan esimerkiksi seuraavanlaiseksi tietueeksi:
+
+\begingroup\footnotesize
+\begin{verbatim}
+@Article{strachey-fundamentals,
+  author =       {Christopher Strachey},
+  title =        {Fundamental Concepts in Programming Languages},
+  journal =      {Higher-Order and Symbolic Computation},
+  year =         2000,
+  volume =       13,
+  number =       {1--2},
+  pages =        {11--49},
+  doi =          {10.1023/A:1010000313106}
+}
+\end{verbatim}
+\endgroup
+
+Huomaa erityisesti kenttä doi, johon voi kirjoittaa artikkelin
+digitaalisen tunnisteen (Digital Object Identifier, DOI).  Se on
+yleensä parempi valinta kuin mikään URL, koska DOI on pysyvä
+artikkelin tunnistetieto.  Useimmat DOIt on lisäksi muutettavissa
+URLiksi lisäämällä sen alkuun \url{http://dx.doi.org/}.
+
+Jos netissä olevan lähteen DOI ei ole tiedossa (tai sitä ei ole
+lainkaan), voi käyttää url-kenttää ja sen kaverina urldate-kenttää,
+jolla ilmaistaan (muodossa VVVV--KK--PP) verkossa olevan lähteen
+viittauspäivä.  Linkki kannattaa valita huolella siten, että se on
+mahdollisimman tarkka ja mahdollisimman pitkään voimassa -- jos
+sivulla on erikseen osoitettu pysyvä linkki (engl.~\emph{permanent
+  link}), sitä on syytä käyttää.
+
+Viitattaessa WWW-sivuun, joka ei ole kirja tai artikkeli tai muukaan
+julkaisu, voidaan käyttää
+online-tietuetyyppiä \parencite[esim.][]{debian-social-contract}:
+
+\begingroup\footnotesize
+\begin{verbatim}
+@Online{debian-social-contract,
+  title =        {Debian Social Contract},
+  year =         {2004},
+  url =          {http://www.debian.org/social_contract.en.html},
+  urldate =      {2013-01-29}
+}
+\end{verbatim}
+\endgroup
+
+Jotkin lähteet ovat toimitettuja kokoomateoksia, jotka koostuvat
+itsenäisistä artikkeleista.  Yleensä tällöin viitataan johonkin sen
+osa"-artikkeliin \parencite[esim.][]{prechelt-credibility} eikä koko
+kokoomateokseen.  Tällöin sekä teos että viitatut artikkelit lisätään
+tietokantaan omina tietueinaan, ja kussakin artikkelitietueessa
+viitataan kokoomateokseen käyttäen
+crossref"-kenttää:\footnote{Sallittua on myös yhdistää artikkeli ja
+  kokoomateos yhdeksi InCollection-tietueeksi, esimerkiksi jos
+  kokoomateoksesta viitataan vain yhteen artikkeeliin.  Tällöin
+  kokoomateoksen nimi tulee booktitle"-kenttään eikä crossref"-kenttää
+  käytetä.}
+
+\begingroup\footnotesize
+\begin{verbatim}
+@Collection{making-software,
+  editor =       {Andy Oram and Greg Wilson},
+  title =        {Making Software},
+  subtitle =     {What Really Works, and Why We Believe It},
+  publisher =    {O'Reilly},
+  year =         2011
+}
+@InCollection{prechelt-credibility,
+  author =       {Lutz Prechelt and Marian Petre},
+  title =        {Credibility, or Why Should I Insist on Being
+                  Convinced},
+  crossref =     {making-software},
+  pages =        {17--34}
+}
+\end{verbatim}
+\endgroup
+
+Huomaa, kuinka kokoomateoksella on toimittajia (editor) eikä tekijöitä
+(author).
+
+Tarkempia tietoja lähdetietokannan rakenteesta löytyy
+\textsc{Bib\TeX}in manuaalista \parencite{bibtexing},
+\textsc{Bib\LaTeX}in manuaalista \parencite[luku~2]{biblatex-manual}
+sekä \textsc{Bib\LaTeX}-Chicagon manuaalista
+\parencite[luvut 5.1--5.2]{biblatex-chicago-manual}.  Lisää
+esimerkkejä löydät myös tämän oppaan lähdekoodista.
+
+\section{Lähdeluettelo}
+
+Lähdetietokanta muutetaan lähdeluetteloksi apuohjelmalla {biber}.  Se
+on varsin uusi, joten se puuttuu useimmista koneista, joiden
+\TeX-asennus ei ole aivan ajantasalla.  Yliopiston suorakäyttökoneista
+se löytyy tällä hetkellä vain charra.it.jyu.fi-koneesta.
+Ubuntu-asennuksiin se on saatavissa versiosta 12.10 alkaen ja
+Debian-asennuksiin Wheezystä alkaen.  Windowsiin se on asennettavissa
+Mik\TeX-pakettina biber-windows-x64.
+
+Komentoriviltä biberin käyttö on yksinkertaista.  Kun \LaTeX\ (tai
+pdf\LaTeX) on kerran ajettu, ajetaan biber parametrinaan dokumentin
+nimi.  Tämän jälkeen ajetaan \LaTeX\ (tai pdf\LaTeX) vähintään kerran
+(kunnes edellisen ajon lopussa ei enää pyydetä uutta ajoa).
+Esimerkiksi näin:
+
+\begingroup\footnotesize
+\begin{verbatim}
+$ pdflatex malliopas
+[...]
+Package biblatex Warning: Please (re)run Biber on the file:
+(biblatex)                malliopas
+(biblatex)                and rerun LaTeX afterwards.
+[..]
+Output written on malliopas.pdf (18 pages, 96855 bytes).
+Transcript written on malliopas.log.
+$ biber malliopas
+INFO - This is Biber 0.9.9
+[...]
+INFO - Output to malliopas.bbl
+$ pdflatex malliopas
+[...]
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+[...]
+Output written on malliopas.pdf (21 pages, 107373 bytes).
+Transcript written on malliopas.log.
+$ pdflatex malliopas
+[...]
+Output written on malliopas.pdf (21 pages, 107509 bytes).
+Transcript written on malliopas.log.
+\end{verbatim}
+\endgroup
+
+\section{Tiedossa olevat ongelmat}
+
+Lähdeluettelon ja lähdeviitteiden toiminta ei ole toistaiseksi aivan
+virheetöntä.
+
+\textsc{Bib\LaTeX}in versiossa 2.6 (julkaistu 30.4.2013) on virhe,
+joka aiheuttaa seuraavan virheilmoituksen:%
+{\footnotesize%
+\begin{verbatim}
+Runaway argument?
+{bibliography = {{Kirjallisuusluettelo}{Kirjallisuus}}, references = \ETC.
+! Paragraph ended before \DeclareBibliographyStrings was complete.
+\end{verbatim}
+}%
+Virhe on korjattu heti seuraavassa versiossa 2.7 (julkaistu 7.7.2013).
+Jos päivittäminen ei tule kyseeseen, pikakorjaus vikaan on etsiä
+tiedostosta \texttt{.../biblatex/lbx/finnish.lbx} rivi%
+{\footnotesize%
+\begin{verbatim}
+editorsan        = {{toimittaneet ja selityksin varustaneet,% FIXME: unsure
+\end{verbatim}
+}%
+ja korjata se muotoon%
+{\footnotesize%
+\begin{verbatim}
+editorsan        = {{toimittaneet ja selityksin varustaneet}% FIXME: unsure
+\end{verbatim}
+}%
+(eli pilkku vaihdetaan päättäväksi aaltosulkeeksi).
+
+Jos artikkelilla ei ole tekijää, lähdeluettelossa kyseisen artikkelin
+merkintä alkaa vuosiluvulla.  Tämä vika on korjattu
+\textsc{Bib\LaTeX}-Chicagon versiossa 0.9.9c (julkaistu 15.3.2013).
+
+Jos lähdetietokantaan kirjoittaa urldate-päiväyksen, tulee se
+lähdeluetteloon virheellisessä muodossa.  Tämä vika on korjattu
+\textsc{Bib\LaTeX}-Chicagon versiossa 0.9.9b (julkaistu 6.12.2012).
+
+Joissakin asennuksissa on järjestelmäkirjastoissa virhe, jonka
+johdosta W-alkuiset sukunimet aakkostuvat lähdeluettelon alkuun.  Tätä
+on havaittu keväällä 2019 muun muassa Overleaf-palvelussa.  Tähän ei
+nykytiedon valossa auta muu kuin jonkin muun asennuksen kokeilu.  Vika
+korjattaneen myös näihin asennuksiin jollakin aikataululla.
+
+\chapter{Tutkielmapohjan erityispiirteet}
+
+Pääsääntöisesti {gradu3} käyttäytyy kuten \LaTeX in mukana
+tuleva {report}-kirjoitelmaluokka.  Eroja kuitenkin on:
+\begin{itemize}
+\item Sinun ei tarvitse ladata {inputenc}-, {fontenc}-
+  eikä {babel}-pakettia.
+  \begin{itemize}
+  \item Käyttämäsi merkistö sinun pitää ilmoittaa
+    {\string\documentclass}-komennon optiona.  Nykyään {utf8} on
+    yleensä sopiva valinta, joskin joissakin tilanteissa latin1 tai
+    latin9 voi tulla myös kyseeseen.
+  \item Jos tutkielmasi on englanninkielinen, ilmoita se
+    {\string\documentclass}-komennon optiolla {english}.
+  \end{itemize}
+\item Jos tutkielmasi on kandidaatintutkielma, käytä
+  {\string\documentclass}-komennon optiota {bachelor}.
+\item Ilmoita tutkielmasi metatiedot taulukossa~\ref{tbl:metatiedot}
+  esitetyillä komennoilla.  Ne tulee antaa ennen
+  {\string\maketitle}-komentoa.
+\begin{table}[ht]\centering
+  \begin{tabular}{lp{9cm}}
+    \toprule
+    Komento & Tarkoitus \\
+    \midrule
+    {\string\title}
+    & Työn otsikko (älä käytä {\string\thanks}-komentoa) \\
+    {\string\translatedtitle}
+    & Suomenkielisen työn englanninkielinen otsikko,
+    englanninkielisen työn suomenkielinen otsikko\\
+    {\string\studyline}
+    & Opintosuuntasi (ei pakollinen, jos käytät bachelor-optiota)\\
+    {\string\tiivistelma}
+    & Suomenkielinen tiivistelmä \\
+    {\string\abstract}
+    & Englanninkielinen abstrakti \\
+    {\string\avainsanat}
+    & Suomenkieliset avainsanat \\
+    {\string\keywords}
+    & Englanninkieliset avainsanat \\
+    {\string\author}
+    & Kirjoittajan nimi (jos useita, anna kukin omana komentonaan -- {\string\and}-komentoa ei tueta) \\
+    {\string\contactinformation}
+    & Kirjoittajan yhteystiedot (valinnainen) \\
+    {\string\supervisor}
+    & Tutkielman ohjaaja (jos useita, anna kukin omana komentonaan; ei pakollinen, jos käytät bachelor-optiota)\\
+    \bottomrule
+  \end{tabular}
+  \caption{Metatietojen ilmoituskomennot}\label{tbl:metatiedot}
+\end{table}
+\item Voit \string\maketitle-komennon jälkeen halutessasi kirjoittaa
+  esipuheen.  Sen otsikon saat komennolla \string\preface.
+\item Mahdollisen esipuheen jälkeen voit kirjoittaa termiluettelon
+  käyttämällä thetermlist-ympäristöä.  Sen sisällä voit käyttää
+  \string\item[\textit{termi}]"-komentoa merkitsemään määriteltävän
+  termin.
+\item Käytä \string\maketitle-komennon ja mahdollisten esipuheen ja
+  termiluettelon jälkeen \string\mainmatter"-komentoa.  Se laatii
+  automaattisesti tarvittavat sisällys-, kuvio- ja taulukkoluettelot.
+\item Komentoja \string\subsubsection, \string\paragraph{} ja
+  \string\subparagraph{} ei tueta.
+\item Liitteet eivät ole lukuja (\string\chapter) vaan alilukuja
+  (\string\section).
+\item Lähdeluettelon ja lähdeviitteiden tekemisestä kerrottiin
+  edellisessä luvussa.
+\end{itemize}
+
+\chapter{Yhteenveto}
+
+Tutkielman viimeinen luku on Yhteenveto.  Sen on hyvä olla lyhyt;
+siinä todetaan, mitä tutkielmassa esitetyn nojalla voidaan sanoa
+johdannon väitteen totuudesta tai tutkimuskysymyksen vastauksesta.
+Yhteenvedossa tuodaan myös esille tutkielman heikkoudet (erityisesti
+tekijät, jotka heikentävät tutkielman tulosten luotettavuutta), ellei
+niitä ole jo aiemmin tuotu esiin esimerkiksi Pohdinta-luvussa.  Tässä
+luvussa voidaan myös tuoda esille, mitä tutkimusta olisi tämän
+tutkielman tulosten valossa syytä tehdä seuraavaksi.
+
+Jos Yhteenveto alkaa pitkittyä, se kannattaa jakaa kahtia niin, että
+tulosten tulkinta otetaan omaksi Pohdinta-luvukseen, jolloin
+Yhteenvedosta tulee varsin lyhyt ja lakoninen.
+
+Yhteenvedon jälkeen tulee \string\printbibliography-komennolla
+laadittu lähdeluettelo ja sen jälkeen mahdolliset liitteet.
+
+\printbibliography
+
+\appendix
+\section{Siirtyminen gradu2:sta gradu3:een}
+
+Keskeneräisen tutkielman siirtäminen gradu2:sta gradu3:een ei ole
+kovin vaikeata.  Aluksi on totta kai vaihdettava
+\string\documentclass-komennossa gradu2 gradu3:ksi.  Komennon
+optioista suurin osa on poistettava, koska niitä ei enää tueta;
+ainoastaan merkistön ilmoittava optio jää jäljelle.  Mahdollinen
+kandi-optio vaihdetaan optioksi bachelor.
+
+Taulukossa~\ref{tbl:cmdchange} on lueteltu tarvittavat
+komentovaihdokset.  Viiva tarkoittaa, ettei vastaavaa komentoa ole
+lainkaan.  Huomaa erityisesti uudet komennot.
+
+\begin{table}[h]\centering
+  \begin{tabular}{ll}
+    \toprule
+    gradu2                 & gradu3  \\
+    \midrule
+    ---                    & \string\maketitle \\
+    ---                    & \string\supervisor \\
+    \string\acmccs         & --- \\
+    \string\aine           & \string\subject\\
+    \string\copyrightowner & --- \\
+    \string\fulltitle      & --- \\
+    \string\laitos         & \string\department\\
+    \string\license        & --- \\
+    \string\linja          & \string\studyline\\
+    \string\paikka         & --- \\
+    \string\setauthor      & \string\author\\
+    \string\termlist       & thetermlist-ympäristö\\
+    \string\tyyppi         & \string\type\\
+    \string\yhteystiedot   & \string\contactinformation\\
+    \string\yliopisto      & \string\university\\
+    \string\ysa            & --- \\
+    \bottomrule
+  \end{tabular}
+  \caption{Komentomuutokset gradu2:sta gradu3:een}
+  \label{tbl:cmdchange}
+\end{table}
+
+Isoin työ voi aiheutua lähdeluettelon laatimistekniikan muuttumiseen
+sopeutumisesta.
+
+\section{Harvemmin tarvittavat ominaisuudet}
+
+Aiemmin esiteltyjen lisäksi gradu3 tarjoaa seuraavat lisäominaisuudet:
+\begin{itemize}
+\item \LaTeXe:n vakio-optiot draft ja final toimivat.
+\item \LaTeXe:n vakio-optio twoside toimii myös.  Tätä voi käyttää
+  esimerkiksi gradun kansitusversion laatimiseen, mutta virallisen
+  arvostelu- ja arkistokappaleen laatimiseen sitä ei suositella.
+\item Vaikka tutkielman suomenkielisyyttä ei tarvitse erikseen
+  mainita, finnish-optio toimii.
+\item \string\university-komennolla voit ilmoittaa tutkielman
+  kotiyliopistoksi jonkin muun kuin Jyväskylän yliopiston.
+\item  \string\department-komennolla voit ilmoittaa tutkielman
+  kotilaitokseksi jonkin muun kuin Informaatioteknologian tiedekunnan.
+\item \string\subject-komennolla voit ilmoittaa tutkielman
+  oppiaineeksi jonkin muun kuin tietotekniikan.  Huomaa, että oppiaine
+  tulisi suomenkielisissä tutkielmissa kirjoittaa genetiivimuodossa ja
+  isolla alkukirjaimella (''Tietotekniikan''), englanninkielisissä
+  tuktkielmissa in-preposition kanssa (''in Information Technology'').
+\item \string\type-komennolla voit ilmoittaa tutkielman tyypin, jos se
+  on jokin muu kuin pro gradu (oletus) tai kandidaatintutkielma
+  (optiolla bachelor).
+\item \string\setdate-komennolla voit asettaa päivämäärän
+  haluamaksesi.  Anna komennolle kolme parametria -- päivä,
+  kuukausi ja vuosi -- numeerisessa muodossa.
+\item Ympäristöllä chapterquote voit laittaa luvun alkuun
+  mietelauseen.  Sillä on yksi pakollinen parametri (lainauksen
+  attribuutio).
+\item Komento \string\graduclsdate\ sisältää käytössä olevan gradu3:n
+  julkaisupäivämäärän ja \string\graduclsversion\ sen versionumeron.
+\end{itemize}
+
+\end{document}

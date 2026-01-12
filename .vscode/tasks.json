@@ -1,0 +1,24 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run SPH-DEM Avalonia App",
+			"type": "shell",
+			"command": "dotnet run --project .\\SPHDEM_Simulation",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Compile LaTeX thesis (pdflatex + biber)",
+			"type": "shell",
+			"command": "pdflatex gradu.tex; biber gradu; pdflatex gradu.tex; pdflatex gradu.tex",
+			"args": [],
+			"problemMatcher": [
+				"$latex"
+			],
+			"group": "build"
+		}
+	]
+}

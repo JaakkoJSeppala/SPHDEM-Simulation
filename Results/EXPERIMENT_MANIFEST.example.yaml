@@ -1,0 +1,40 @@
+# Example experiment manifest for ShipHydroSim
+# Copy to Results/EXPERIMENT_MANIFEST.yaml and edit values
+
+experiment:
+  name: demo-dam-break
+  description: Illustrative run; synthetic initial condition
+  seed: 424242
+  timestamp: 2025-11-14T12:00:00Z
+
+solver:
+  smoothingLength_h: 0.20
+  restDensity_rho0: 1000.0
+  viscosity_nu: 0.05
+  stiffness_k: 20000.0
+  timeStep_dt: 0.002
+  adaptiveTimeStep: true
+
+scenario:
+  type: dam_break | wave_pool
+  particleSpacing: 0.25
+  domain:
+    min: [-5.0, 0.0, -5.0]
+    max: [ 5.0, 4.0,  5.0]
+
+waves:
+  enabled: true
+  model: sine | stokes | irregular
+  sine:
+    amplitude: 0.3
+    wavelength: 4.0
+    period: 2.0
+
+ship:
+  length: 3.0
+  beam: 1.0
+  draft: 0.5
+
+notes:
+  - This manifest describes a synthetic setup for reproducibility.
+  - Replace with actual parameters when running studies.
