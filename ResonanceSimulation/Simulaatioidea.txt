@@ -1,0 +1,95 @@
+Hei,
+olen suunnitellut demosimulaatio tekemistä antamiesi ohjeiden mukaisesti siten, 
+että ensin kiinnitetään yksi selkeä ja yksinkertainen testiesimerkki, jota 
+voidaan verrata kirjallisuudessa raportoituihin tuloksiin. Ajatukseni on 
+toteuttaa tämä oman SPH-koodin avulla, jotta perusilmiöt (geometria, 
+hydrostaattinen tila, voimat ja kappaleiden liike) voidaan ymmärtää ja 
+tarkistaa vaiheittain ennen monimutkaisempia tapauksia.
+Aloittaisin yhdellä tunnetulla benchmarkilla (esim. kuution liike vedessä, 
+SPH–DCDEM model for arbitrary geometries in free surface solid–fluid flows), 
+jota käyttäisin validointiin. Tämän jälkeen toteutusta voisi laajentaa hallitusti. 
+Tarkoituksena ei ole toteuttaa kirjallisuuden monimutkaisimpia malleja, vaan käyttää
+ niitä vertailukohtina oman simulaation toimivuuden osoittamiseksi.
+
+Tässä yksi selkeä **prosessi-idea**, joka sopii hyvin siihen tavoitteeseen että 
+etenet “benchmark → ymmärrys → hallittu laajennus”, ja samalla varmistat että 
+pystyt **selittämään jokaisen välivaiheen** gradussa.
+
+## 0) Rajaa “minimi-demo”, jolla onnistuminen on selvästi mitattavaa
+
+* Valitse **yksi** testitapaus (benchmark), jonka tuloksia voi verrata kirjallisuuteen.
+* Kirjoita alussa 1 sivun “Definition of Done”:
+
+  * mitä mitataan (esim. kappaleen sijainti/nopeus ajan funktiona, hydrostaattinen paineprofiili, pinnankorkeus)
+  * millä tarkkuudella hyväksyt (esim. max-virhe < X %, kvalitatiivinen sama ilmiö)
+  * mitä ei vielä tehdä (esim. ei turbulenssia, ei monimutkaista kontaktimallia, ei adaptive time step)
+
+Tämä estää simulaatiota paisumasta.
+
+## 1) Rakenna validointiketju: “fysiikka ensin, sitten liike”
+
+Tee simulaatio vaiheittain niin, että jokainen vaihe on itsenäisesti testattava.
+
+### Vaihe A — Geometria & partikkelijakauma
+
+* Lue/luo domain ja kappaleen geometria (kuutio tms.).
+* Tee partikkelien initialisointi (nestepartikkelit + kappalepartikkelit / rigid body -representaatio).
+* **Testi:** partikkelitiheys tasainen, kappaleen massa/tilavuus oikein, rajapinnat oikein.
+
+### Vaihe B — Hydrostaattinen tasapaino (ilman kappaleen liikettä)
+
+* Aja pelkkä neste gravitaatiolla, *mutta* niin että järjestelmä saavuttaa hydrostaattisen tilan (esim. vaimennus/relaxation).
+* **Testi:** paine ~ ρ g h (profiili), pinnan rauhoittuminen, ei “räjähdä”.
+
+Tämä on usein tärkein “SPH-koodi on terve” -tarkistus.
+
+### Vaihe C — Voimat kappaleeseen (kappale kiinni paikallaan)
+
+* Laske nesteen paine-/viskositeettivoimista resultantti kappaleelle, mutta pidä kappale **kiinnitettynä** (ei liikettä).
+* **Testi:** noste ≈ ρ_f g V_upotus, momentit järkeviä, ei outoja drift-voimia symmetriassa.
+
+### Vaihe D — Kappaleen 6DOF-liike (yksi kappale)
+
+* Vapauta kappale liikkumaan (translaatio + rotaatio) ja lisää kontaktit vain jos pakko (aluksi vaikka ei kontaktia pohjaan).
+* **Testi:** putoamis-/kellumisliike, nopeus ja asento vs. kirjallisuus/benchmark, energian käyttäytyminen järkevää.
+
+Tässä kohtaa sinulla on jo “gradu-demoon” riittävä ketju.
+
+## 2) Tee jokaisesta vaiheesta oma “mini-raportti” (suoraan graduun kelpaavaa)
+
+Jokaisesta A–D vaiheesta:
+
+* **tavoite**
+* **mallin oletukset** (mitä yksinkertaistat)
+* **parametrit** (Δx, h, Δt, EOS tms.)
+* **stabiilisuushavainnot** (mikä rikkoo, mikä rauhoittaa)
+* **tulokset + kuva** (1–2 kuvaa riittää)
+* **yksi selkeä johtopäätös** (onnistuiko testi vai ei)
+
+Näistä tulee gradun runko ilman, että “kirjoittaminen” jää lopuksi.
+
+## 3) Vasta sitten hallittu laajennus (valitse 1–2, ei kaikkea)
+
+Kun perusdemo toimii, laajenna vain yhtä akselia kerrallaan:
+
+* (i) tarkempi kontaktimalli (pohjakontakti / seinämät)
+* (ii) useampi kappale (kaksi kuutiota, törmäys vedessä)
+* (iii) monimutkaisempi geometria (”arbitrary geometry”)
+* (iv) parametri-/resoluutiotutkimus (konvergenssi, h/Δx vaikutus)
+
+Jokainen laajennus: sama testirunko + yksi uusi metriikka.
+
+## 4) “Selitä jälkeenpäin” -varmistus: rakenna jäljitettävä loki
+
+Pidä koko projektin ajan:
+
+* versionumero / git-commit per testi
+* ajokonfiguraatio (yksi YAML/JSON per ajo)
+* automaattinen “run summary” (parametrit + tärkeimmät mittarit)
+* kuvaajat aina samasta skriptistä
+
+Tämä tekee gradun kirjoittamisesta oikeasti helppoa, ja myös ohjaaja näkee, että ymmärrät mitä teet.
+
+---
+
+Jos haluat, voin muotoilla tästä sinulle valmiin **gradun työpaketti-listan** (WP1–WP4), jossa on jokaiselle vaiheelle tavoite, syötteet/tuotokset ja “valmis kun” -kriteerit — sellaisena, että sen voi melkein kopioida gradun metodilukuun.
