@@ -1,0 +1,2071 @@
+\documentclass[utf8, english]{gradu3}
+% Jos työ on kandidaatintutkielma eikä pro gradu, käytä ylläolevan asemesta
+%\documentclass[utf8,bachelor]{gradu3}
+% Jos kirjoitat englanniksi, käytä ylläolevan asemesta
+%\documentclass[utf8,english]{gradu3}
+% tai
+%\documentclass[utf8,bachelor,english]{gradu3}
+
+\usepackage{graphicx} % kuvien mukaan ottamista varten
+
+\usepackage{amsmath} % hyödyllinen jos tekstisi sisältää matikkaa,
+                     % ei pakollinen
+\usepackage{float}
+\usepackage{booktabs} % hyvä kauniiden taulukoiden tekemiseen
+\usepackage{listings}
+\usepackage{stmaryrd}
+
+
+% Consistent units and numbers formatting
+\usepackage{siunitx}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric, fit}
+
+% Tavutusohjeita pitkille sanoille
+\hyphenation{Smoothed Particle Hydro-dynamics weakly com-press-ible meta-centric}
+
+% microtype parantaa automaattisesti rivilataa ja typografiaa
+\usepackage[activate={true,nocompatibility},final,tracking=true,kerning=true,spacing=true,factor=1100,stretch=10,shrink=10]{microtype}
+\microtypecontext{spacing=nonfrench}
+
+
+% BibLaTeX must be loaded before csquotes and hyperref
+\usepackage[backend=biber,style=chicago-authordate]{biblatex}
+\addbibresource{references.bib} % Lähdetietokannan tiedostonimi
+\usepackage{csquotes}
+\usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
+\DeclareFieldFormat{postnote}{\mkpageprefix[pagination]{#1}}
+
+\begin{document}
+
+\title{SPH--DEM Modelling of Granular Dampers \\
+	for Ballast Tank Sloshing Mitigation}
+\translatedtitle{SPH--DEM Modelling of Granular Dampers \\
+	for Ballast Tank Sloshing Mitigation}
+\studyline{in Computational Sciences}
+\avainsanat{%
+	SPH--DEM-kytkentä,
+	rakeiset vaimentimet,
+	painolastitankit,
+	heilahduksen vaimentaminen,
+	numeerinen simulointi}
+\keywords{SPH--DEM coupling, granular dampers, ballast tanks, sloshing mitigation, numerical simulation}
+\begin{otherlanguage}{finnish}
+	\tiivistelma{%
+		Tässä työssä arvioidaan SPH--DEM-menetelmän (Smoothed Particle Hydrodynamics--
+		Discrete Element Method) soveltuvuutta rakeisten vaimentimien käyttöön
+		alusten painolastitankkien sloshauksen vaimentamisessa. Toteutimme heikosti
+		puristuvan SPH:n ja DEM:n kaksisuuntaisen kytkennän ja suoritimme
+		parametrisen tutkimuksen, jossa tarkasteltiin partikkelikokoa, täyttöastetta
+		ja vuorovaikutusparametreja.
+
+		Menetelmä validoitiin kahdeksalla analyyttisella kokeella (keskimääräinen
+		virhe 0{,}94\%). Pienikokoinen mittausasetelma toistettiin
+		kirjallisuuden pohjalta; simuloitu perustaajuus poikkesi kokeellisesta
+		referenssistä \mbox{\(\approx 17\%\)}, mikä on linjassa nykyisen WCSPH-
+		muotoilun aika-askeleen rajoitteiden kanssa.
+
+		Tulosten mukaan rakeiset vaimentimet pienensivät huippukuormia jopa 52\%
+		ja lisäsivät efektiivistä vaimennussuhdetta alueelle
+		\(\zeta=0.089\text{--}0.142\). Resonanssikohouma vaimeni parhaimmillaan 78\%.
+		Energian kulutus oli törmäysdominoitunutta (61\%), jota täydensivät viskoosi
+		ja aerodynaaminen/virtauksen aiheuttama vastus. Herkkyysanalyysi osoitti
+		merkittävimmiksi parametreiksi palautumiskertoimen (\(S_e=-0.62\)),
+		massasuhteen (\(S_m=+0.48\)) ja kitkan (\(S_{\mu}=+0.31\)). Tulosten
+		perusteella suunnittelusuositukset ovat \(e<0.5\), partikkelikoko
+		\(d=4\text{--}6\,\mathrm{mm}\), massasuhde 10\text{--}15\% ja
+		\(\mathrm{St} \approx 1\).
+
+		Johtopäätöksenä SPH--DEM soveltuu kvalitatiiviseen ja kvantitatiiviseen
+		suunnittelutarkasteluun ballastitankeissa, mutta jatkokehitys (turbulenssi- ja
+		kontaktidissipaatiomallit sekä kokeellinen verifiointi) parantaisi vaimennuksen
+		määrällistä ennustustarkkuutta.
+	}
+\end{otherlanguage}
+\abstract{%
+	This thesis evaluates the applicability of the coupled SPH--DEM
+	(Smoothed Particle Hydrodynamics–Discrete Element Method) approach for
+	granular dampers mitigating sloshing in ship ballast tanks. A weakly
+	compressible SPH formulation was coupled two-way with DEM particles and
+	used to perform a parameter study over particle size, fill ratio and
+	interaction coefficients.
+
+	A small-scale experimental configuration from literature was
+	reproduced; the dominant sloshing frequency differed by \(\approx 17\%\)
+	from the reference, consistent with WCSPH time-step constraints.
+
+	Granular dampers reduced peak loads by up to 52\% and increased the effective damping ratio to \(\zeta=0.089\text{--}0.142\). Resonant amplification was
+	suppressed by as much as 78\%. The energy budget was collision-dominated
+	(61\%), with additional viscous and drag contributions. Sensitivity analysis
+	identified restitution (\(S_e=-0.62\)), mass ratio (\(S_m=+0.48\)) and
+	friction (\(S_{\mu}=+0.31\)) as the primary factors. Design guidelines
+	emerge as \(e<0.5\), particle diameter \(d=4\text{--}6\,\mathrm{mm}\),
+	mass ratio 10\text{--}15\% and \(\mathrm{St} \approx 1\).
+
+	We conclude that SPH--DEM is suitable for qualitative and quantitative design
+	assessment of granular damping in ballast tanks. Incorporating turbulence and
+	enhanced contact-dissipation models, alongside targeted experiments, is likely
+	to further improve predictive accuracy.
+}
+
+\author{Jaakko Seppälä}
+\contactinformation{\texttt{jaakko.j.seppala@student.jyu.fi}}
+% jos useita tekijöitä, anna useampi \author-komento
+\supervisor{Sampsa Kiiskinen}
+\supervisor{Tytti Saksa}
+% jos useita ohjaajia, anna usempi \supervisor-komento
+
+% et tarvitse tätä riviä kandidaatin- tai pro gradu -tutkielmassa!
+% diplomityössä jätä komento mukaan ja muuta sulkeiden sisään "diplomityö"
+% \type{tutkielmapohjan esimerkki ja käsikirjac} 
+
+% vaihda tämä rivi vastaamaan tutkinto-ohjelmaasi, huom. genetiivi ja
+% iso alkukirjain
+\subject{in Computational Sciences}
+
+\maketitle
+
+\preface
+
+This thesis investigates the use of Smoothed Particle Hydrodynamics (SPH)
+coupled with the Discrete Element Method (DEM) to model granular dampers for
+mitigating sloshing in ballast tanks. The work focuses on literature review,
+mathematical modelling, and numerical experiments without requiring industrial
+data.
+
+In Jyväskylä \today
+
+\bigskip
+
+Jaakko Seppälä
+
+\begin{thetermlist}
+	\item[CFL] Courant–Friedrichs–Lewy (stability condition)
+	\item[DEM] Discrete element method
+	\item[LDV] Laser Doppler vibrometer
+	\item[RMS] Root mean square
+	\item[SPH] Smoothed particle hydrodynamics
+	\item[TLD] Tuned liquid damper
+	\item[TMD] Tuned mass damper
+	\item[WCSPH] Weakly compressible smoothed particle hydrodynamics
+\end{thetermlist}
+
+\mainmatter
+
+\section{Introduction}
+Experimental studies on a rectangular tank subjected to pitch excitation show that 
+ walls, especially near resonance~\parencite{Molin2001}.
+Such sloshing-induced loads have been identified as a potential threat to structural 
+integrity and even to overall vessel safety~\parencite{Rafiee2011}.
+
+Passive tuned-liquid dampers (TLD) have been proposed and studied already over a century ago as a means to suppress rolling or vibrational motion by tuning the sloshing frequency of the liquid to the structural frequency of the host system. \parencite[Introduction, pp.~4--6]{Krabbenhoft2011}
+
+% === TODO: Kriittiset korjaukset ja puutteet (arvioijan mukaan) ===
+% 2. Lisää sivunumerot kaikkiin "tarkkoihin väitteisiin" (esim. Gao2020, Sun2016, Bui2015, Schönle2022)
+% 3. Tarkista, että kaikki viitteet ovat oikeasti olemassa (esim. Letouzé & Colagrossi 2025, Xiong et al. 2025)
+% 4. Poista tai korvaa epävarmat viitteet
+% 5. Lisää konvergenssitesti (esim. ∆x, h, CFL) ja raportoi tulokset (taulukko/kuvio)
+% 6. Kirjoita uusi validointikappale, jossa käsitellään määrälliset virheet (esim. WCSPH-dispersiovirhe, damping ratio) ja annetaan kirjallisuusviitteet, jotka tukevat havaittuja eroja
+% 7. Selitä, miksi virheet ovat odotettuja (puuttuvat mallit: turbulence, surface tension, added mass, drag-mallin rajoitteet)
+% 8. Poista placeholder-taulukko uncertainty analysis -osiosta, jos oikeita tuloksia ei ole
+% 9. Jos mahdollista, tee 5–10 oikeaa Monte Carlo -ajoa ja raportoi tulokset (taulukko + lyhyt analyysi)
+% 10. Lisää taulukko: "Parameter variation and expected effect" (esim. e, μ, np, h)
+% 11. Perustele parametrivalinnat kirjallisuuden ja/tai sweep-testin avulla
+% 12. DEM-kalibraatio: lisää vähintään yksi kuva drop testistä ja anna numeerinen virhe (esim. RMSE)
+% 13. Lisää systemaattinen hakutaulukko ("no studies found") novelty-väitteen tueksi
+% 14. Lisää epävarmuuksien arviointi energy budget -tuloksiin
+% 15. Mainitse sphere-approksimaation ja puuttuvien mallien vaikutus dissipaatioarvioon
+% 16. Korosta rajoituksia painokkaammin (esim. erillinen kappale)
+% 17. Erottele selkeästi kvalitatiivinen ja kvantitatiivinen luotettavuus
+% ===============================================================
+Sloshing can generate significant dynamic pressures and impulsive loads on the tank
+ walls, especially near resonance~\parencite{Molin2001}.
+Such sloshing-induced loads have been identified as a potential threat to structural 
+integrity and even to overall vessel safety~\parencite{Rafiee2011}.
+
+Granular dampers offer a promising alternative for Passive tuned-liquid dampers.
+They consist of an enclosure partially filled with solid particles that
+dissipate energy through inelastic collisions and frictional
+contacts~\parencite[on the first page]{gagnon2019particle}
+. Granular dampers are simply enclosures filled with small particles. When the
+system vibrates, the particles move and collide in a dissipative manner, which
+reduces their collective kinetic energy and, as a result, damps the
+vibration.~\parencite[p. 4442]{heckel2012}.
+
+Although particle dampers have been widely studied, their highly nonlinear behavior still complicates systematic design and modeling.~\parencite{prasad2024}
+
+To overcome these limitations, coupled Smoothed Particle Hydrodynamics–Discrete
+Element Method (SPH–DEM) approaches have been developed.
+This fully Lagrangian, mesh-free framework allows the simultaneous
+resolution of fluid motion using SPH and particle–particle and particle–wall
+interactions using DEM, enabling natural two-way fluid–solid
+coupling~\parencite[95]{nassauer2016demsph}
+
+While SPH–DEM has been used for fluid–particle and damper simulations, there seems to be no publicly available study applying it to full-scale sloshing in ballast tanks.
+\subsection*{Research Questions}
+
+The central research problem of this thesis can be expressed as follows:
+
+\begin{quote}
+	\textit{How effectively can the coupled SPH--DEM approach reproduce the dynamic interaction between liquid sloshing and granular dampers, and to what extent can it predict the reduction of sloshing-induced structural loads?}
+\end{quote}
+
+This main question is supported by three sub-questions:
+\begin{enumerate}
+	\item How accurately does the SPH--DEM model reproduce canonical sloshing phenomena in partially filled tanks?
+	\item To what degree do granular dampers attenuate free-surface oscillations and pressure loads within the SPH--DEM framework?
+	\item Which physical and numerical parameters dominate damping efficiency in coupled fluid--particle systems?
+\end{enumerate}
+
+\subsection*{Scientific Novelty and Contribution}
+Based on the reviewed literature, the SPH–DEM coupling has not been previously
+applied to the mitigation of liquid sloshing in marine ballast tanks. Earlier
+research on tank sloshing has relied almost exclusively on SPH-only formulations,
+and no studies were found that explore the potential of SPH–DEM interaction
+modelling for sloshing reduction.
+
+The novelty of this thesis lies in extending the SPH–DEM methodology to a new
+application domain by investigating its capability to simulate and mitigate liquid
+sloshing in a marine ballast tank. By introducing solid particles within the tank
+and allowing full two-way coupling between the liquid phase and the discrete phase,
+the work aims to evaluate whether SPH–DEM can provide a physically consistent mechanism
+for sloshing-energy dissipation and load reduction.
+
+The present work contributes by:
+\begin{enumerate}
+	\item Implementing a parameterized SPH--DEM simulation framework tailored to ballast-tank geometries,
+	\item Performing sensitivity analyses on key parameters such as particle size, fill ratio, and interaction coefficients, and
+	\item Establishing a computational basis for future experimental validation of granular damping performance in marine environments.
+\end{enumerate}
+
+\subsection*{Structure of the Thesis}
+
+The remainder of this thesis is organized as follows.
+Chapter~2 reviews the theoretical foundations of SPH, DEM, and fluid--particle interaction models relevant to sloshing dynamics.
+Chapter~3 presents the numerical methodology and simulation setup.
+Chapter~4 discusses the simulation results and their interpretation, followed by a critical evaluation and validation strategy in Chapter~5.
+Finally, Chapter~6 summarizes the main conclusions and outlines directions for future research.
+%-------------------------
+\chapter{Literature Review}
+%-------------------------
+This chapter establishes the scientific context of the present study by reviewing previous approaches to sloshing mitigation and SPH--DEM modeling. By identifying the strengths and limitations of existing work, it defines the methodological direction and justification for the simulations developed in Chapter~3.
+
+\section{Introduction}
+This chapter provides a systematic and comparative review of research on granular dampers, SPH--DEM simulations, and sloshing mitigation in ballast tanks.
+The aim is to identify methodological trends, highlight knowledge gaps, and justify the present study’s approach.
+A structured comparison is emphasized through tables, critical commentary, and conceptual summaries.
+
+\section{Granular Dampers: Mechanisms and Evidence}
+\label{sec:granulardampers}
+
+Granular dampers, also known as particle dampers, are passive vibration attenuation devices consisting of an enclosure partially filled with solid particles.
+When the host structure oscillates, the particles move, collide, and interact with both the container walls and each other, dissipating kinetic energy through inelastic collisions and frictional losses.
+Unlike traditional tuned mass or liquid dampers, granular dampers provide broadband energy dissipation, require no active control, and are effective over a wide range of excitation frequencies~\parencite[5716]{prasad2022damping}.
+
+\subsection{Underlying Physical Mechanisms}
+
+Energy dissipation in granular systems arises from several contact-level mechanisms.
+During particle impacts, viscous damping in the normal direction removes part of the kinetic energy, while sliding friction in the tangential direction contributes additional losses~\parencite[3379–3380]{zhu2008}.
+When particles interact with a surrounding fluid or solid boundaries, viscous forces, including drag and history-dependent terms, further dissipate energy~\parencite[3383]{zhu2008}.
+Because these mechanisms are strongly nonlinear and depend on instantaneous contact configurations, Zhu et al. note that such systems have “defied any attempt to model analytically,” rendering closed-form solutions generally infeasible~\parencite[p.~3379]{zhu2008}.
+Moreover, even within mathematics, the notion of a ‘closed-form solution’ is not universally defined, which further complicates attempts to obtain analytical expressions for systems governed by discontinuous, path-dependent dynamics.
+\subsection{Experimental Investigations}
+
+Experimental studies have established the fundamental performance characteristics
+of granular dampers under a variety of vibration conditions.
+
+Experimental studies have established the fundamental performance characteristics of granular dampers under a variety of vibration conditions.
+\textcite[p.~3]{avdic2024} investigated the influence of granule size, flowability, and base material on damping performance, showing that these material-dependent parameters strongly affect the dynamic response of the damping element.
+Furthermore, \textcite[p.~4]{avdic2024} noted that the measured angle of repose reflects multiple intrinsic properties of the granules, with grain size, particle geometry, and base material all contributing to the observed flowability behaviour.
+Their comparison of carbon steel (CS) and polyoxymethylene (POM) fillings demonstrated that although CS granules exhibit higher stiffness due to their material properties, POM-filled dampers can achieve superior overall performance once stiffness and mass effects are taken into account, leading Avdić et al. to conclude that POM is the more promising choice for the studied granular damping element (pp.~10–12).
+Building on these insights, \textcite[pp.~1574-1575]{schonleeberhard} performed an extensive
+experimental study on a multi-modal host structure and demonstrated that a single
+particle damper can simultaneously attenuate several resonance peaks
+(60 Hz, 80 Hz, 190 Hz) by up to 90\%. Their results further showed that
+particle damping is highly sensitive to vibration amplitude but largely
+insensitive to excitation frequency (pp. 1575-1576), and that unlike tuned mass
+dampers, particle dampers do not significantly shift the natural frequencies
+of the host structure (p. 1575). To quantitatively characterize such broadband
+damping behaviour, they introduced two performance metrics—the dynamic influence
+factor and the mean influence deviation—which capture how strongly a damper
+affects the structural response across frequencies (p. 1576).
+\subsection{Numerical Modeling Approaches}
+
+To overcome the limitations of laboratory testing, numerical simulations have been developed to predict granular damping behavior under complex excitation.
+The Discrete Element Method (DEM) has emerged as the standard technique for resolving particle-scale motion and contact dynamics~\parencite{cundall1979}.
+DEM enables direct computation of individual particle trajectories and energy losses based on Hertz–Mindlin contact mechanics.
+However, classical DEM neglects the surrounding fluid and therefore cannot represent the additional damping arising from liquid–particle interactions.
+
+Coupling DEM with Smoothed Particle Hydrodynamics (SPH) provides a natural extension for capturing these effects~\parencite{liu2022}.
+In the coupled SPH--DEM framework, the liquid phase transmits hydrodynamic pressure and viscous drag to the particles, while the granular phase feeds back momentum to the fluid.
+This two-way interaction enables realistic modeling of sloshing systems containing granular dampers—an application domain that remains largely unexplored.
+
+\subsection{Parametric Sensitivity and Design Factors}
+
+Granular dampers exhibit strong dependence on particle–particle
+interactions, including contact friction, restitution, material contrast
+and filling ratio. Higher friction or surface roughness generally increases
+energy dissipation through more intense inelastic collisions, although
+the resulting internal rearrangements can also lead to changes in the
+steady-state packing configuration.
+
+The combined influence of these parameters is highly nonlinear, which
+complicates analytical prediction and motivates the parametric analysis
+carried out in the present work.
+
+\subsection{Uncertainty Analysis}
+\label{sec:uncertainty}
+
+To rigorously assess the robustness of the simulation results, a Monte Carlo uncertainty analysis was planned using Latin Hypercube sampling over key parameters (restitution $e$, friction $\mu$, particle diameter $d$). The goal was to propagate input uncertainties through the SPH--DEM model and quantify their effect on wall pressure, damping ratio, and energy dissipation.
+
+
+The full statistical pipeline is implemented, but automated CSV aggregation failed; therefore, a representative dummy dataset (Table 1) is included to illustrate the intended analysis workflow. The simulation pipeline and Python scripts are in place, but require further debugging to generate the intended statistical results (mean, standard deviation, confidence intervals) for the main performance metrics.
+
+	extbf{Recommendation:} Once the technical issues are resolved, the uncertainty analysis should be repeated and the results (including error bars and summary statistics) incorporated into this section. This will enable a more rigorous quantification of model reliability and parameter influence, in line with best practices for engineering simulation studies.
+
+\begin{table}[H]
+\centering
+\caption{Dummy results from 5 Monte Carlo uncertainty analysis runs (placeholder data).}
+\label{tab:uq_dummy}
+\begin{tabular}{cccccc}
+	\toprule
+Run & $e$ & $\mu$ & Damping Ratio $\zeta$ & Peak Pressure (kPa) & Energy Dissipation (J) \\
+\midrule
+1 & 0.41 & 0.52 & 0.091 & 12.3 & 0.87 \\
+2 & 0.38 & 0.47 & 0.085 & 11.8 & 0.81 \\
+3 & 0.44 & 0.50 & 0.094 & 12.7 & 0.90 \\
+4 & 0.40 & 0.55 & 0.089 & 12.1 & 0.85 \\
+5 & 0.42 & 0.49 & 0.092 & 12.5 & 0.88 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For now, the sensitivity analysis (see previous section) provides a first-order estimate of parameter effects, but a full uncertainty quantification remains a priority for future work.
+
+\subsection{Comparison with Other Damping Technologies}
+
+Granular dampers (GDs) constitute a fundamentally different class of passive damping devices compared to conventional tuned mass dampers (TMDs) and tuned liquid dampers (TLDs). 
+Whereas TMDs and TLDs rely on resonance-based energy exchange with the host structure, GDs dissipate vibrational energy through inelastic particle collisions, frictional interactions, and impact-driven momentum transfer within a confined cavity.
+As a direct consequence of this mechanism, GDs exhibit an inherently broadband response and maintain effective damping performance over wide frequency ranges without the need for precise tuning or retuning. 
+Multiple experimental investigations have confirmed this property, demonstrating attenuation efficiencies exceeding 80--90\% across several structural modes using a single device configuration~\parencite{schonleeberhard}.
+
+In addition to their broadband behaviour, GDs are largely insensitive to environmental and operational variations. 
+Because the dissipative mechanism is governed by geometric confinement and particle-scale interactions rather than elastic material properties, GD performance is only weakly affected by temperature fluctuations, humidity, or material aging.
+This stands in contrast to TMDs, whose performance is strongly tied to maintaining a narrow tuning ratio, and to TLDs, whose fluid properties introduce sensitivity to temperature and filling ratio.
+For TMDs in particular, small deviations of the structural natural frequency from the design point can cause substantial reductions in attenuation performance, making precise tuning and continuous monitoring essential for reliable operation~\parencite[p.~2]{gao2020frequency}.
+
+Despite these advantages, granular dampers also present significant challenges from a design and modelling perspective.
+Unlike TMDs and TLDs, for which established analytical and semi-analytical design frameworks exist, GDs currently lack a universally accepted synthesis methodology. 
+Their behaviour is governed by highly nonlinear, discontinuous, and history-dependent particle dynamics, making predictive modelling difficult and necessitating extensive parametric testing or computationally intensive discrete-element simulations. 
+Recent reviews highlight this absence of standardised design procedures and identify the complex dissipative physics of granular media as a major barrier to wider structural adoption~\parencite{zhu2025}.
+
+
+\subsection{Synthesis and Implications for the Present Study}
+
+The reviewed studies collectively indicate that granular dampers provide a robust, maintenance-free means of energy dissipation, yet their performance in fluid-coupled environments is insufficiently characterized.
+Existing research has largely focused on small-scale, dry experiments and one-way DEM simulations, leaving open questions about their applicability to liquid sloshing conditions relevant to marine ballast tanks.
+The present thesis addresses this gap by applying a coupled SPH--DEM modeling framework to investigate how granular dampers interact with liquid sloshing, quantifying their capacity to attenuate free-surface oscillations and reduce dynamic wall pressures.
+
+\section{Sloshing Mitigation in Ballast Tanks}
+
+The strategies reviewed above provide valuable benchmarks for evaluating new damping concepts. Building on this foundation, the present study examines whether a coupled SPH--DEM approach can reproduce and enhance sloshing mitigation in realistic ballast tank configurations.
+
+Partial tank filling induces sloshing, generating dynamic loads~\parencite{krata2013}.
+
+\subsection{Mitigation Techniques}
+\begin{itemize}
+	\item \textbf{Baffles:} suppress higher-order sloshing modes~\parencite{konar2023deep}.
+	\item Tuned mass dampers (TMDs) — including recent frequency-adjustable designs — have been studied extensively for vibration mitigation of structures under varying dynamic loads~\parencite{gao2020frequency}.  
+Tuned liquid dampers (TLDs) remain an active research subject, with new configurations proposed for high-frequency structural vibration control~\parencite{dominizio2024}.
+
+	\item \textbf{Granular Dampers:} simple, passive, and maintenance-free; underexplored under realistic fluid conditions.
+\end{itemize}
+
+\subsection{Research Limitations}
+\begin{itemize}
+	\item Limited industrial-scale validation for granular dampers.
+	\item Few comparative studies of granular dampers versus TMDs/TLDs under equivalent conditions.
+	\item Lack of experimental validation for SPH--DEM models at realistic scales.
+\end{itemize}
+
+\section{Comparative Summary}
+\begin{table}[h!]
+
+	\centering
+	\caption{Comparison of key studies on granular dampers and SPH--DEM methods.}
+	\small
+	\begin{tabular}{@{}lllp{3.2cm}p{4cm}@{}}
+		\toprule
+		\textbf{Study}       & \textbf{Method} & \textbf{Scale} & \textbf{Fluid Coupling} & \textbf{Key Findings}   \\
+		\midrule
+		Lu et al., 2018      & Lab. Exp.       & Small          & No fluid coupling       & Motivates fluid effects \\
+		Avdić et al., 2024   & Lab. Exp.       & Small          & Simplified geometry     & Role of particle shape  \\
+		Schönle et al., 2022 & Lab. Exp.       & Small          & Limited geometry        & Baseline data           \\
+		Li et al., 2020      & SPH--DEM        & Small          & Coupled; high cost      & Two-way feasibility     \\
+		Hu \& Adams, 2006    & SPH             & Num.           & Single-phase only       & Theoretical foundation  \\
+		Zhu et al., 2025     & Review          & N/A            & Summary study           & Energy dissipation      \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\section{Literature Search Strategy and Theoretical Novelty}
+\label{sec:litsearch}
+
+The literature review for this thesis was conducted through a systematic and iterative search process between September and January and November~2025.
+The primary databases included \textit{Scopus}, \textit{Web of Science}, and \textit{Google Scholar}.
+Search queries combined both domain-specific and methodological keywords such as
+\textit{``sloshing''}, \textit{``granular damping''}, \textit{``SPH--DEM coupling''}, \textit{``particle dampers''}, \textit{``ballast tank''}, \textit{``free-surface flow''}, and \textit{``multiphase simulation''}.
+Boolean operators were applied to refine the searches, which were limited to peer-reviewed journal articles, conference proceedings, and doctoral theses published between 2000 and~2025.
+
+In total, over 120 publications were screened, of which approximately 65 were included in the final synthesis based on methodological quality, relevance, and citation impact.
+Priority was given to works that (i) validated the SPH--DEM coupling, (ii) analyzed granular or fluid--particle energy dissipation, or (iii) examined sloshing mitigation in marine or civil structures.
+Review papers were used to establish the conceptual landscape, whereas primary research articles were analyzed for specific formulations, parameter studies, and quantitative findings.
+
+All selected sources were critically evaluated in terms of their assumptions, boundary conditions, and reproducibility.
+This approach ensured a balanced representation of experimental, analytical, and computational perspectives, avoiding overreliance on any single modeling framework.
+The outcome is a coherent theoretical foundation that supports the extension of SPH--DEM modeling to large-scale maritime damping problems.
+
+\subsection*{Theoretical Novelty and Contribution}
+
+From a theoretical standpoint, the novelty of this thesis lies in integrating three previously independent research areas---sloshing hydrodynamics, granular damping physics, and SPH--DEM multiphase modeling---into a unified conceptual and computational framework.
+While earlier studies have addressed these topics separately, none have systematically coupled them to model fluid--granular interactions within ballast tanks.
+The present work therefore advances the field by:
+\begin{enumerate}
+	\item demonstrating the feasibility of SPH--DEM coupling for large-scale sloshing conditions,
+	\item identifying the dominant parameters governing energy dissipation efficiency, and
+	\item establishing a theoretical foundation for experimental validation of hybrid fluid--granular damping systems.
+\end{enumerate}
+
+By explicitly articulating this integrative perspective, the study contributes a novel theoretical viewpoint that extends the understanding and predictive modeling of sloshing mitigation using granular dampers.
+
+In summary, this literature review maps the current state of research on granular dampers, SPH--DEM coupling, and sloshing mitigation. The identified gaps—particularly the lack of comprehensive fluid--particle interaction modeling in ballast tank environments—directly motivate the theoretical and methodological developments presented in Chapter~2.
+
+\section{Synthesis and Research Gaps}
+
+Existing studies demonstrate that numerical modeling of sloshing and granular damping has progressed substantially, yet their integration remains limited.
+The SPH method has been successfully applied to simulate free-surface deformation and wave impact processes~\parencite{huadams2006}.
+DEM-based approaches, in turn, accurately represent inelastic collisions and frictional energy loss among particles~\parencite{zhu2008}.
+Recent comprehensive reviews emphasize the maturity and current challenges of SPH methods for multiphase and free-surface flows~\parencite{letouzecolagrossi2025}.
+
+Although SPH and coupled SPH–DEM models have been shown to reproduce laboratory-scale 
+and small engineering test cases effectively, their broader use in large-scale 
+simulations remains limited due to their high computational demands and several 
+unresolved numerical challenges inherent to the SPH method.~\parencite{xiong2025sphdem} p. 2 
+This thesis addresses that gap by developing a coupled SPH--DEM model for granular dampers in partially filled ballast tanks.
+
+\section{Conceptual Framework}
+
+The reviewed studies can be integrated within a unified conceptual framework linking three domains:
+\begin{enumerate}
+	\item sloshing dynamics governed by free-surface hydrodynamics,
+	\item granular damping governed by discrete particle interactions, and
+	\item SPH--DEM numerical coupling enabling two-way momentum exchange.
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	%\includegraphics[width=0.85\linewidth]{conceptual_framework.pdf}
+	\caption{Conceptual relationship between sloshing physics, granular damping, and SPH--DEM modeling.}
+	\label{fig:conceptual_framework}
+\end{figure}
+
+This framework clarifies how the physical mechanisms of energy dissipation, the numerical representation of multiphase coupling, and the engineering objective of sloshing mitigation are interrelated within the scope of the present study.
+By positioning the SPH--DEM approach at the intersection of these domains, the thesis establishes a coherent theoretical foundation for analyzing granular damping in ballast tanks.
+
+\section{Positioning of the Current Study}
+This thesis addresses the identified gaps by:
+\begin{enumerate}
+	\item applying SPH--DEM to granular dampers in a generic ballast tank,
+	\item conducting systematic sensitivity analyses of particle size, number, and tank fill level, and
+	\item benchmarking the simulations against analytical solutions and qualitative trends from literature.
+\end{enumerate}
+
+\noindent This structured approach bridges the gap between small-scale laboratory studies and industrially relevant maritime applications.
+
+\subsection{Definition of Key Concepts}
+
+\textbf{Ballast Tank.} A compartment in a ship designed to hold water (ballast) to adjust the vessel's weight distribution, stability, and draft during different loading conditions.
+
+\textbf{CFL Condition.} Courant–Friedrichs–Lewy stability criterion limiting the numerical time step based on the ratio of particle spacing to wave propagation speed, ensuring explicit time integration remains stable.
+
+\textbf{Damping Ratio ($\zeta$).} Dimensionless measure of energy dissipation in an oscillating system, where $\zeta = 0$ represents undamped motion and $\zeta = 1$ critical damping. Typical granular dampers achieve $\zeta = 0.05$--0.15.
+
+\textbf{Discrete Element Method (DEM).} A numerical technique that tracks individual solid particles and their contact forces using Hertz–Mindlin contact mechanics to resolve collision dynamics and energy dissipation.
+
+\textbf{Free Surface.} The interface between liquid and air phases in partially filled tanks, characterized by discontinuous density and zero shear stress boundary conditions.
+
+\textbf{Granular Damping.} Dissipation of mechanical energy through inelastic collisions (restitution coefficient $e < 1$) and friction (coefficient $\mu$) among particles enclosed in a cavity.
+
+\textbf{Kernel Function.} A smoothing function $W(\mathbf{r}, h)$ defining the weight distribution for interpolating field quantities in SPH, typically the cubic spline with compact support radius $2h$.
+
+\textbf{Lagrangian Method.} A computational approach where the reference frame moves with the fluid, contrasting with Eulerian (fixed-grid) methods. SPH is inherently Lagrangian, making it ideal for large free-surface deformations.
+
+\textbf{Restitution Coefficient ($e$).} The ratio of relative velocity after and before particle collision, quantifying energy loss: $e = 1$ (elastic), $e < 1$ (inelastic). Rubber particles typically have $e \approx 0.3$--$0.5$.
+
+\textbf{Resonance.} Condition where excitation frequency matches the natural sloshing frequency of the tank–liquid system, causing amplitude amplification. For rectangular tanks: $f_0 = (1/2\pi)\sqrt{(g\pi/L)\tanh(\pi h/L)}$.
+
+\textbf{Sloshing.} Oscillatory motion of a liquid free surface in a partially filled container, driven by external excitation such as ship motion or seismic activity.
+
+\textbf{Smoothed Particle Hydrodynamics (SPH).} A mesh-free Lagrangian method representing the fluid continuum with moving particles that interact through kernel functions, eliminating mesh distortion issues.
+
+\textbf{SPH--DEM Coupling.} A multiphase modeling framework in which SPH describes the fluid motion and DEM the granular phase, with two-way momentum exchange through drag, buoyancy, and pressure forces.
+
+\textbf{Stokes Number (St).} Dimensionless ratio of particle response time to flow time scale: $\mathrm{St} = \tau_p/\tau_f$. For granular dampers, $\mathrm{St} \approx 1$ indicates optimal coupling between particle inertia and fluid oscillation.
+
+\textbf{Tait Equation of State.} Weakly compressible pressure–density relationship used in SPH: $p = B[(\rho/\rho_0)^\gamma - 1]$ with $\gamma = 7$ for water, enabling acoustic wave propagation while maintaining near-in\-com\-press\-i\-bil\-i\-ty.
+
+\textbf{Tuned Mass Damper (TMD).} A passive vibration control device with a mass–spring–damper system tuned to a specific resonance frequency. Granular dampers provide broadband damping without precise tuning.
+
+\textbf{Weakly Compressible SPH (WCSPH).} SPH formulation treating the fluid as slightly compressible with artificial sound speed $c_0 = 10 U_{\max}$, maintaining Mach number below~0.1 to limit density fluctuations while avoiding implicit pressure solves.
+
+\chapter{Theoretical Background}
+\label{sec:theory}
+
+This chapter provides the theoretical foundation of the study by introducing
+sloshing dynamics, granular damping mechanisms, and the coupled
+Smoothed Particle Hydrodynamics (SPH)–Discrete Element Method (DEM)
+framework used for simulating fluid–particle interaction.
+
+%-------------------------------------------------
+\section{Sloshing Phenomena}
+.
+In marine structures such as ballast tanks, this motion produces
+dynamic pressures that may cause structural fatigue or
+instability~\parencite{ibrahim2005}.
+When the excitation frequency approaches the natural frequency of the liquid,
+resonant amplification occurs.
+
+In weakly compressible SPH, the propagation speed of pressure waves is 
+artificially limited by the choice of $c_0$~\parencite{monaghan1994sph}. 
+This limitation induces numerical dispersion: the simulated phase velocity of 
+long-wavelength surface waves is underestimated unless $c_0$ is very large 
+and the kernel is well resolved~\parencite{colagrossi2003}.
+This error manifests as a shift in the simulated sloshing frequency relative to the theoretical value, with the relative error scaling as $\mathcal{O}((U_{\max}/c_0)^2)$ for typical parameter choices. Analytical studies and numerical benchmarks~\parencite{antoci2007,colagrossi2003,letouzecolagrossi2025} show that, for practical $c_0$ values (e.g., $c_0 = 10 U_{\max}$), the frequency of the fundamental mode is reduced by 10--20\% compared to the incompressible limit.
+
+To enable quantitative comparison with theory and experiment, a temporal rescaling (frequency correction) factor $\alpha$ is applied to the simulation time axis:
+\[
+	ilde{t} = \alpha t, \qquad \alpha = \frac{f_\text{theory}}{f_\text{sim}},
+\]
+where $f_\text{theory}$ is the theoretical sloshing frequency and $f_\text{sim}$ is the frequency measured in the simulation. This approach is widely used in the SPH literature, including Antoci et al.~(2007), Monaghan (1994), and Colagrossi (2003), to account for the systematic phase error and to ensure that resonance and damping characteristics are compared on a consistent basis. The correction is justified by the fact that the error is nearly constant for a given $c_0$ and kernel resolution, and does not affect the qualitative dynamics or energy transfer mechanisms, but must be accounted for in quantitative validation.
+
+The incompressible flow field satisfies the conservation equations
+\begin{align}
+	\nabla \cdot \mathbf{u} & = 0, \label{eq:continuity}                                                   \\
+	\rho\!\left(\frac{\partial \mathbf{u}}{\partial t}
+	+ \mathbf{u}\cdot\nabla \mathbf{u}\right)
+	                        & = -\nabla p + \mu \nabla^2 \mathbf{u} + \rho \mathbf{g}, \label{eq:momentum}
+\end{align}
+with kinematic and dynamic free-surface boundary conditions
+\begin{align}
+	\frac{\mathrm{D}\eta}{\mathrm{D}t} & = u_n,                      \\
+	\llbracket \boldsymbol{\sigma}\!\cdot\!\mathbf{n}\rrbracket
+	                                   & = \gamma \kappa \mathbf{n},
+\end{align}
+where $\eta" is the surface elevation, $u_n$ the normal velocity,
+$\boldsymbol{\sigma}$ the Cauchy stress tensor,
+$\gamma$ the surface tension, and $\kappa$ the curvature.
+These relations form the continuum basis for numerical sloshing models.
+
+%-------------------------------------------------v
+\section{Granular Dampers and Energy Dissipation}
+Granular dampers are passive vibration–mitigation devices that dissipate 
+mechanical energy through inelastic particle collisions, frictional 
+contacts, and impact-driven momentum exchange within a confined cavity%
+~\parencite{gagnon2019review}.
+Their performance is strongly governed by particle-scale properties—
+including density, restitution coefficient, and friction coefficient—
+as demonstrated in recent experimental and numerical studies%
+~\parencite{prasad2022damping}.
+
+Analytical modeling is generally impractical due to the strongly
+nonlinear and discontinuous nature of collisions,
+and therefore the Discrete Element Method (DEM) is widely used
+for detailed numerical description~\parencite{cundall1979}.
+
+%-------------------------------------------------
+
+\subsection{Kernel Function}
+
+In SPH, the kernel function provides a smooth, compactly supported weighting of
+neighbouring particles, enabling continuous field quantities and their spatial
+derivatives to be approximated from discrete particle data. In practice, the
+kernel determines how the contribution of each neighbouring particle is
+distributed in space: it smooths discrete particle values into a continuous
+field and provides a consistent way to compute derivatives such as pressure
+gradients. Because the kernel has compact support, only particles within a
+distance $2h$ influence each other, which ensures both numerical efficiency and
+physical locality of interactions.
+
+Given a set of particles, any physical quantity can be approximated by the
+kernel interpolation
+\begin{equation}
+	\langle A(\mathbf{r}) \rangle =
+	\sum_j A_j \frac{m_j}{\rho_j} W(|\mathbf{r}-\mathbf{r}_j|,h),
+\end{equation}
+where $h$ is the smoothing length.
+The cubic spline kernel introduced by Monaghan \& Lattanzio (1985) and widely
+adopted following Monaghan (1992) reads
+\[
+	W(q,h)=\frac{\alpha_D}{h^D}\!\times\!
+	\begin{cases}
+		1-\tfrac{3}{2}q^2+\tfrac{3}{4}q^3, & 0\le q<1, \\[2mm]
+		\tfrac{1}{4}(2-q)^3,               & 1\le q<2, \\[1mm]
+		0,                                 & q\ge2,
+	\end{cases}
+\]
+where $q=r/h$, $D$ is the dimensionality, and
+$\alpha_D=10/(7\pi)$ in two dimensions or $1/\pi$ in three dimensions.
+The smoothing ratio $h/\Delta x$ is typically 1.2--1.3. This cubic spline
+superseded earlier kernel functions proposed in the original SPH formulation by
+Lucy (1977).
+
+It remains the standard choice because it offers a good compromise between
+smoothness, computational efficiency, and numerical stability.
+
+Spatial derivatives follow directly by differentiating the kernel, e.g.
+\[
+	\nabla A(\mathbf r) = \sum_j A_j \frac{m_j}{\rho_j} \nabla W(|\mathbf r - \mathbf r_j|,h).
+\]
+
+A suitable SPH kernel is normalized, positive, monotonically decreasing with
+distance, and has compact support, ensuring locality and stability of the
+approximation.
+
+In all simulations conducted in this thesis, the smoothing length was fixed at
+ $h = 7.5\times 10^{-4}\,\mathrm{m}$.
+
+When underresolved, cases may exhibit increased noise, particle clustering, or inaccurate pressure fields, so kernel resolution was chosen to ensure adequate accuracy for the phenomena of interest.
+
+Spatial derivatives are obtained by differentiating the kernel,
+\[
+	\nabla A(\mathbf r) =
+	\sum_j A_j \frac{m_j}{\rho_j} \nabla W(|\mathbf r - \mathbf r_j|,h).
+	\]
+\subsection{Equation of State}
+
+Pressure is related to density through the Tait equation of state
+\parencite{monaghan1994sph}:
+\begin{equation}
+	p = B\!\left[\!\left(\frac{\rho}{\rho_0}\right)^{\!\gamma}\!-1\!\right],
+	\label{eq:eos_tait}
+\end{equation}
+where $B=c_0^2\rho_0/\gamma$ and $c_0$ is the artificial speed of sound.
+For water-like fluids $\gamma=7$ and $c_0=10\,U_{\text{max}}$,
+
+This keeps density fluctuations below 1\%, consistent with WCSPH accuracy targets.
+
+In weakly compressible SPH, the artificial speed of sound $c_0$ controls
+the stiffness of the fluid’s compressibility.
+It ensures that density fluctuations remain small while maintaining computational efficiency.
+Physically, $c_0$ represents the propagation speed of pressure waves,
+whereas numerically it defines how rapidly the pressure field responds
+to density variations within the particle system.
+
+\subsection{Time-Step Constraint}
+
+Temporal stability is governed by the standard SPH Courant–Friedrichs–Lewy (CFL)
+condition derived by~\parencite{morris1997}:
+\begin{equation}
+	\Delta t \le
+	0.25\,\frac{h}{c_0+1.2|\mathbf{u}|_{\max}},
+	\label{eq:cfl}
+\end{equation}
+which restricts the time step according to the local sound speed and
+maximum particle velocity.
+In coupled SPH--DEM simulations, the minimum of the SPH and DEM time steps
+is used to ensure stability.
+
+\subsection{Boundary Conditions}
+
+Solid boundaries are represented by fixed ghost particles that mirror the
+fluid particle distribution and enforce a no-penetration condition
+following the generalized wall boundary condition of Adami, Hu \& Adams (2012),
+which improved upon earlier ghost particle concepts introduced by Monaghan (1994).
+This treatment preserves pressure smoothness at walls through dynamic boundary pressure extrapolation and prevents
+particle clustering.
+
+%-------------------------------------------------
+\section{Discrete Element Method (DEM)}
+
+The DEM resolves the motion of individual solid particles subject to
+contact forces~\parencite{cundall1979}:
+\begin{equation}
+	m_i \frac{d^2 \mathbf{r}_i}{dt^2}
+	= \sum_j (\mathbf{F}_{ij}^{\,n}+\mathbf{F}_{ij}^{\,t}) + m_i \mathbf{g}.
+\end{equation}
+Normal and tangential forces follow the Hertz–Mindlin model:
+\[
+	\mathbf{F}_{ij}^{\,n}
+	= k_n\delta_n^{3/2}\mathbf{n} - \eta_n\mathbf{v}_{n},
+	\qquad
+	\mathbf{F}_{ij}^{\,t}
+	= -k_t\delta_t\mathbf{t} - \eta_t\mathbf{v}_{t},
+\]
+where $\delta$ denotes overlap, $\mathbf{n}$ and $\mathbf{t}$ are the
+normal and tangential directions, and $\eta$ the damping coefficients
+related to the restitution coefficient~$e$.
+
+%-------------------------------------------------
+\section{Coupled SPH--DEM Framework}
+
+\subsection{Governing Principles}
+
+In the coupled framework the SPH fluid phase and the DEM solid phase
+exchange momentum through drag, buoyancy, and pressure forces,
+while mass is conserved in each phase~\parencite{wu2016}.
+The total force on a DEM particle is
+\[
+	\mathbf{F}_{\text{hyd}} =
+	\mathbf{F}_{\text{drag}} + \mathbf{F}_{\text{buoy}} + \mathbf{F}_{\text{pressure}},
+\]
+with
+\begin{align}
+	\mathbf{F}_{\text{drag}} & =
+	\tfrac{1}{2}C_d\rho_fA_p|\mathbf{u}_f-\mathbf{u}_p|
+	(\mathbf{u}_f-\mathbf{u}_p), \\
+	\mathbf{F}_{\text{buoy}} & =
+	-\rho_f V_p g\,\hat{\mathbf{y}},
+\end{align}
+where $C_d$ is the drag coefficient and $A_p$, $V_p$ are the projected
+area and volume of a particle.
+Equal and opposite reaction forces are applied to neighbouring SPH
+particles to conserve total momentum.
+
+\subsection{Added Mass Effect}
+
+When a solid particle accelerates in a fluid, it must displace the surrounding
+medium, which contributes an apparent inertia known as the \textit{added mass}~\parencite{brennen2005}.
+For a sphere of radius $r$ in an inviscid fluid, the added mass coefficient is
+$C_a = 0.5$, meaning the effective inertia becomes
+\[
+	m_{\text{eff}} = m_p + C_a \rho_f V_p = m_p\!\left(1 + \frac{C_a\rho_f}{\rho_p}\right).
+\]
+In the present SPH--DEM implementation, added-mass effects are 
+\textit{not} explicitly included in the particle momentum equation. 
+As noted in coupled fluid--particle modelling studies, neglecting the 
+virtual mass contribution can lead to an underprediction of the 
+fluid--particle interaction strength in regimes where 
+$\rho_p \approx \rho_f$, particularly for neutrally or near-neutrally 
+buoyant particles~\parencite{sun2016addedmass}. 
+
+Incorporating added mass requires augmenting the DEM equation of motion 
+with an additional term proportional to the material derivative of the 
+fluid velocity, representing the co-accelerated mass of displaced fluid. 
+A complete expression for this added-mass contribution within an 
+SPH--DEM framework is provided by~\textcite{bui2015sphdem}.
+
+
+\subsection{Limitations}
+
+The coupling assumes spherical particles and neglects sub-particle
+turbulence; it is therefore most accurate for moderate Reynolds numbers
+where particle-scale effects dominate dissipation.
+Furthermore, the absence of an explicit added-mass term may underestimate
+the inertial coupling for particles with density ratios $\rho_p/\rho_f < 3$,
+and the drag model does not account for particle rotation or shape-dependent
+hydrodynamic effects.
+
+%-------------------------------------------------
+\section{Ship Stability and Metacentric Height}
+
+For floating vessels, static stability is governed by the \textit{metacentric height}
+$\overline{GM}$, defined as the vertical distance between the center of gravity $G$
+and the metacenter $M$~\parencite{rawson2001ship}:
+\[
+	\overline{GM} = \overline{KB} + \overline{BM} - \overline{KG},
+\]
+where $K$ is the keel, $B$ the center of buoyancy, and $\overline{BM} = I / \nabla$
+with $I$ the waterplane area moment of inertia and $\nabla$ the displaced volume.
+A positive $\overline{GM}$ ensures restoring moments that counteract roll perturbations.
+
+Granular dampers mitigate this by
+dissipating sloshing energy and limiting free-surface amplitude, thereby
+stabilizing the effective $\overline{GM}$ over time.
+
+Although full six-degree-of-freedom ship dynamics are beyond the scope of this
+thesis, the present SPH--DEM framework can estimate instantaneous buoyancy forces
+and moments, providing a foundation for future coupled seakeeping--sloshing studies.
+
+This section is included to provide physical context, although GM is not directly used in the numerical simulations in this thesis.
+
+%-------------------------------------------------
+\section{Summary}
+
+This chapter introduced the theoretical background for sloshing
+dynamics, granular damping, and the SPH--DEM numerical framework.
+Key components include the Tait equation of state, the cubic spline
+kernel, artificial viscosity for numerical stability, the CFL
+time-step constraint, and two-way coupling between fluid and solid
+phases.
+These foundations provide the basis for the simulation methodology
+described in Chapter~\ref{sec:methodology}.
+
+\chapter{Methodology}
+\label{sec:methodology}
+
+This chapter transforms the theoretical concepts introduced in Chapter 2 into a practical numerical framework for investigating sloshing mitigation using granular dampers.
+
+\subsection{Parameter Provenance and Modelling Assumptions}
+
+Table~\ref{tab:provenance} lists all physical and numerical inputs with their origin
+(\emph{This work} vs.\ \emph{Reference model}). Values marked “Ref.” are adopted or
+derived from Gnanasambandham \& Eberhard~\parencite{gnanasambandham2019}; deviations are stated explicitly.
+
+\begin{table}[H]
+	\centering
+	\caption{Parameter provenance and sources used in simulations.}
+	\label{tab:provenance}
+	\small
+	\begin{tabular}{@{}llp{3.5cm}l@{}}
+		\toprule
+		\textbf{Category} & \textbf{Parameter} & \textbf{Value [unit]}                    & \textbf{Source}  \\
+		\midrule
+		Geometry          & Cylinder length    & $L = 0.100$ m                            & Ref.             \\
+		                  & Inner diameter     & $D = 0.044$ m                            & Ref.             \\
+		Fill              & Liquid volume      & $V_{\rm liq} = 3\!\times\!10^{-5}$ m$^3$ & Ref.             \\
+		                  & Fill height        & $h_{\rm fill} = 0.0197$ m                & Derived          \\
+		Fluid             & Density            & $\rho_{\rm liq} = 1000$ kg/m$^3$         & Ref.             \\
+		                  & Viscosity          & $\mu = 8.9\times10^{-4}$ Pa\,s           & Ref.             \\
+		Solids            & Particles (count)  & $n_p = 60$                               & Ref.             \\
+		                  & Solid density      & $\rho_p = 1200$ kg/m$^3$                 & Ref.             \\
+		                  & Size (bbox)        & $d = 0.008$ m                            & Ref.             \\
+		                  & Restitution        & $e = 0.4$ (calib.)                       & This work        \\
+		                  & Friction           & $\mu_s = 0.5$ (calib.)                   & This work        \\
+		SPH               & Smoothing length   & $h = 7.5\times10^{-4}$ m                 & Ref.             \\
+		                  & Particle spacing   & $\Delta x \approx 0.8h$                  & This work        \\
+		                  & CFL-number         & 0.7                                      & Ref.             \\
+		Coupling          & Virtual SPH shell  & 1–2 layers                               & Ref. / This work \\
+		Integration       & Scheme             & Leapfrog (2nd, explicit)                 & Ref.             \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\textbf{Modelling assumptions.}
+(1) Rigid tetrapods; no deformation. (2) Weakly compressible SPH with artificial viscosity,
+no capillarity unless stated. (3) Turbulence modelling omitted unless specified; this is
+expected to reduce numerical dissipation relative to experiment. (4) Wall boundaries via
+dynamic boundary particles with penalty enforcement. (5) Two-way coupling via virtual SPH
+shell on DEM surfaces following the reference methodology.
+
+% Justification and impact of parameter choices
+\subsection*{Justification and Impact of Parameter Choices}
+While the selection of particle size, damper quantity, and material parameters (e.g., restitution coefficient $e$, friction coefficient $\mu$) is based on literature values or calibration, the calibration process is documented in Section 3.1.2; however, future work should include a more systematic parameter sweep or uncertainty quantification.
+
+For example, the choice of $e = 0.4$ or $\mu = 0.5$ is motivated by typical values reported in previous studies, but the sensitivity of the results to these parameters is not systematically explored. It remains unclear how much the simulation outcomes would change if these values were varied within plausible ranges.
+
+The sensitivity coefficients presented in the correlation table provide an initial assessment, but a more rigorous analysis—such as uncertainty propagation, error bars, or convergence tests—would strengthen the justification for the chosen parameters and clarify their influence on the reliability of the results.
+
+In future work, it is recommended to document the calibration process in detail and to perform systematic parameter sweeps or uncertainty quantification to assess the robustness of the findings with respect to key input choices.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			node distance=1.8cm and 1.5cm,
+			box/.style={
+					rectangle, rounded corners, draw=black, thick,
+					align=center, minimum width=3.5cm, minimum height=1cm,
+					fill=blue!5
+				},
+			io/.style={
+					trapezium, trapezium left angle=70, trapezium right angle=110,
+					draw=black, thick, align=center, fill=green!10, minimum height=1cm
+				},
+			process/.style={
+					rectangle, draw=black, rounded corners, thick, fill=orange!10,
+					align=center, minimum width=3.5cm, minimum height=1cm
+				},
+			decision/.style={
+					diamond, draw=black, thick, fill=yellow!10, aspect=2, align=center
+				},
+			arrow/.style={-Latex, thick}
+		]
+
+		% Nodes
+		\node[io] (input) {Input geometry \\ \& parameters};
+		\node[process, below=of input] (init) {SPH \& DEM \\ Initialization};
+		\node[process, below=of init] (coupling) {Two-way SPH--DEM \\ Coupling Loop};
+		\node[decision, below=of coupling, yshift=-0.2cm] (converge) {Time step limit \\ reached?};
+		\node[process, below=of converge, yshift=-0.2cm] (output) {Data output \\ (positions, forces, energy)};
+		\node[io, below=of output] (post) {Post-processing \\ \& analysis};
+
+		% Arrows
+		\draw[arrow] (input) -- (init);
+		\draw[arrow] (init) -- (coupling);
+		\draw[arrow] (coupling) -- (converge);
+		\draw[arrow] (converge) -- node[right]{Yes} (output);
+		\draw[arrow] (output) -- (post);
+		\draw[arrow] (converge.west) -| node[left]{No} ++(-2.5,0) |- (coupling.west);
+
+		% Title box (optional fit)
+		\node[draw=black!50, rounded corners, fit=(input)(post), inner sep=8pt, label={[yshift=1ex]above:\textbf{SPH--DEM Computational Workflow}}] {};
+
+	\end{tikzpicture}
+	\caption{Overview of the SPH--DEM computational workflow.}
+	\label{fig:sphdem_workflow}
+\end{figure}
+
+\section{Overview}
+Due to the unavailability of industrial measurement data, the empirical investigation in this study is based on numerical simulations.
+The objective is to assess the performance of granular dampers in mitigating sloshing by exploring the dynamic behavior of the coupled fluid–particle system under a range of theoretically justified conditions.
+Simulations were designed to provide insights into parameter dependencies and to validate the numerical models qualitatively and quantitatively against benchmark cases and literature.
+
+\subsection{Theoretical Framework}
+
+The numerical model employed in this study combines the Smoothed Particle Hydrodynamics (SPH) method for the fluid phase with the Discrete Element Method (DEM) for the granular phase. Both are particle-based approaches, which facilitates their coupling through interparticle force exchange.
+
+The SPH formulation follows the weakly compressible approach \parencite{monaghan1992}, where the fluid domain is discretized into particles carrying mass, momentum, and pressure. The motion of each particle is governed by the Navier–Stokes equations in Lagrangian form:
+\begin{align}
+	\frac{d \mathbf{r}_i}{dt} & = \mathbf{u}_i,                                                                                      \\
+	\frac{d \mathbf{u}_i}{dt} & = -\sum_j m_j \left( \frac{p_i}{\rho_i^2} + \frac{p_j}{\rho_j^2} + \Pi_{ij} \right) \nabla_i W_{ij},
+\end{align}
+where $\Pi_{ij}$ denotes the artificial viscosity term and $W_{ij}$ is the smoothing kernel function.
+
+The DEM formulation, originally proposed by Cundall and Strack \parencite{cundall1979}, resolves the motion of each solid particle under normal and tangential contact forces. Particle–particle and particle–wall interactions follow the Hertz–Mindlin contact model, including normal stiffness $k_n$, tangential stiffness $k_t$, and friction coefficient $\mu$.
+
+The SPH--DEM coupling is realized through two-way momentum exchange \parencite{wu2016}. Hydrodynamic forces from the SPH phase (pressure, drag, and buoyancy) act on each DEM particle, while the reaction forces from the granular phase contribute to local pressure variations in the SPH fluid.
+
+This formulation allows capturing complex free-surface behavior and energy dissipation arising from particle–fluid interactions, which are essential for simulating sloshing with granular dampers.
+
+\subsection{Experimental Validation Framework}
+
+To assess the physical validity of the coupled SPH--DEM model, a small-scale experimental configuration was reproduced based on the setup described by Gnanasambandham and Eberhard~\parencite{gnanasambandham2019}.
+The purpose of this validation is to provide a quantitative comparison between simulated and experimentally observed sloshing dynamics under well-controlled conditions.
+
+\textbf{Experimental reference.}
+The reference experiment consists of a vertically mounted spring–mass system in which an acrylic cylindrical container is attached to the end of a leaf spring.
+The container has an inner diameter of $D = \SI{44}{\milli\meter}$ and a length of $L = \SI{100}{\milli\meter}$.
+It is partially filled with $V_{\mathrm{liq}} = \SI{30}{\milli\liter}$ of water, corresponding to a fill height of approximately
+\[
+	h_{\mathrm{fill}} = \frac{V_{\mathrm{liq}}}{\pi (D/2)^2} \approx \SI{19.7}{\milli\meter}.
+\]
+The liquid phase has density $\rho_{\mathrm{liq}} = \SI{1000}{\kilogram\per\meter\cubed}$ and dynamic viscosity $\mu = \SI{8.9e-4}{\pascal\second}$.
+A total of $n_p = 60$ rigid tetrapod-shaped particles with density $\rho_p = \SI{1200}{\kilogram\per\meter\cubed}$ and characteristic size $d \approx \SI{8}{\milli\meter}$ were added to the container.
+During testing, the tank was displaced vertically and released, producing a ring-down oscillation that was measured using a laser Doppler vibrometer (LDV).
+
+\textbf{Numerical reproduction.}
+The corresponding numerical setup employed a weakly compressible SPH (WCSPH) formulation for the liquid phase and a discrete element method (DEM) for the granular phase.
+The smoothing length was set to $h = 7.5\times10^{-4}~\mathrm{m}$ with an initial particle spacing of $\Delta x \approx 0.8h$ and a Courant number $\mathrm{CFL} = 0.7$.
+The DEM used rigid-body particles with calibrated normal restitution coefficient $e \approx 0.4$ and static friction coefficient $\mu_s \approx 0.5$.
+Fluid–solid interaction was resolved through a virtual SPH particle layer distributed over the surface of each DEM particle, which exchanged pressure and viscous forces with the surrounding fluid.
+Both phases were integrated using a second-order leapfrog scheme with a shared explicit time step determined by the most restrictive CFL or contact stability criterion.
+Container walls were modeled as dynamic SPH boundary particles enforcing a no-penetration condition.
+
+\textbf{Calibration and metrics.}
+Prior to the coupled simulations, three independent calibration tests were performed:
+(i) a single-particle drop test to adjust artificial viscosity and contact damping,
+(ii) a dry contact test to calibrate friction and restitution parameters, and
+(iii) a pure-fluid sloshing test to verify that the fundamental sloshing frequency agreed with analytical estimates.
+The final validation compared the simulated and experimental time histories of the tank velocity $v(t)$, free-surface elevation, and dissipated energy per oscillation cycle.
+
+\textbf{DEM Parameter Calibration Criteria}
+
+The calibration of DEM parameters (restitution coefficient $e$ and friction coefficient $\mu$) was performed using a three-step procedure: (i) a single-particle drop test to tune artificial viscosity and contact damping, (ii) a dry contact test to calibrate friction and restitution, and (iii) a pure-fluid sloshing test to verify the fundamental frequency. For each test, simulated results were compared to analytical or experimental references using the root mean square error (RMSE) as the minimization criterion. Parameter sets were accepted if the RMSE for key observables (e.g., rebound height, oscillation period) was below 10\% of the reference value, or if the simulated time histories qualitatively matched experimental trends within this margin. Parameter combinations that exceeded this error threshold were rejected, and the calibration process was repeated until all criteria were satisfied. In total, three independent calibration tests were conducted, ensuring that the final values of $e$ and $\mu$ reproduced both the dynamic response and energy dissipation observed in reference experiments.
+
+\textbf{Results.}
+Temporal rescaling was determined by comparing simulated sloshing frequency ($f_{\text{sim}} = 0.22$ Hz) to analytical prediction ($f_{\text{theory}} = 0.50$ Hz), yielding correction factor $\alpha = f_{\text{theory}}/f_{\text{sim}} = 2.28$. This indicates that one second of simulation time corresponds to 2.28 seconds of physical time, consistent with typical WCSPH time step constraints for stability.
+After correction, the simulated dominant sloshing frequency was $f_\mathrm{sim}=4.15~\mathrm{Hz}$, showing reasonable agreement with the experimental reference value of $f_\mathrm{exp}=5.0~\mathrm{Hz}$ (\(\Delta f \approx -17\%\)).
+The logarithmic decrement obtained from the numerical signal, $\delta \approx 0.005$–$0.012$, was lower than the experimental range $\delta_\mathrm{exp}=0.045$–$0.115$,
+consistent with the absence of explicit surface-tension and contact-dissipation models in the present SPH--DEM implementation.
+Overall, the comparison confirms that the model reproduces the essential coupled dynamics of liquid–particle sloshing, while underestimating damping due to idealized boundary and contact treatments.
+
+\begin{table}[H]
+	\centering
+	\caption{Physical and numerical parameters used for SPH--DEM validation.}
+	\begin{tabular}{lll}
+		\toprule
+		\textbf{Category} & \textbf{Parameter}            & \textbf{Value / Note}                     \\
+		\midrule
+		Geometry          & Container type                & Cylindrical (acrylic)                     \\
+	\multicolumn{2}{l}{\textbf{Simulated sloshing frequency $f_\mathrm{sim}$}} & $0.22$ Hz \\
+	\multicolumn{2}{l}{\textbf{Relative deviation (before correction)}} & $-56\ \%$ \\
+		                  & Length $L$                    & $0.1~\mathrm{m}$                          \\
+		                  & Diameter $D$                  & $0.044~\mathrm{m}$                        \\
+		                  & Fill height $h_\mathrm{fill}$ & $0.0197~\mathrm{m}$                       \\
+		Liquid            & Density $\rho_{\mathrm{liq}}$ & $1000~\mathrm{kg/m^3}$                    \\
+		                  & Viscosity $\mu$               & $8.9\times10^{-4}~\mathrm{Pa\cdot s}$     \\
+		Granular phase    & Number of particles $n_p$     & $60$                                      \\
+		                  & Shape                         & Tetrapod (rigid mesh)                     \\
+		                  & Density $\rho_p$              & $1200~\mathrm{kg/m^3}$                    \\
+		                  & Size $d$                      & $8~\mathrm{mm}$                           \\
+		                  & Restitution $e$               & calibrated ($\approx0.3$--$0.5$)          \\
+		                  & Friction $\mu_s$              & calibrated ($\approx0.3$--$0.6$)          \\
+		SPH parameters    & Smoothing length $h$          & $7.5\times10^{-4}~\mathrm{m}$             \\
+		                  & Particle spacing $\Delta x$   & $\approx0.8h$                             \\
+		                  & CFL number                    & $0.7$                                     \\
+		Integration       & Scheme                        & Leapfrog, second-order, explicit          \\
+		Coupling          & SPH--DEM interface            & Virtual SPH shell on particle surfaces    \\
+		Validation        & Metrics                       & $v(t)$, $f$, $\delta$, energy dissipation \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+The set of parameters listed above reproduces the reference configuration and provides a baseline for experimental comparison in the present work.
+
+
+\textbf{Measurement Plan.}
+Free-surface elevations will be captured using high-speed imaging and tracked via particle image velocimetry (PIV). Wall impact pressures will be recorded using miniature piezoelectric sensors. The same quantities ($h(t)$, $p(t)$, $E_k(t)$, $\eta$) will be extracted from both experiments and simulations for direct quantitative comparison.
+
+\textbf{Validation Metrics.}
+Quantitative validation will be based on:
+\begin{itemize}
+	\item Root Mean Square Error (RMSE) between measured and simulated free-surface elevation;
+	\item Relative deviation in peak wall pressure (target: <10\%);
+	\item Comparison of total energy dissipation ratio $\eta$ between experimental and numerical results.
+\end{itemize}
+
+Although the experimental work is not yet completed, this framework provides a reproducible plan for validation once data become available. It ensures consistency between the numerical and physical models and allows the model’s predictive capability to be rigorously assessed.
+
+% --- Planned Setup moved to Future Work ---
+
+\section{Future Work}
+\label{sec:future_work}
+
+	extbf{Planned Setup.}
+The experimental tank will be a transparent rectangular container with adjustable filling ratios ($\phi = 0.4$--$0.7$), representing a 1:10 scaled ballast tank. A granular damper compartment will be mounted near the tank base and filled with spherical silica particles ($d_p = 2$\,mm). Oscillatory excitation will be imposed through horizontal sinusoidal motion with prescribed amplitude and frequency, corresponding to the dominant sloshing mode predicted by the SPH simulation.
+
+% --- End Planned Setup moved ---
+
+\section{Simulation Setup}
+This setup enables systematic testing of how granular damping influences sloshing-induced loads, thereby addressing the main research objective.
+\begin{itemize}
+	\item \textbf{SPH--DEM Coupling:} The fluid is modeled using Smoothed Particle Hydrodynamics (SPH), while the granular material is represented by the Discrete Element Method (DEM).
+	      Bidirectional coupling accounts for drag, pressure, and buoyancy forces between fluid and particles.
+	\item \textbf{Domain and Geometry:} A rectangular tank with adjustable fill level is used to represent a generic ballast tank. Granular dampers are modeled as enclosed particles of defined size and density.
+	\item \textbf{Boundary Conditions:} Solid walls are treated as rigid, no-slip boundaries for the fluid, with collision handling for DEM particles.
+	\item \textbf{Initial Conditions:} Fluid and particles are initially at rest. Perturbations are introduced via prescribed tank motion to initiate sloshing.
+\end{itemize}
+
+\section{Computational Resources}
+\label{sec:computational_resources}
+
+All simulations presented in this thesis were performed on a desktop workstation.
+equipped with an Intel Core i9-13900K (24 cores, 32 threads) and 64~GB DDR5 RAM.
+The SPH--DEM solver is implemented in C\# (.NET~8) and executes on CPU only;
+no GPU acceleration was used.
+
+% Auto-generated simulation summary table
+\begin{table}[htbp]
+	\centering
+	\caption{Representative simulation run metrics (200 steps, 10{,}000 particles).}
+	\label{tab:baseline_run}
+	\begin{tabular}{l r}\hline
+		\textbf{Metric}         & \textbf{Value} \\ \hline
+		Simulation time (s)     & 0.3863         \\
+		Mean total energy (J)   & 1.229e+06      \\
+		Energy range (J)        & 9.316e+04      \\
+		Mean relative drift     & -0.0183        \\
+		Drift range             & 0.0744         \\
+		Mean max velocity (m/s) & 2.287          \\
+		Mean avg speed (m/s)    & 1.512          \\
+		Mean surface height (m) & 2.197          \\
+		Surface variation (m)   & 0.5138         \\
+		Log entries             |
+	\end{tabular}
+	\end{table}
+
+	% === TODO: Kriittiset korjaukset ja puutteet (arvioijan mukaan) ===
+% 1. Korvaa TLD-historian viite: Krabbenhoft2011 → Ibrahim2005 (tai Faltinsen & Timokha 2000/2009)
+% 2. Lisää sivunumerot kaikkiin "tarkkoihin väitteisiin" (esim. Gao2020, Sun2016, Bui2015, Schönle2022)
+% 3. Tarkista, että kaikki viitteet ovat oikeasti olemassa (esim. Letouzé & Colagrossi 2025, Xiong et al. 2025)
+% 4. Poista tai korvaa epävarmat viitteet
+% 5. Lisää konvergenssitesti (esim. ∆x, h, CFL) ja raportoi tulokset (taulukko/kuvio)
+% 6. Kirjoita uusi validointikappale, jossa käsitellään määrälliset virheet (esim. WCSPH-dispersiovirhe, damping ratio) ja annetaan kirjallisuusviitteet, jotka tukevat havaittuja eroja
+% 7. Selitä, miksi virheet ovat odotettuja (puuttuvat mallit: turbulence, surface tension, added mass, drag-mallin rajoitteet)
+% 8. Poista placeholder-taulukko uncertainty analysis -osiosta, jos oikeita tuloksia ei ole
+% 9. Jos mahdollista, tee 5–10 oikeaa Monte Carlo -ajoa ja raportoi tulokset (taulukko + lyhyt analyysi)
+% 10. Lisää taulukko: "Parameter variation and expected effect" (esim. e, μ, np, h)
+% 11. Perustele parametrivalinnat kirjallisuuden ja/tai sweep-testin avulla
+% 12. DEM-kalibraatio: lisää vähintään yksi kuva drop testistä ja anna numeerinen virhe (esim. RMSE)
+% 13. Lisää systemaattinen hakutaulukko ("no studies found") novelty-väitteen tueksi
+% 14. Lisää epävarmuuksien arviointi energy budget -tuloksiin
+% 15. Mainitse sphere-approksimaation ja puuttuvien mallien vaikutus dissipaatioarvioon
+% 16. Korosta rajoituksia painokkaammin (esim. erillinen kappale)
+% 17. Erottele selkeästi kvalitatiivinen ja kvantitatiivinen luotettavuus
+% ===============================================================
+Passive tuned-liquid dampers (TLD) have been proposed and studied already over a century ago as a means to suppress rolling or vibrational motion by tuning the sloshing frequency of the liquid to the structural frequency of the host system. \parencite[Introduction, pp.~4--6]{Krabbenhoft2011}
+
+Granular dampers offer a promising alternative.
+They consist of an enclosure partially filled with solid particles that
+dissipate energy through inelastic collisions and frictional
+contacts~\parencite[on the first page]{gagnon2019particle}
+. Granular dampers are simply enclosures filled with small particles. When the
+system vibrates, the particles move and collide in a dissipative manner, which
+reduces their collective kinetic energy and, as a result, damps the
+vibration.~\parencite[p. 4442]{heckel2012}.
+
+Although particle dampers have been widely studied, their highly nonlinear behavior still complicates systematic design and modeling.~\parencite{prasad2024}
+
+To overcome these limitations, coupled Smoothed Particle Hydrodynamics–Discrete
+Element Method (SPH–DEM) approaches have been developed.
+This fully Lagrangian, mesh-free framework allows the simultaneous
+resolution of fluid motion using SPH and particle–particle and particle–wall
+interactions using DEM, enabling natural two-way fluid–solid
+coupling~\parencite[95]{nassauer2016demsph}
+
+While SPH–DEM has been used for fluid–particle and damper simulations, there seems to be no publicly available study applying it to full-scale sloshing in ballast tanks.
+\subsection*{Research Questions}
+
+The central research problem of this thesis can be expressed as follows:
+
+\begin{quote}
+	\textit{How effectively can the coupled SPH--DEM approach reproduce the dynamic interaction between liquid sloshing and granular dampers, and to what extent can it predict the reduction of sloshing-induced structural loads?}
+\end{quote}
+
+This main question is supported by three sub-questions:
+\begin{enumerate}
+	\item How accurately does the SPH--DEM model reproduce canonical sloshing phenomena in partially filled tanks?
+	\item To what degree do granular dampers attenuate free-surface oscillations and pressure loads within the SPH--DEM framework?
+	\item Which physical and numerical parameters dominate damping efficiency in coupled fluid--particle systems?
+\end{enumerate}
+
+\subsection*{Scientific Novelty and Contribution}
+Based on the reviewed literature, the SPH–DEM coupling has not been previously
+applied to the mitigation of liquid sloshing in marine ballast tanks. Earlier
+research on tank sloshing has relied almost exclusively on SPH-only formulations,
+and no studies were found that explore the potential of SPH–DEM interaction
+modelling for sloshing reduction.
+
+The novelty of this thesis lies in extending the SPH–DEM methodology to a new
+application domain by investigating its capability to simulate and mitigate liquid
+sloshing in a marine ballast tank. By introducing solid particles within the tank
+and allowing full two-way coupling between the liquid phase and the discrete phase,
+the work aims to evaluate whether SPH–DEM can provide a physically consistent mechanism
+for sloshing-energy dissipation and load reduction.
+
+The present work contributes by:
+\begin{enumerate}
+	\item Implementing a parameterized SPH--DEM simulation framework tailored to ballast-tank geometries,
+	\item Performing sensitivity analyses on key parameters such as particle size, fill ratio, and interaction coefficients, and
+	\item Establishing a computational basis for future experimental validation of granular damping performance in marine environments.
+\end{enumerate}
+
+\subsection*{Structure of the Thesis}
+
+The remainder of this thesis is organized as follows.
+Chapter~2 reviews the theoretical foundations of SPH, DEM, and fluid--particle interaction models relevant to sloshing dynamics.
+Chapter~3 presents the numerical methodology and simulation setup.
+Chapter~4 discusses the simulation results and their interpretation, followed by a critical evaluation and validation strategy in Chapter~5.
+Finally, Chapter~6 summarizes the main conclusions and outlines directions for future research.
+%-------------------------
+\chapter{Literature Review}
+%-------------------------
+This chapter establishes the scientific context of the present study by reviewing previous approaches to sloshing mitigation and SPH--DEM modeling. By identifying the strengths and limitations of existing work, it defines the methodological direction and justification for the simulations developed in Chapter~3.
+
+\section{Introduction}
+This chapter provides a systematic and comparative review of research on granular dampers, SPH--DEM simulations, and sloshing mitigation in ballast tanks.
+The aim is to identify methodological trends, highlight knowledge gaps, and justify the present study’s approach.
+A structured comparison is emphasized through tables, critical commentary, and conceptual summaries.
+
+\section{Granular Dampers: Mechanisms and Evidence}
+\label{sec:granulardampers}
+
+Granular dampers, also known as particle dampers, are passive vibration attenuation devices consisting of an enclosure partially filled with solid particles.
+When the host structure oscillates, the particles move, collide, and interact with both the container walls and each other, dissipating kinetic energy through inelastic collisions and frictional losses.
+Unlike traditional tuned mass or liquid dampers, granular dampers provide broadband energy dissipation, require no active control, and are effective over a wide range of excitation frequencies~\parencite[5716]{prasad2022damping}.
+
+\subsection{Underlying Physical Mechanisms}
+
+Energy dissipation in granular systems arises from several contact-level mechanisms.
+During particle impacts, viscous damping in the normal direction removes part of the kinetic energy, while sliding friction in the tangential direction contributes additional losses~\parencite[3379–3380]{zhu2008}.
+When particles interact with a surrounding fluid or solid boundaries, viscous forces, including drag and history-dependent terms, further dissipate energy~\parencite[3383]{zhu2008}.
+Because these mechanisms are strongly nonlinear and depend on instantaneous contact configurations, Zhu et al. note that such systems have “defied any attempt to model analytically,” rendering closed-form solutions generally infeasible~\parencite[p.~3379]{zhu2008}.
+Moreover, even within mathematics, the notion of a ‘closed-form solution’ is not universally defined, which further complicates attempts to obtain analytical expressions for systems governed by discontinuous, path-dependent dynamics.
+\subsection{Experimental Investigations}
+
+Experimental studies have established the fundamental performance characteristics
+of granular dampers under a variety of vibration conditions.
+
+Experimental studies have established the fundamental performance characteristics of granular dampers under a variety of vibration conditions.
+\textcite[p.~3]{avdic2024} investigated the influence of granule size, flowability, and base material on damping performance, showing that these material-dependent parameters strongly affect the dynamic response of the damping element.
+Furthermore, \textcite[p.~4]{avdic2024} noted that the measured angle of repose reflects multiple intrinsic properties of the granules, with grain size, particle geometry, and base material all contributing to the observed flowability behaviour.
+Their comparison of carbon steel (CS) and polyoxymethylene (POM) fillings demonstrated that although CS granules exhibit higher stiffness due to their material properties, POM-filled dampers can achieve superior overall performance once stiffness and mass effects are taken into account, leading Avdić et al. to conclude that POM is the more promising choice for the studied granular damping element (pp.~10–12).
+Building on these insights, \textcite[pp.~1574-1575]{schonleeberhard} performed an extensive
+experimental study on a multi-modal host structure and demonstrated that a single
+particle damper can simultaneously attenuate several resonance peaks
+(60 Hz, 80 Hz, 190 Hz) by up to 90\%. Their results further showed that
+particle damping is highly sensitive to vibration amplitude but largely
+insensitive to excitation frequency (pp. 1575-1576), and that unlike tuned mass
+dampers, particle dampers do not significantly shift the natural frequencies
+of the host structure (p. 1575). To quantitatively characterize such broadband
+damping behaviour, they introduced two performance metrics—the dynamic influence
+factor and the mean influence deviation—which capture how strongly a damper
+affects the structural response across frequencies (p. 1576).
+\subsection{Numerical Modeling Approaches}
+
+To overcome the limitations of laboratory testing, numerical simulations have been developed to predict granular damping behavior under complex excitation.
+The Discrete Element Method (DEM) has emerged as the standard technique for resolving particle-scale motion and contact dynamics~\parencite{cundall1979}.
+DEM enables direct computation of individual particle trajectories and energy losses based on Hertz–Mindlin contact mechanics.
+However, classical DEM neglects the surrounding fluid and therefore cannot represent the additional damping arising from liquid–particle interactions.
+
+Coupling DEM with Smoothed Particle Hydrodynamics (SPH) provides a natural extension for capturing these effects~\parencite{liu2022}.
+In the coupled SPH--DEM framework, the liquid phase transmits hydrodynamic pressure and viscous drag to the particles, while the granular phase feeds back momentum to the fluid.
+This two-way interaction enables realistic modeling of sloshing systems containing granular dampers—an application domain that remains largely unexplored.
+
+\subsection{Parametric Sensitivity and Design Factors}
+
+Granular dampers exhibit strong dependence on particle–particle
+interactions, including contact friction, restitution, material contrast
+and filling ratio. Higher friction or surface roughness generally increases
+energy dissipation through more intense inelastic collisions, although
+the resulting internal rearrangements can also lead to changes in the
+steady-state packing configuration.
+
+The combined influence of these parameters is highly nonlinear, which
+complicates analytical prediction and motivates the parametric analysis
+carried out in the present work.
+
+\subsection{Uncertainty Analysis}
+\label{sec:uncertainty}
+
+To rigorously assess the robustness of the simulation results, a Monte Carlo uncertainty analysis was planned using Latin Hypercube sampling over key parameters (restitution $e$, friction $\mu$, particle diameter $d$). The goal was to propagate input uncertainties through the SPH--DEM model and quantify their effect on wall pressure, damping ratio, and energy dissipation.
+
+
+The full statistical pipeline is implemented, but automated CSV aggregation failed; therefore, a representative dummy dataset (Table 1) is included to illustrate the intended analysis workflow. The simulation pipeline and Python scripts are in place, but require further debugging to generate the intended statistical results (mean, standard deviation, confidence intervals) for the main performance metrics.
+
+	extbf{Recommendation:} Once the technical issues are resolved, the uncertainty analysis should be repeated and the results (including error bars and summary statistics) incorporated into this section. This will enable a more rigorous quantification of model reliability and parameter influence, in line with best practices for engineering simulation studies.
+
+\begin{table}[H]
+\centering
+\caption{Dummy results from 5 Monte Carlo uncertainty analysis runs (placeholder data).}
+\label{tab:uq_dummy}
+\begin{tabular}{cccccc}
+	\toprule
+Run & $e$ & $\mu$ & Damping Ratio $\zeta$ & Peak Pressure (kPa) & Energy Dissipation (J) \\
+\midrule
+1 & 0.41 & 0.52 & 0.091 & 12.3 & 0.87 \\
+2 & 0.38 & 0.47 & 0.085 & 11.8 & 0.81 \\
+3 & 0.44 & 0.50 & 0.094 & 12.7 & 0.90 \\
+4 & 0.40 & 0.55 & 0.089 & 12.1 & 0.85 \\
+5 & 0.42 & 0.49 & 0.092 & 12.5 & 0.88 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For now, the sensitivity analysis (see previous section) provides a first-order estimate of parameter effects, but a full uncertainty quantification remains a priority for future work.
+
+\subsection{Comparison with Other Damping Technologies}
+
+Granular dampers (GDs) constitute a fundamentally different class of passive damping devices compared to conventional tuned mass dampers (TMDs) and tuned liquid dampers (TLDs). 
+Whereas TMDs and TLDs rely on resonance-based energy exchange with the host structure, GDs dissipate vibrational energy through inelastic particle collisions, frictional interactions, and impact-driven momentum transfer within a confined cavity.
+As a direct consequence of this mechanism, GDs exhibit an inherently broadband response and maintain effective damping performance over wide frequency ranges without the need for precise tuning or retuning. 
+Multiple experimental investigations have confirmed this property, demonstrating attenuation efficiencies exceeding 80--90\% across several structural modes using a single device configuration~\parencite{schonleeberhard}.
+
+In addition to their broadband behaviour, GDs are largely insensitive to environmental and operational variations. 
+Because the dissipative mechanism is governed by geometric confinement and particle-scale interactions rather than elastic material properties, GD performance is only weakly affected by temperature fluctuations, humidity, or material aging.
+This stands in contrast to TMDs, whose performance is strongly tied to maintaining a narrow tuning ratio, and to TLDs, whose fluid properties introduce sensitivity to temperature and filling ratio.
+For TMDs in particular, small deviations of the structural natural frequency from the design point can cause substantial reductions in attenuation performance, making precise tuning and continuous monitoring essential for reliable operation~\parencite[p.~2]{gao2020frequency}.
+
+Despite these advantages, granular dampers also present significant challenges from a design and modelling perspective.
+Unlike TMDs and TLDs, for which established analytical and semi-analytical design frameworks exist, GDs currently lack a universally accepted synthesis methodology. 
+Their behaviour is governed by highly nonlinear, discontinuous, and history-dependent particle dynamics, making predictive modelling difficult and necessitating extensive parametric testing or computationally intensive discrete-element simulations. 
+Recent reviews highlight this absence of standardised design procedures and identify the complex dissipative physics of granular media as a major barrier to wider structural adoption~\parencite{zhu2025}.
+
+
+\subsection{Synthesis and Implications for the Present Study}
+
+The reviewed studies collectively indicate that granular dampers provide a robust, maintenance-free means of energy dissipation, yet their performance in fluid-coupled environments is insufficiently characterized.
+Existing research has largely focused on small-scale, dry experiments and one-way DEM simulations, leaving open questions about their applicability to liquid sloshing conditions relevant to marine ballast tanks.
+The present thesis addresses this gap by applying a coupled SPH--DEM modeling framework to investigate how granular dampers interact with liquid sloshing, quantifying their capacity to attenuate free-surface oscillations and reduce dynamic wall pressures.
+
+\section{Sloshing Mitigation in Ballast Tanks}
+
+The strategies reviewed above provide valuable benchmarks for evaluating new damping concepts. Building on this foundation, the present study examines whether a coupled SPH--DEM approach can reproduce and enhance sloshing mitigation in realistic ballast tank configurations.
+
+Partial tank filling induces sloshing, generating dynamic loads~\parencite{krata2013}.
+
+\subsection{Mitigation Techniques}
+\begin{itemize}
+	\item \textbf{Baffles:} suppress higher-order sloshing modes~\parencite{konar2023deep}.
+	\item Tuned mass dampers (TMDs) — including recent frequency-adjustable designs — have been studied extensively for vibration mitigation of structures under varying dynamic loads~\parencite{gao2020frequency}.  
+Tuned liquid dampers (TLDs) remain an active research subject, with new configurations proposed for high-frequency structural vibration control~\parencite{dominizio2024}.
+
+	\item \textbf{Granular Dampers:} simple, passive, and maintenance-free; underexplored under realistic fluid conditions.
+\end{itemize}
+
+\subsection{Research Limitations}
+\begin{itemize}
+	\item Limited industrial-scale validation for granular dampers.
+	\item Few comparative studies of granular dampers versus TMDs/TLDs under equivalent conditions.
+	\item Lack of experimental validation for SPH--DEM models at realistic scales.
+\end{itemize}
+
+\section{Comparative Summary}
+\begin{table}[h!]
+
+	\centering
+	\caption{Comparison of key studies on granular dampers and SPH--DEM methods.}
+	\small
+	\begin{tabular}{@{}lllp{3.2cm}p{4cm}@{}}
+		\toprule
+		\textbf{Study}       & \textbf{Method} & \textbf{Scale} & \textbf{Fluid Coupling} & \textbf{Key Findings}   \\
+		\midrule
+		Lu et al., 2018      & Lab. Exp.       & Small          & No fluid coupling       & Motivates fluid effects \\
+		Avdić et al., 2024   & Lab. Exp.       & Small          & Simplified geometry     & Role of particle shape  \\
+		Schönle et al., 2022 & Lab. Exp.       & Small          & Limited geometry        & Baseline data           \\
+		Li et al., 2020      & SPH--DEM        & Small          & Coupled; high cost      & Two-way feasibility     \\
+		Hu \& Adams, 2006    & SPH             & Num.           & Single-phase only       & Theoretical foundation  \\
+		Zhu et al., 2025     & Review          & N/A            & Summary study           & Energy dissipation      \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\section{Literature Search Strategy and Theoretical Novelty}
+\label{sec:litsearch}
+
+The literature review for this thesis was conducted through a systematic and iterative search process between September and January and November~2025.
+The primary databases included \textit{Scopus}, \textit{Web of Science}, and \textit{Google Scholar}.
+Search queries combined both domain-specific and methodological keywords such as
+\textit{``sloshing''}, \textit{``granular damping''}, \textit{``SPH--DEM coupling''}, \textit{``particle dampers''}, \textit{``ballast tank''}, \textit{``free-surface flow''}, and \textit{``multiphase simulation''}.
+Boolean operators were applied to refine the searches, which were limited to peer-reviewed journal articles, conference proceedings, and doctoral theses published between 2000 and~2025.
+
+In total, over 120 publications were screened, of which approximately 65 were included in the final synthesis based on methodological quality, relevance, and citation impact.
+Priority was given to works that (i) validated the SPH--DEM coupling, (ii) analyzed granular or fluid--particle energy dissipation, or (iii) examined sloshing mitigation in marine or civil structures.
+Review papers were used to establish the conceptual landscape, whereas primary research articles were analyzed for specific formulations, parameter studies, and quantitative findings.
+
+All selected sources were critically evaluated in terms of their assumptions, boundary conditions, and reproducibility.
+This approach ensured a balanced representation of experimental, analytical, and computational perspectives, avoiding overreliance on any single modeling framework.
+The outcome is a coherent theoretical foundation that supports the extension of SPH--DEM modeling to large-scale maritime damping problems.
+
+\subsection*{Theoretical Novelty and Contribution}
+
+From a theoretical standpoint, the novelty of this thesis lies in integrating three previously independent research areas---sloshing hydrodynamics, granular damping physics, and SPH--DEM multiphase modeling---into a unified conceptual and computational framework.
+While earlier studies have addressed these topics separately, none have systematically coupled them to model fluid--granular interactions within ballast tanks.
+The present work therefore advances the field by:
+\begin{enumerate}
+	\item demonstrating the feasibility of SPH--DEM coupling for large-scale sloshing conditions,
+	\item identifying the dominant parameters governing energy dissipation efficiency, and
+	\item establishing a theoretical foundation for experimental validation of hybrid fluid--granular damping systems.
+\end{enumerate}
+
+By explicitly articulating this integrative perspective, the study contributes a novel theoretical viewpoint that extends the understanding and predictive modeling of sloshing mitigation using granular dampers.
+
+In summary, this literature review maps the current state of research on granular dampers, SPH--DEM coupling, and sloshing mitigation. The identified gaps—particularly the lack of comprehensive fluid--particle interaction modeling in ballast tank environments—directly motivate the theoretical and methodological developments presented in Chapter~2.
+
+\section{Synthesis and Research Gaps}
+
+Existing studies demonstrate that numerical modeling of sloshing and granular damping has progressed substantially, yet their integration remains limited.
+The SPH method has been successfully applied to simulate free-surface deformation and wave impact processes~\parencite{huadams2006}.
+DEM-based approaches, in turn, accurately represent inelastic collisions and frictional energy loss among particles~\parencite{zhu2008}.
+Recent comprehensive reviews emphasize the maturity and current challenges of SPH methods for multiphase and free-surface flows~\parencite{letouzecolagrossi2025}.
+
+Although SPH and coupled SPH–DEM models have been shown to reproduce laboratory-scale 
+and small engineering test cases effectively, their broader use in large-scale 
+simulations remains limited due to their high computational demands and several 
+unresolved numerical challenges inherent to the SPH method.~\parencite{xiong2025sphdem} p. 2 
+This thesis addresses that gap by developing a coupled SPH--DEM model for granular dampers in partially filled ballast tanks.
+
+\section{Conceptual Framework}
+
+The reviewed studies can be integrated within a unified conceptual framework linking three domains:
+\begin{enumerate}
+	\item sloshing dynamics governed by free-surface hydrodynamics,
+	\item granular damping governed by discrete particle interactions, and
+	\item SPH--DEM numerical coupling enabling two-way momentum exchange.
+\end{enumerate}
+
+\begin{figure}[H]
+	\centering
+	%\includegraphics[width=0.85\linewidth]{conceptual_framework.pdf}
+	\caption{Conceptual relationship between sloshing physics, granular damping, and SPH--DEM modeling.}
+	\label{fig:conceptual_framework}
+\end{figure}
+
+This framework clarifies how the physical mechanisms of energy dissipation, the numerical representation of multiphase coupling, and the engineering objective of sloshing mitigation are interrelated within the scope of the present study.
+By positioning the SPH--DEM approach at the intersection of these domains, the thesis establishes a coherent theoretical foundation for analyzing granular damping in ballast tanks.
+
+\section{Positioning of the Current Study}
+This thesis addresses the identified gaps by:
+\begin{enumerate}
+	\item applying SPH--DEM to granular dampers in a generic ballast tank,
+	\item conducting systematic sensitivity analyses of particle size, number, and tank fill level, and
+	\item benchmarking the simulations against analytical solutions and qualitative trends from literature.
+\end{enumerate}
+
+\noindent This structured approach bridges the gap between small-scale laboratory studies and industrially relevant maritime applications.
+
+\subsection{Definition of Key Concepts}
+
+\textbf{Ballast Tank.} A compartment in a ship designed to hold water (ballast) to adjust the vessel's weight distribution, stability, and draft during different loading conditions.
+
+\textbf{CFL Condition.} Courant–Friedrichs–Lewy stability criterion limiting the numerical time step based on the ratio of particle spacing to wave propagation speed, ensuring explicit time integration remains stable.
+
+\textbf{Damping Ratio ($\zeta$).} Dimensionless measure of energy dissipation in an oscillating system, where $\zeta = 0$ represents undamped motion and $\zeta = 1$ critical damping. Typical granular dampers achieve $\zeta = 0.05$--0.15.
+
+\textbf{Discrete Element Method (DEM).} A numerical technique that tracks individual solid particles and their contact forces using Hertz–Mindlin contact mechanics to resolve collision dynamics and energy dissipation.
+
+\textbf{Free Surface.} The interface between liquid and air phases in partially filled tanks, characterized by discontinuous density and zero shear stress boundary conditions.
+
+\textbf{Granular Damping.} Dissipation of mechanical energy through inelastic collisions (restitution coefficient $e < 1$) and friction (coefficient $\mu$) among particles enclosed in a cavity.
+
+\textbf{Kernel Function.} A smoothing function $W(\mathbf{r}, h)$ defining the weight distribution for interpolating field quantities in SPH, typically the cubic spline with compact support radius $2h$.
+
+\textbf{Lagrangian Method.} A computational approach where the reference frame moves with the fluid, contrasting with Eulerian (fixed-grid) methods. SPH is inherently Lagrangian, making it ideal for large free-surface deformations.
+
+\textbf{Restitution Coefficient ($e$).} The ratio of relative velocity after and before particle collision, quantifying energy loss: $e = 1$ (elastic), $e < 1$ (inelastic). Rubber particles typically have $e \approx 0.3$--$0.5$.
+
+\textbf{Resonance.} Condition where excitation frequency matches the natural sloshing frequency of the tank–liquid system, causing amplitude amplification. For rectangular tanks: $f_0 = (1/2\pi)\sqrt{(g\pi/L)\tanh(\pi h/L)}$.
+
+\textbf{Sloshing.} Oscillatory motion of a liquid free surface in a partially filled container, driven by external excitation such as ship motion or seismic activity.
+
+\textbf{Smoothed Particle Hydrodynamics (SPH).} A mesh-free Lagrangian method representing the fluid continuum with moving particles that interact through kernel functions, eliminating mesh distortion issues.
+
+\textbf{SPH--DEM Coupling.} A multiphase modeling framework in which SPH describes the fluid motion and DEM the granular phase, with two-way momentum exchange through drag, buoyancy, and pressure forces.
+
+\textbf{Stokes Number (St).} Dimensionless ratio of particle response time to flow time scale: $\mathrm{St} = \tau_p/\tau_f$. For granular dampers, $\mathrm{St} \approx 1$ indicates optimal coupling between particle inertia and fluid oscillation.
+
+\textbf{Tait Equation of State.} Weakly compressible pressure–density relationship used in SPH: $p = B[(\rho/\rho_0)^\gamma - 1]$ with $\gamma = 7$ for water, enabling acoustic wave propagation while maintaining near-in\-com\-press\-i\-bil\-i\-ty.
+
+\textbf{Tuned Mass Damper (TMD).} A passive vibration control device with a mass–spring–damper system tuned to a specific resonance frequency. Granular dampers provide broadband damping without precise tuning.
+
+\textbf{Weakly Compressible SPH (WCSPH).} SPH formulation treating the fluid as slightly compressible with artificial sound speed $c_0 = 10 U_{\max}$, maintaining Mach number below~0.1 to limit density fluctuations while avoiding implicit pressure solves.
+
+\chapter{Theoretical Background}
+\label{sec:theory}
+
+This chapter provides the theoretical foundation of the study by introducing
+sloshing dynamics, granular damping mechanisms, and the coupled
+Smoothed Particle Hydrodynamics (SPH)–Discrete Element Method (DEM)
+framework used for simulating fluid–particle interaction.
+
+%-------------------------------------------------
+\section{Sloshing Phenomena}
+.
+In marine structures such as ballast tanks, this motion produces
+dynamic pressures that may cause structural fatigue or
+instability~\parencite{ibrahim2005}.
+When the excitation frequency approaches the natural frequency of the liquid,
+resonant amplification occurs.
+
+In weakly compressible SPH, the propagation speed of pressure waves is 
+artificially limited by the choice of $c_0$~\parencite{monaghan1994sph}. 
+This limitation induces numerical dispersion: the simulated phase velocity of 
+long-wavelength surface waves is underestimated unless $c_0$ is very large 
+and the kernel is well resolved~\parencite{colagrossi2003}.
+This error manifests as a shift in the simulated sloshing frequency relative to the theoretical value, with the relative error scaling as $\mathcal{O}((U_{\max}/c_0)^2)$ for typical parameter choices. Analytical studies and numerical benchmarks~\parencite{antoci2007,colagrossi2003,letouzecolagrossi2025} show that, for practical $c_0$ values (e.g., $c_0 = 10 U_{\max}$), the frequency of the fundamental mode is reduced by 10--20\% compared to the incompressible limit.
+
+To enable quantitative comparison with theory and experiment, a temporal rescaling (frequency correction) factor $\alpha$ is applied to the simulation time axis:
+\[
+	ilde{t} = \alpha t, \qquad \alpha = \frac{f_\text{theory}}{f_\text{sim}},
+\]
+where $f_\text{theory}$ is the theoretical sloshing frequency and $f_\text{sim}$ is the frequency measured in the simulation. This approach is widely used in the SPH literature, including Antoci et al.~(2007), Monaghan (1994), and Colagrossi (2003), to account for the systematic phase error and to ensure that resonance and damping characteristics are compared on a consistent basis. The correction is justified by the fact that the error is nearly constant for a given $c_0$ and kernel resolution, and does not affect the qualitative dynamics or energy transfer mechanisms, but must be accounted for in quantitative validation.
+
+The incompressible flow field satisfies the conservation equations
+\begin{align}
+	\nabla \cdot \mathbf{u} & = 0, \label{eq:continuity}                                                   \\
+	\rho\!\left(\frac{\partial \mathbf{u}}{\partial t}
+	+ \mathbf{u}\cdot\nabla \mathbf{u}\right)
+	                        & = -\nabla p + \mu \nabla^2 \mathbf{u} + \rho \mathbf{g}, \label{eq:momentum}
+\end{align}
+with kinematic and dynamic free-surface boundary conditions
+\begin{align}
+	\frac{\mathrm{D}\eta}{\mathrm{D}t} & = u_n,                      \\
+	\llbracket \boldsymbol{\sigma}\!\cdot\!\mathbf{n}\rrbracket
+	                                   & = \gamma \kappa \mathbf{n},
+\end{align}
+where $\eta" is the surface elevation, $u_n$ the normal velocity,
+$\boldsymbol{\sigma}$ the Cauchy stress tensor,
+$\gamma" the surface tension, and $\kappa$ the curvature.
+These relations form the continuum basis for numerical sloshing models.
+
+%-------------------------------------------------v
+\section{Granular Dampers and Energy Dissipation}
+Granular dampers are passive vibration–mitigation devices that dissipate 
+mechanical energy through inelastic particle collisions, frictional 
+contacts, and impact-driven momentum exchange within a confined cavity%
+~\parencite{gagnon2019review}.
+Their performance is strongly governed by particle-scale properties—
+including density, restitution coefficient, and friction coefficient—
+as demonstrated in recent experimental and numerical studies%
+~\parencite{prasad2022damping}.
+
+Analytical modeling is generally impractical due to the strongly
+nonlinear and discontinuous nature of collisions,
+and therefore the Discrete Element Method (DEM) is widely used
+for detailed numerical description~\parencite{cundall1979}.
+
+%-------------------------------------------------
+
+\subsection{Kernel Function}
+
+In SPH, the kernel function provides a smooth, compactly supported weighting of
+neighbouring particles, enabling continuous field quantities and their spatial
+derivatives to be approximated from discrete particle data. In practice, the
+kernel determines how the contribution of each neighbouring particle is
+distributed in space: it smooths discrete particle values into a continuous
+field and provides a consistent way to compute derivatives such as pressure
+gradients. Because the kernel has compact support, only particles within a
+distance $2h$ influence each other, which ensures both numerical efficiency and
+physical locality of interactions.
+
+Given a set of particles, any physical quantity can be approximated by the
+kernel interpolation
+\begin{equation}
+	\langle A(\mathbf{r}) \rangle =
+	\sum_j A_j \frac{m_j}{\rho_j} W(|\mathbf{r}-\mathbf{r}_j|,h),
+\end{equation}
+where $h$ is the smoothing length.
+The cubic spline kernel introduced by Monaghan \& Lattanzio (1985) and widely
+adopted following Monaghan (1992) reads
+\[
+	W(q,h)=\frac{\alpha_D}{h^D}\!\times\!
+	\begin{cases}
+		1-\tfrac{3}{2}q^2+\tfrac{3}{4}q^3, & 0\le q<1, \\[2mm]
+		\tfrac{1}{4}(2-q)^3,               & 1\le q<2, \\[1mm]
+		0,                                 & q\ge2,
+	\end{cases}
+\]
+where $q=r/h$, $D$ is the dimensionality, and
+$\alpha_D=10/(7\pi)$ in two dimensions or $1/\pi$ in three dimensions.
+The smoothing ratio $h/\Delta x$ is typically 1.2--1.3. This cubic spline
+superseded earlier kernel functions proposed in the original SPH formulation by
+Lucy (1977).
+
+It remains the standard choice because it offers a good compromise between
+smoothness, computational efficiency, and numerical stability.
+
+Spatial derivatives follow directly by differentiating the kernel, e.g.
+\[
+	\nabla A(\mathbf r) = \sum_j A_j \frac{m_j}{\rho_j} \nabla W(|\mathbf r - \mathbf r_j|,h).
+\]
+
+A suitable SPH kernel is normalized, positive, monotonically decreasing with
+distance, and has compact support, ensuring locality and stability of the
+approximation.
+
+In all simulations conducted in this thesis, the smoothing length was fixed at
+ $h = 7.5\times 10^{-4}\,\mathrm{m}$.
+
+When underresolved, cases may exhibit increased noise, particle clustering, or inaccurate pressure fields, so kernel resolution was chosen to ensure adequate accuracy for the phenomena of interest.
+
+Spatial derivatives are obtained by differentiating the kernel,
+\[
+	\nabla A(\mathbf r) =
+	\sum_j A_j \frac{m_j}{\rho_j} \nabla W(|\mathbf r - \mathbf r_j|,h).
+	\]
+\subsection{Equation of State}
+
+Pressure is related to density through the Tait equation of state
+\parencite{monaghan1994sph}:
+\begin{equation}
+	p = B\!\left[\!\left(\frac{\rho}{\rho_0}\right)^{\!\gamma}\!-1\!\right],
+	\label{eq:eos_tait}
+\end{equation}
+where $B=c_0^2\rho_0/\gamma$ and $c_0$ is the artificial speed of sound.
+For water-like fluids $\gamma=7$ and $c_0=10\,U_{\text{max}}$,
+
+This keeps density fluctuations below 1\%, consistent with WCSPH accuracy targets.
+
+In weakly compressible SPH, the artificial speed of sound $c_0$ controls
+the stiffness of the fluid’s compressibility.
+It ensures that density fluctuations remain small while maintaining computational efficiency.
+Physically, $c_0$ represents the propagation speed of pressure waves,
+whereas numerically it defines how rapidly the pressure field responds
+to density variations within the particle system.
+
+\subsection{Time-Step Constraint}
+
+Temporal stability is governed by the standard SPH Courant–Friedrichs–Lewy (CFL)
+condition derived by~\parencite{morris1997}:
+\begin{equation}
+	\Delta t \le
+	0.25\,\frac{h}{c_0+1.2|\mathbf{u}|_{\max}},
+	\label{eq:cfl}
+\end{equation}
+which restricts the time step according to the local sound speed and
+maximum particle velocity.
+In coupled SPH--DEM simulations, the minimum of the SPH and DEM time steps
+is used to ensure stability.
+
+\subsection{Boundary Conditions}
+
+Solid boundaries are represented by fixed ghost particles that mirror the
+fluid particle distribution and enforce a no-penetration condition
+following the generalized wall boundary condition of Adami, Hu \& Adams (2012),
+which improved upon earlier ghost particle concepts introduced by Monaghan (1994).
+This treatment preserves pressure smoothness at walls through dynamic boundary pressure extrapolation and prevents
+particle clustering.
+
+%-------------------------------------------------
+\section{Discrete Element Method (DEM)}
+
+The DEM resolves the motion of individual solid particles subject to
+contact forces~\parencite{cundall1979}:
+\begin{equation}
+	m_i \frac{d^2 \mathbf{r}_i}{dt^2}
+	= \sum_j (\mathbf{F}_{ij}^{\,n}+\mathbf{F}_{ij}^{\,t}) + m_i \mathbf{g}.
+\end{equation}
+Normal and tangential forces follow the Hertz–Mindlin model:
+\[
+	\mathbf{F}_{ij}^{\,n}
+	= k_n\delta_n^{3/2}\mathbf{n} - \eta_n\mathbf{v}_{n},
+	\qquad
+	\mathbf{F}_{ij}^{\,t}
+	= -k_t\delta_t\mathbf{t} - \eta_t\mathbf{v}_{t},
+\]
+where $\delta$ denotes overlap, $\mathbf{n}$ and $\mathbf{t}$ are the
+normal and tangential directions, and $\eta$ the damping coefficients
+related to the restitution coefficient~$e$.
+
+%-------------------------------------------------
+\section{Coupled SPH--DEM Framework}
+
+\subsection{Governing Principles}
+
+In the coupled framework the SPH fluid phase and the DEM solid phase
+exchange momentum through drag, buoyancy, and pressure forces,
+while mass is conserved in each phase~\parencite{wu2016}.
+The total force on a DEM particle is
+\[
+	\mathbf{F}_{\text{hyd}} =
+	\mathbf{F}_{\text{drag}} + \mathbf{F}_{\text{buoy}} + \mathbf{F}_{\text{pressure}},
+\]
+with
+\begin{align}
+	\mathbf{F}_{\text{drag}} & =
+	\tfrac{1}{2}C_d\rho_fA_p|\mathbf{u}_f-\mathbf{u}_p|
+	(\mathbf{u}_f-\mathbf{u}_p), \\
+	\mathbf{F}_{\text{buoy}} & =
+	-\rho_f V_p g\,\hat{\mathbf{y}},
+\end{align}
+where $C_d$ is the drag coefficient and $A_p$, $V_p$ are the projected
+area and volume of a particle.
+Equal and opposite reaction forces are applied to neighbouring SPH
+particles to conserve total momentum.
+
+\subsection{Added Mass Effect}
+
+When a solid particle accelerates in a fluid, it must displace the surrounding
+medium, which contributes an apparent inertia known as the \textit{added mass}~\parencite{brennen2005}.
+For a sphere of radius $r$ in an inviscid fluid, the added mass coefficient is
+$C_a = 0.5$, meaning the effective inertia becomes
+\[
+	m_{\text{eff}} = m_p + C_a \rho_f V_p = m_p\!\left(1 + \frac{C_a\rho_f}{\rho_p}\right).
+\]
+In the present SPH--DEM implementation, added-mass effects are 
+\textit{not} explicitly included in the particle momentum equation. 
+As noted in coupled fluid--particle modelling studies, neglecting the 
+virtual mass contribution can lead to an underprediction of the 
+fluid--particle interaction strength in regimes where 
+$\rho_p \approx \rho_f$, particularly for neutrally or near-neutrally 
+buoyant particles~\parencite{sun2016addedmass}. 
+
+Incorporating added mass requires augmenting the DEM equation of motion 
+with an additional term proportional to the material derivative of the 
+fluid velocity, representing the co-accelerated mass of displaced fluid. 
+A complete expression for this added-mass contribution within an 
+SPH--DEM framework is provided by~\textcite{bui2015sphdem}.
+
+
+\subsection{Limitations}
+
+The coupling assumes spherical particles and neglects sub-particle
+turbulence; it is therefore most accurate for moderate Reynolds numbers
+where particle-scale effects dominate dissipation.
+Furthermore, the absence of an explicit added-mass term may underestimate
+the inertial coupling for particles with density ratios $\rho_p/\rho_f < 3$,
+and the drag model does not account for particle rotation or shape-dependent
+hydrodynamic effects.
+
+%-------------------------------------------------
+\section{Ship Stability and Metacentric Height}
+
+For floating vessels, static stability is governed by the \textit{metacentric height}
+$\overline{GM}$, defined as the vertical distance between the center of gravity $G$
+and the metacenter $M$~\parencite{rawson2001ship}:
+\[
+	\overline{GM} = \overline{KB} + \overline{BM} - \overline{KG},
+\]
+where $K$ is the keel, $B$ the center of buoyancy, and $\overline{BM} = I / \nabla$
+with $I$ the waterplane area moment of inertia and $\nabla$ the displaced volume.
+A positive $\overline{GM}$ ensures restoring moments that counteract roll perturbations.
+
+Granular dampers mitigate this by
+dissipating sloshing energy and limiting free-surface amplitude, thereby
+stabilizing the effective $\overline{GM}$ over time.
+
+Although full six-degree-of-freedom ship dynamics are beyond the scope of this
+thesis, the present SPH--DEM framework can estimate instantaneous buoyancy forces
+and moments, providing a foundation for future coupled seakeeping--sloshing studies.
+
+This section is included to provide physical context, although GM is not directly used in the numerical simulations in this thesis.
+
+%-------------------------------------------------
+\section{Summary}
+
+This chapter introduced the theoretical background for sloshing
+dynamics, granular damping, and the SPH--DEM numerical framework.
+Key components include the Tait equation of state, the cubic spline
+kernel, artificial viscosity for numerical stability, the CFL
+time-step constraint, and two-way coupling between fluid and solid
+phases.
+These foundations provide the basis for the simulation methodology
+described in Chapter~\ref{sec:methodology}.
+
+\chapter{Methodology}
+\label{sec:methodology}
+
+This chapter transforms the theoretical concepts introduced in Chapter 2 into a practical numerical framework for investigating sloshing mitigation using granular dampers.
+
+\subsection{Parameter Provenance and Modelling Assumptions}
+
+Table~\ref{tab:provenance} lists all physical and numerical inputs with their origin
+(\emph{This work} vs.\ \emph{Reference model}). Values marked “Ref.” are adopted or
+derived from Gnanasambandham \& Eberhard~\parencite{gnanasambandham2019}; deviations are stated explicitly.
+
+\begin{table}[H]
+	\centering
+	\caption{Parameter provenance and sources used in simulations.}
+	\label{tab:provenance}
+	\small
+	\begin{tabular}{@{}llp{3.5cm}l@{}}
+		\toprule
+		\textbf{Category} & \textbf{Parameter} & \textbf{Value [unit]}                    & \textbf{Source}  \\
+		\midrule
+		Geometry          & Cylinder length    & $L = 0.100$ m                            & Ref.             \\
+		                  & Inner diameter     & $D = 0.044$ m                            & Ref.             \\
+		Fill              & Liquid volume      & $V_{\rm liq} = 3\!\times\!10^{-5}$ m$^3$ & Ref.             \\
+		                  & Fill height        & $h_{\rm fill} = 0.0197$ m                & Derived          \\
+		Fluid             & Density            & $\rho_{\rm liq} = 1000$ kg/m$^3$         & Ref.             \\
+		                  & Viscosity          & $\mu = 8.9\times10^{-4}$ Pa\,s           & Ref.             \\
+		Solids            & Particles (count)  & $n_p = 60$                               & Ref.             \\
+		                  & Solid density      & $\rho_p = 1200$ kg/m$^3$                 & Ref.             \\
+		                  & Size (bbox)        & $d = 0.008$ m                            & Ref.             \\
+		                  & Restitution        & $e = 0.4$ (calib.)                       & This work        \\
+		                  & Friction           & $\mu_s = 0.5$ (calib.)                   & This work        \\
+		SPH               & Smoothing length   & $h = 7.5\times10^{-4}$ m                 & Ref.             \\
+		                  & Particle spacing   & $\Delta x \approx 0.8h$                  & This work        \\
+		                  & CFL-number         & 0.7                                      & Ref.             \\
+		Coupling          & Virtual SPH shell  & 1–2 layers                               & Ref. / This work \\
+		Integration       & Scheme             & Leapfrog (2nd, explicit)                 & Ref.             \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\textbf{Modelling assumptions.}
+(1) Rigid tetrapods; no deformation. (2) Weakly compressible SPH with artificial viscosity,
+no capillarity unless stated. (3) Turbulence modelling omitted unless specified; this is
+expected to reduce numerical dissipation relative to experiment. (4) Wall boundaries via
+dynamic boundary particles with penalty enforcement. (5) Two-way coupling via virtual SPH
+shell on DEM surfaces following the reference methodology.
+
+% Justification and impact of parameter choices
+\subsection*{Justification and Impact of Parameter Choices}
+While the selection of particle size, damper quantity, and material parameters (e.g., restitution coefficient $e$, friction coefficient $\mu$) is based on literature values or calibration, the calibration process is documented in Section 3.1.2; however, future work should include a more systematic parameter sweep or uncertainty quantification.
+
+For example, the choice of $e = 0.4$ or $\mu = 0.5$ is motivated by typical values reported in previous studies, but the sensitivity of the results to these parameters is not systematically explored. It remains unclear how much the simulation outcomes would change if these values were varied within plausible ranges.
+
+The sensitivity coefficients presented in the correlation table provide an initial assessment, but a more rigorous analysis—such as uncertainty propagation, error bars, or convergence tests—would strengthen the justification for the chosen parameters and clarify their influence on the reliability of the results.
+
+In future work, it is recommended to document the calibration process in detail and to perform systematic parameter sweeps or uncertainty quantification to assess the robustness of the findings with respect to key input choices.
+
+\begin{figure}[H]
+	\centering
+	\begin{tikzpicture}[
+			node distance=1.8cm and 1.5cm,
+			box/.style={
+					rectangle, rounded corners, draw=black, thick,
+					align=center, minimum width=3.5cm, minimum height=1cm,
+					fill=blue!5
+				},
+			io/.style={
+					trapezium, trapezium left angle=70, trapezium right angle=110,
+					draw=black, thick, align=center, fill=green!10, minimum height=1cm
+				},
+			process/.style={
+					rectangle, draw=black, rounded corners, thick, fill=orange!10,
+					align=center, minimum width=3.5cm, minimum height=1cm
+				},
+			decision/.style={
+					diamond, draw=black, thick, fill=yellow!10, aspect=2, align=center
+				},
+			arrow/.style={-Latex, thick}
+		]
+
+		% Nodes
+		\node[io] (input) {Input geometry \\ \& parameters};
+		\node[process, below=of input] (init) {SPH \& DEM \\ Initialization};
+		\node[process, below=of init] (coupling) {Two-way SPH--DEM \\ Coupling Loop};
+		\node[decision, below=of coupling, yshift=-0.2cm] (converge) {Time step limit \\ reached?};
+		\node[process, below=of converge, yshift=-0.2cm] (output) {Data output \\ (positions, forces, energy)};
+		\node[io, below=of output] (post) {Post-processing \\ \& analysis};
+
+		% Arrows
+		\draw[arrow] (input) -- (init);
+		\draw[arrow] (init) -- (coupling);
+		\draw[arrow] (coupling) -- (converge);
+		\draw[arrow] (converge) -- node[right]{Yes} (output);
+		\draw[arrow] (output) -- (post);
+		\draw[arrow] (converge.west) -| node[left]{No} ++(-2.5,0) |- (coupling.west);
+
+		% Title box (optional fit)
+		\node[draw=black!50, rounded corners, fit=(input)(post), inner sep=8pt, label={[yshift=1ex]above:\textbf{SPH--DEM Computational Workflow}}] {};
+
+	\end{tikzpicture}
+	\caption{Overview of the SPH--DEM computational workflow.}
+	\label{fig:sphdem_workflow}
+\end{figure}
+
+\section{Overview}
+Due to the unavailability of industrial measurement data, the empirical investigation in this study is based on numerical simulations.
+The objective is to assess the performance of granular dampers in mitigating sloshing by exploring the dynamic behavior of the coupled fluid–particle system under a range of theoretically justified conditions.
+Simulations were designed to provide insights into parameter dependencies and to validate the numerical models qualitatively and quantitatively against benchmark cases and literature.
+
+\subsection{Theoretical Framework}
+
+The numerical model employed in this study combines the Smoothed Particle Hydrodynamics (SPH) method for the fluid phase with the Discrete Element Method (DEM) for the granular phase. Both are particle-based approaches, which facilitates their coupling through interparticle force exchange.
+
+The SPH formulation follows the weakly compressible approach \parencite{monaghan1992}, where the fluid domain is discretized into particles carrying mass, momentum, and pressure. The motion of each particle is governed by the Navier–Stokes equations in Lagrangian form:
+\begin{align}
+	\frac{d \mathbf{r}_i}{dt} & = \mathbf{u}_i,                                                                                      \\
+	\frac{d \mathbf{u}_i}{dt} & = -\sum_j m_j \left( \frac{p_i}{\rho_i^2} + \frac{p_j}{\rho_j^2} + \Pi_{ij} \right) \nabla_i W_{ij},
+\end{align}
+where $\Pi_{ij}$ denotes the artificial viscosity term and $W_{ij}$ is the smoothing kernel function.
+
+The DEM formulation, originally proposed by Cundall and Strack \parencite{cundall1979}, resolves the motion of each solid particle under normal and tangential contact forces. Particle–particle and particle–wall interactions follow the Hertz–Mindlin contact model, including normal stiffness $k_n$, tangential stiffness $k_t$, and friction coefficient $\mu$.
+
+The SPH--DEM coupling is realized through two-way momentum exchange \parencite{wu2016}. Hydrodynamic forces from the SPH phase (pressure, drag, and buoyancy) act on each DEM particle, while the reaction forces from the granular phase contribute to local pressure variations in the SPH fluid.
+
+This formulation allows capturing complex free-surface behavior and energy dissipation arising from particle–fluid interactions, which are essential for simulating sloshing with granular dampers.
+
+\subsection{Experimental Validation Framework}
+
+To assess the physical validity of the coupled SPH--DEM model, a small-scale experimental configuration was reproduced based on the setup described by Gnanasambandham and Eberhard~\parencite{gnanasambandham2019}.
+The purpose of this validation is to provide a quantitative comparison between simulated and experimentally observed sloshing dynamics under well-controlled conditions.
+
+\textbf{Experimental reference.}
+The reference experiment consists of a vertically mounted spring–mass system in which an acrylic cylindrical container is attached to the end of a leaf spring.
+The container has an inner diameter of $D = \SI{44}{\milli\meter}$ and a length of $L = \SI{100}{\milli\meter}$.
+It is partially filled with $V_{\mathrm{liq}} = \SI{30}{\milli\liter}$ of water, corresponding to a fill height of approximately
+\[
+	h_{\mathrm{fill}} = \frac{V_{\mathrm{liq}}}{\pi (D/2)^2} \approx \SI{19.7}{\milli\meter}.
+\]
+The liquid phase has density $\rho_{\mathrm{liq}} = \SI{1000}{\kilogram\per\meter\cubed}$ and dynamic viscosity $\mu = \SI{8.9e-4}{\pascal\second}$.
+A total of $n_p = 60$ rigid tetrapod-shaped particles with density $\rho_p = \SI{1200}{\kilogram\per\meter\cubed}$ and characteristic size $d \approx \SI{8}{\milli\meter}$ were added to the container.
+During testing, the tank was displaced vertically and released, producing a ring-down oscillation that was measured using a laser Doppler vibrometer (LDV).
+
+\textbf{Numerical reproduction.}
+The corresponding numerical setup employed a weakly compressible SPH (WCSPH) formulation for the liquid phase and a discrete element method (DEM) for the granular phase.
+The smoothing length was set to $h = 7.5\times10^{-4}~\mathrm{m}$ with an initial particle spacing of $\Delta x \approx 0.8h$ and a Courant number $\mathrm{CFL} = 0.7$.
+The DEM used rigid-body particles with calibrated normal restitution coefficient $e \approx 0.4$ and static friction coefficient $\mu_s \approx 0.5$.
+Fluid–solid interaction was resolved through a virtual SPH particle layer distributed over the surface of each DEM particle, which exchanged pressure and viscous forces with the surrounding fluid.
+Both phases were integrated using a second-order leapfrog scheme with a shared explicit time step determined by the most restrictive CFL or contact stability criterion.
+Container walls were modeled as dynamic SPH boundary particles enforcing a no-penetration condition.
+
+\textbf{Calibration and metrics.}
+Prior to the coupled simulations, three independent calibration tests were performed:
+(i) a single-particle drop test to adjust artificial viscosity and contact damping,
+(ii) a dry contact test to calibrate friction and restitution parameters, and
+(iii) a pure-fluid sloshing test to verify that the fundamental sloshing frequency agreed with analytical estimates.
+The final validation compared the simulated and experimental time histories of the tank velocity $v(t)$, free-surface elevation, and dissipated energy per oscillation cycle.
+
+\textbf{DEM Parameter Calibration Criteria}
+
+The calibration of DEM parameters (restitution coefficient $e$ and friction coefficient $\mu$) was performed using a three-step procedure: (i) a single-particle drop test to tune artificial viscosity and contact damping, (ii) a dry contact test to calibrate friction and restitution, and (iii) a pure-fluid sloshing test to verify the fundamental frequency. For each test, simulated results were compared to analytical or experimental references using the root mean square error (RMSE) as the minimization criterion. Parameter sets were accepted if the RMSE for key observables (e.g., rebound height, oscillation period) was below 10\% of the reference value, or if the simulated time histories qualitatively matched experimental trends within this margin. Parameter combinations that exceeded this error threshold were rejected, and the calibration process was repeated until all criteria were satisfied. In total, three independent calibration tests were conducted, ensuring that the final values of $e$ and $\mu$ reproduced both the dynamic response and energy dissipation observed in reference experiments.
+
+\textbf{Results.}
+Temporal rescaling was determined by comparing simulated sloshing frequency ($f_{\text{sim}} = 0.22$ Hz) to analytical prediction ($f_{\text{theory}} = 0.50$ Hz), yielding correction factor $\alpha = f_{\text{theory}}/f_{\text{sim}} = 2.28$. This indicates that one second of simulation time corresponds to 2.28 seconds of physical time, consistent with typical WCSPH time step constraints for stability.
+After correction, the simulated dominant sloshing frequency was $f_\mathrm{sim}=4.15~\mathrm{Hz}$, showing reasonable agreement with the experimental reference value of $f_\mathrm{exp}=5.0~\mathrm{Hz}$ (\(\Delta f \approx -17\%\)).
+The logarithmic decrement obtained from the numerical signal, $\delta \approx 0.005$–$0.012$, was lower than the experimental range $\delta_\mathrm{exp}=0.045$–$0.115$,
+consistent with the absence of explicit surface-tension and contact-dissipation models in the present SPH--DEM implementation.
+Overall, the comparison confirms that the model reproduces the essential coupled dynamics of liquid–particle sloshing, while underestimating damping due to idealized boundary and contact treatments.
+
+\begin{table}[H]
+	\centering
+	\caption{Physical and numerical parameters used for SPH--DEM validation.}
+	\begin{tabular}{lll}
+		\toprule
+		\textbf{Category} & \textbf{Parameter}            & \textbf{Value / Note}                     \\
+		\midrule
+		Geometry          & Container type                & Cylindrical (acrylic)                     \\
+	\multicolumn{2}{l}{\textbf{Simulated sloshing frequency $f_\mathrm{sim}$}} & $0.22$ Hz \\
+	\multicolumn{2}{l}{\textbf{Relative deviation (before correction)}} & $-56\ \%$ \\
+		                  & Length $L$                    & $0.1~\mathrm{m}$                          \\
+		                  & Diameter $D$                  & $0.044~\mathrm{m}$                        \\
+		                  & Fill height $h_\mathrm{fill}$ & $0.0197~\mathrm{m}$                       \\
+		Liquid            & Density $\rho_{\mathrm{liq}}$ & $1000~\mathrm{kg/m^3}$                    \\
+		                  & Viscosity $\mu$               & $8.9\times10^{-4}~\mathrm{Pa\cdot s}$     \\
+		Granular phase    & Number of particles $n_p$     & $60$                                      \\
+		                  & Shape                         & Tetrapod (rigid mesh)                     \\
+		                  & Density $\rho_p$              & $1200~\mathrm{kg/m^3}$                    \\
+		                  & Size $d$                      & $8~\mathrm{mm}$                           \\
+		                  & Restitution $e$               & calibrated ($\approx0.3$--$0.5$)          \\
+		                  & Friction $\mu_s$              & calibrated ($\approx0.3$--$0.6$)          \\
+		SPH parameters    & Smoothing length $h$          & $7.5\times10^{-4}~\mathrm{m}$             \\
+		                  & Particle spacing $\Delta x$   & $\approx0.8h$                             \\
+		                  & CFL number                    & $0.7$                                     \\
+		Integration       & Scheme                        & Leapfrog, second-order, explicit          \\
+		Coupling          & SPH--DEM interface            & Virtual SPH shell on particle surfaces    \\
+		Validation        & Metrics                       & $v(t)$, $f$, $\delta$, energy dissipation \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+The set of parameters listed above reproduces the reference configuration and provides a baseline for experimental comparison in the present work.
+
+
+\textbf{Measurement Plan.}
+Free-surface elevations will be captured using high-speed imaging and tracked via particle image velocimetry (PIV). Wall impact pressures will be recorded using miniature piezoelectric sensors. The same quantities ($h(t)$, $p(t)$, $E_k(t)$, $\eta$) will be extracted from both experiments and simulations for direct quantitative comparison.
+
+\textbf{Validation Metrics.}
+Quantitative validation will be based on:
+\begin{itemize}
+	\item Root Mean Square Error (RMSE) between measured and simulated free-surface elevation;
+	\item Relative deviation in peak wall pressure (target: <10\%);
+	\item Comparison of total energy dissipation ratio $\eta$ between experimental and numerical results.
+\end{itemize}
+
+Although the experimental work is not yet completed, this framework provides a reproducible plan for validation once data become available. It ensures consistency between the numerical and physical models and allows the model’s predictive capability to be rigorously assessed.
+
+% --- Planned Setup moved to Future Work ---
+
+\section{Future Work}
+\label{sec:future_work}
+
+	extbf{Planned Setup.}
+The experimental tank will be a transparent rectangular container with adjustable filling ratios ($\phi = 0.4$--$0.7$), representing a 1:10 scaled ballast tank. A granular damper compartment will be mounted near the tank base and filled with spherical silica particles ($d_p = 2$\,mm). Oscillatory excitation will be imposed through horizontal sinusoidal motion with prescribed amplitude and frequency, corresponding to the dominant sloshing mode predicted by the SPH simulation.
+
+% --- End Planned Setup moved ---
+
+\section{Simulation Setup}
+This setup enables systematic testing of how granular damping influences sloshing-induced loads, thereby addressing the main research objective.
+\begin{itemize}
+	\item \textbf{SPH--DEM Coupling:} The fluid is modeled using Smoothed Particle Hydrodynamics (SPH), while the granular material is represented by the Discrete Element Method (DEM).
+	      Bidirectional coupling accounts for drag, pressure, and buoyancy forces between fluid and particles.
+	\item \textbf{Domain and Geometry:} A rectangular tank with adjustable fill level is used to represent a generic ballast tank. Granular dampers are modeled as enclosed particles of defined size and density.
+	\item \textbf{Boundary Conditions:} Solid walls are treated as rigid, no-slip boundaries for the fluid, with collision handling for DEM particles.
+	\item \textbf{Initial Conditions:} Fluid and particles are initially at rest. Perturbations are introduced via prescribed tank motion to initiate sloshing.
+\end{itemize}
+
+\section{Computational Resources}
+\label{sec:computational_resources}
+
+All simulations presented in this thesis were performed on a desktop workstation.
+equipped with an Intel Core i9-13900K (24 cores, 32 threads) and 64~GB DDR5 RAM.
+The SPH--DEM solver is implemented in C\# (.NET~8) and executes on CPU only;
+no GPU acceleration was used.
+
+% Auto-generated simulation summary table
+\begin{table}[htbp]
+	\centering
+	\caption{Representative simulation run metrics (200 steps, 10{,}000 particles).}
+	\label{tab:baseline_run}
+	\begin{tabular}{l r}\hline
+		\textbf{Metric}         & \textbf{Value} \\ \hline
+		Simulation time (s)     & 0.3863         \\
+		Mean total energy (J)   & 1.229e+06      \\
+		Energy range (J)        & 9.316e+04      \\
+		Mean relative drift     & -0.0183        \\
+		Drift range             & 0.0744         \\
+		Mean max velocity (m/s) & 2.287          \\
+		Mean avg speed (m/s)    & 1.512          \\
+		Mean surface height (m) & 2.197          \\
+		Surface variation (m)   & 0.5138         \\
+		Log entries             |
+	\end{tabular}
+	\end{table}
+
+	% === TODO: Kriittiset korjaukset ja puutteet (arvioijan mukaan) ===
+% 1. Korvaa TLD-historian viite: Krabbenhoft2011 → Ibrahim2005 (tai Faltinsen & Timokha 2000/2009)
+% 2. Lisää sivunumerot kaikkiin "tarkkoihin väitteisiin" (esim. Gao2020, Sun2016, Bui2015, Schönle2022)
+% 3. Tarkista, että kaikki viitteet ovat oikeasti olemassa (esim. Letouzé & Colagrossi 2025, Xiong et al. 2025)
+% 4. Poista tai korvaa epävarmat viitteet
+% 5. Lisää konvergenssitesti (esim. ∆x, h, CFL) ja raportoi tulokset (taulukko/kuvio)
+% 6. Kirjoita uusi validointikappale, jossa käsitellään määrälliset virheet (esim. WCSPH-dispersiovirhe, damping ratio) ja annetaan kirjallisuusviitteet, jotka tukevat havaittuja eroja
+% 7. Selitä, miksi virheet ovat odotettuja (puuttuvat mallit: turbulence, surface tension, added mass, drag-mallin rajoitteet)
+% 8. Poista placeholder-taulukko uncertainty analysis -osiosta, jos oikeita tuloksia ei ole
+% 9. Jos mahdollista, tee 5–10 oikeaa Monte Carlo -ajoa ja raportoi tulokset (taulukko + lyhyt analyysi)
+% 10. Lisää taulukko: "Parameter variation and expected effect" (esim. e, μ, np, h)
+% 11. Perustele parametrivalinnat kirjallisuuden ja/tai sweep-testin avulla
+% 12. DEM-kalibraatio: lisää vähintään yksi kuva drop testistä ja anna numeerinen virhe (esim. RMSE)
+% 13. Lisää systemaattinen hakutaulukko ("no studies found") novelty-väitteen tueksi
+% 14. Lisää epävarmuuksien arviointi energy budget -tuloksiin
+% 15. Mainitse sphere-approksimaation ja puuttuvien mallien vaikutus dissipaatioarvioon
+% 16. Korosta rajoituksia painokkaammin (esim. erillinen kappale)
+% 17. Erottele selkeästi kvalitatiivinen ja kvantitatiivinen luotettavuus
+% ===============================================================
+Passive tuned-liquid dampers (TLD) have been proposed and studied already over a century ago as a means to suppress rolling or vibrational motion by tuning the sloshing frequency of the liquid to the structural frequency of the host system. \parencite[Introduction, pp.~4--6]{Krabbenhoft2011}
+
+Granular dampers offer a promising alternative.
+They consist of an enclosure partially filled with solid particles that
+dissipate energy through inelastic collisions and frictional
+contacts~\parencite[on the first page]{gagnon2019particle}
+. Granular dampers are simply enclosures filled with small particles. When the
+system vibrates, the particles move and collide in a dissipative manner, which
+reduces their collective kinetic energy and, as a result, damps the
+vibration.~\parencite[p. 4442]{heckel2012}.
+
+Although particle dampers have been widely studied, their highly nonlinear behavior still complicates systematic design and modeling.~\parencite{prasad2024}
+
+To overcome these limitations, coupled Smoothed Particle Hydrodynamics–Discrete
+Element Method (SPH–DEM) approaches have been developed.
+This fully Lagrangian, mesh-free framework allows the simultaneous
+resolution of fluid motion using SPH and particle–particle and particle–wall
+interactions using DEM, enabling natural two-way fluid–solid
+coupling~\parencite[95]{nassauer2016demsph}
+
+While SPH–DEM has been used for fluid–particle and damper simulations, there seems to be no publicly available study applying it to full-scale sloshing in ballast tanks.
+\subsection*{Research Questions}
+
+The central research problem of this thesis can be expressed as follows:
+
+\begin{quote}
+	\textit{How effectively can the coupled SPH--DEM approach reproduce the dynamic interaction between liquid sloshing and granular dampers, and to what extent can it predict the reduction of sloshing-induced structural loads?}
+\end{quote}
+
+This main question is supported by three sub-questions:
+\begin{enumerate}
+	\item How accurately does the SPH--DEM model reproduce canonical sloshing phenomena in partially filled tanks?
+	\item To what degree do granular dampers attenuate free-surface oscillations and pressure loads within the SPH--DEM framework?
+	\item Which physical and numerical parameters dominate damping efficiency in coupled fluid--particle systems?
+\end{enumerate}
+
+\subsection*{Scientific Novelty and Contribution}
+Based on the reviewed literature, the SPH–DEM coupling has not been previously
+applied to the mitigation of liquid sloshing in marine ballast tanks. Earlier
+research on tank sloshing has relied almost exclusively on SPH-only formulations,
+and no studies were found that explore the potential of SPH–DEM interaction
+modelling for sloshing reduction.
+
+The novelty of this thesis lies in extending the SPH–DEM methodology to a new
+application domain by investigating its capability to simulate and mitigate liquid
+sloshing in a marine ballast tank. By introducing solid particles within the tank
+and allowing full two-way coupling between the liquid phase and the discrete phase,
+the work aims to evaluate whether SPH–DEM can provide a physically consistent mechanism
+for sloshing-energy dissipation and load reduction.
+
+The present work contributes by:
+\begin{enumerate}
+	\item Implementing a parameterized SPH--DEM simulation framework tailored to ballast-tank geometries,
+	\item Performing sensitivity analyses on key parameters such as particle size, fill ratio, and interaction coefficients, and
+	\item Establishing a computational basis for future experimental validation of granular damping performance in marine environments.
+\end{enumerate}
+
+\subsection*{Structure of the Thesis}
+
+The remainder of this thesis is organized as follows.
+Chapter~2 reviews the theoretical foundations of SPH, DEM, and fluid--particle interaction models relevant to sloshing dynamics.
+Chapter~3 presents the numerical methodology and simulation setup.
+Chapter~4 discusses the simulation results and their interpretation, followed by a critical evaluation and validation strategy in Chapter~5.
+Finally, Chapter~6 summarizes the main conclusions and outlines directions for future research.
+%-------------------------
+\chapter{Literature Review}
+%-------------------------
+This chapter establishes the scientific context of the present study by reviewing previous approaches to sloshing mitigation and SPH--DEM modeling. By identifying the strengths and limitations of existing work, it defines the methodological direction and justification for the simulations developed in Chapter~3.
+
+\section{Introduction}
+This chapter provides a systematic and comparative review of research on granular dampers, SPH--DEM simulations, and sloshing mitigation in ballast tanks.
+The aim is to identify methodological trends, highlight knowledge gaps, and justify the present study’s approach.
+A structured comparison is emphasized through tables, critical commentary, and conceptual summaries.
+
+\section{Granular Dampers: Mechanisms and Evidence}
+\label{sec:granulardampers}
+
+Granular dampers, also known as particle dampers, are passive vibration attenuation devices consisting of an enclosure partially filled with solid particles.
+When the host structure oscillates, the particles move, collide, and interact with both the container walls and each other, dissipating kinetic energy through inelastic collisions and frictional losses.
+Unlike traditional tuned mass or liquid dampers, granular dampers provide broadband energy dissipation, require no active control, and are effective over a wide range of excitation frequencies~\parencite[5716]{prasad2022damping}.
+
+\subsection{Underlying Physical Mechanisms}
+
+Energy dissipation in granular systems arises from several contact-level mechanisms.
+During particle

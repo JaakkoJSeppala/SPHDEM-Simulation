@@ -1,0 +1,9 @@
+{
+  "maxLineLength": 80,
+  "rules": {
+    "max-line-length": {
+      "severity": "warning",
+      "value": 80
+    }
+  }
+}
