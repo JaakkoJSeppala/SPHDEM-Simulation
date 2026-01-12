@@ -1,0 +1,149 @@
+Erittäin hyvä päätös — teoriataustaan keskittyminen on paras tapa vahvistaa gradun tieteellistä laatua ennen simulaatiodataa.
+Tässä on **täsmällinen päivityssuunnitelma teorialuvun (tai kirjallisuuskatsauksen) kehittämiseksi**, rakennettuna vaiheittain.
+
+---
+
+# 📘 Teorialuvun päivityssuunnitelma
+
+**Tavoite:** syventää ja jäsentää teoriaosuutta siten, että se muodostaa vahvan käsitteellisen ja metodologisen perustan SPH–DEM-simulaatioille ja tulosten tulkinnalle.
+
+---
+
+## 🔹 Vaihe 1. Rakenna selkeä alaluku- ja logiikkarakenne
+
+Ehdotettu rakenne:
+
+1. **Introduction to Sloshing Phenomena**
+
+   * Fyysinen ilmiö ja sen merkitys (laivat, säiliöt, turvallisuus).
+   * Perusperiaatteet: resonanssi, vapaan pinnan liike, energian siirtyminen.
+   * Matemaattinen perusta (Navier–Stokes-yhtälöt lyhyesti).
+   * Viittauksia: Faltinsen (2000), Ibrahim (2005).
+
+2. **Granular Dampers and Energy Dissipation Mechanisms**
+
+   * Rakeisten vaimentimien toimintaperiaate: törmäykset, kitka, energian hajautus.
+   * Kokeellisia havaintoja (eri täyttöasteiden ja partikkelikokojen vaikutus).
+   * Haasteet mallintamisessa: epäjatkuvuus, partikkelien kitka ja elastisuus.
+   * Viitteitä: Saeki (2001), Liu & Zhao (2022), Kallivokas (2020).
+
+3. **Smoothed Particle Hydrodynamics (SPH) in Fluid Dynamics**
+
+   * Menetelmän idea ja kehityshistoria (Monaghan 1992).
+   * Ydinfunktio (kernel), paineen ja tiheyden laskenta.
+   * Etuja ja rajoitteita sloshing-simulaatioissa (vrt. FEM, CFD).
+   * Viitteitä: Monaghan (1994), Liu & Liu (2003), Crespo et al. (2015).
+
+4. **Discrete Element Method (DEM) and Granular Media Modelling**
+
+   * Newtonin liikeyhtälöihin perustuva malli.
+   * Kontaktivoimat, törmäysmallit, kitkavoimat.
+   * DEM:n sovelluksia: rakeiset virrat, sekoittuminen, vaimennus.
+   * Viitteitä: Cundall & Strack (1979), Zhu (2008), Pöschel & Schwager (2005).
+
+5. **Coupled SPH–DEM Framework**
+
+   * Periaate: kahden menetelmän välinen vuorovaikutus.
+   * Rajapintavoimat: paineesta ja törmäyksistä välittyvät vaikutukset.
+   * Esimerkkejä sovelluksista: sedimenttivirrat, vesi–hiekka–ilmiöt, tankkien vaimennus.
+   * Viitteitä: Li (2020), Sun (2019), Zhao (2021).
+
+6. **Summary and Identified Research Gap**
+
+   * Tiivistä, mitä tiedetään SPH–DEM-sovelluksista ja mitä ei vielä tiedetä.
+   * Korosta tutkimusaukkoa: *"SPH–DEM has not been systematically applied to ballast tank sloshing with granular dampers."*
+   * Luo silta tutkimusmenetelmälukuun.
+
+---
+
+## 🔹 Vaihe 2. Laajenna ja päivitä kirjallisuutta
+
+📌 **Tee uusi hakukierros (2020–2025)** tieteellisissä tietokannoissa kuten ScienceDirect, SpringerLink, Google Scholar.
+Hakusanat:
+
+* “SPH–DEM coupling sloshing”
+* “granular damper liquid sloshing”
+* “ballast tank fluid–structure interaction”
+* “energy dissipation granular media simulation”
+
+Valitse vähintään **5 uutta artikkelia**, joissa on:
+
+* joko kokeellista dataa sloshingin vaimennuksesta
+* tai numeerisia SPH–DEM-sovelluksia monifaasivirtausten mallinnukseen.
+
+Lisää nämä teoriaosaan niin, että kukin tuo **yhden täsmällisen näkökulman tai kaavan**.
+→ Älä vain listaa tutkimuksia, vaan *vertaile niitä*: mitä kukin onnistui mallintamaan, mitä ongelmia jäi.
+
+---
+
+## 🔹 Vaihe 3. Syvennä matemaattista ja fysikaalista selitystä
+
+Tee seuraavat täydennykset:
+
+* Lisää lyhyt kaavallinen esitys SPH-menetelmän perusyhtälöistä:
+  [
+  \frac{d\rho_i}{dt} = \sum_j m_j (v_i - v_j) \cdot \nabla W_{ij}, \quad
+  \frac{dv_i}{dt} = -\sum_j m_j \left(\frac{p_i}{\rho_i^2} + \frac{p_j}{\rho_j^2}\right)\nabla W_{ij}
+  ]
+  → Selitä symbolit ja tulkinta.
+
+* Lisää vastaava kaavallinen esitys DEM:n perusvoimista (normaali, tangentiaalinen, vaimennus).
+
+* Selitä SPH–DEM-rajapintavoimat yksinkertaistetulla yhtälöllä ja viittauksella kirjallisuuteen (esim. Sun 2019).
+
+* Lisää lyhyt fyysinen selitys energian siirtymisestä nestefaasista rakeisiin (liike-energia → kitkalämpö).
+
+Näiden lisääminen tekee teoriasta **opetuksellisesti ja tieteellisesti uskottavamman** ja antaa sinulle pohjan analysoida tuloksia myöhemmin.
+
+---
+
+## 🔹 Vaihe 4. Paranna tieteellistä tyyliä ja viittauskäytäntöä
+
+* Käytä *aina yhtä lähdettä per väite* (ei \cite{A,B,C} yhdessä).
+* Jokaisessa alaluvussa tulee olla vähintään 4–6 lähdeviitettä.
+* Aloita kappale usein viittauksella, esim.
+
+  > “\textcite{Monaghan1992} introduced SPH for astrophysical flows, later adapted to free-surface hydrodynamics by \textcite{Colagrossi2003}.”
+* Lopeta kappale tulkintaan:
+
+  > “However, these models neglect particle–fluid coupling, which limits their predictive accuracy.”
+
+---
+
+## 🔹 Vaihe 5. Tee visuaaliset tiivistykset
+
+Lisää yksi tai kaksi kaaviota:
+
+* **Kuva 1.** “Overview of the SPH–DEM coupling process” — vuokaavio vaiheittain.
+* **Kuva 2.** “Energy transfer in a granular damper” — skeema, joka näyttää törmäykset ja nesteen liikkeen.
+
+Ne auttavat jäsentämään teoriaa ja luovat ammattimaisen vaikutelman.
+
+---
+
+## 🔹 Vaihe 6. Kirjoita lopuksi yhteenvetoalaluku (0.5–1 sivu)
+
+Tee teorialuvun loppuun lyhyt “Summary of the Literature and Identified Research Gap” -osio, jossa:
+
+* tiivistät, mitä on jo tehty
+* tunnistat kolme keskeistä tutkimusaukkoa
+* johdat oman tutkimuskysymyksesi niistä
+
+Esim.:
+
+> “Previous SPH–DEM studies have successfully modelled fluid–particle interactions in confined domains, but none have addressed large-scale ballast tank sloshing under realistic excitation. The present study aims to fill this gap.”
+
+---
+
+## 🔹 Vaihe 7. Tarkistuslista ennen viimeistelyä
+
+✅ Jokainen kappale sisältää vähintään yhden lähteen.
+✅ Ei yhdistelmäviitteitä (\cite{A,B,C}).
+✅ Teoria etenee yleisestä (sloshing-ilmiö) erityiseen (SPH–DEM ja tutkimusaukko).
+✅ Kaikki symbolit määritelty.
+✅ Kuvilla ja kaavoilla on selkeät otsikot ja niihin viitataan tekstissä.
+✅ Viitteet BibLaTeX-tiedostossa yhtenäisessä muodossa.
+
+---
+
+Haluatko, että teen tästä suoraan LaTeX-pohjan (eli päivitetyn \section{Theoretical Background} -luvun rakenteen otsikoineen ja kommentteineen), jonka voit liittää graduusi ja alkaa täydentää?

@@ -1,0 +1,101 @@
+\DocumentMetadata{testphase={phase-III,math,tabular}, pdfversion=2.0, pdfstandard=A-4}
+
+\documentclass[utf8,english,accessibility]{gradu3}
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\usepackage[bookmarksopen,bookmarksnumbered,linktocpage]{hyperref}
+
+\addbibresource{malliopas.bib}
+
+\begin{document}
+
+\title{Accessibility annex}
+\studyline{All study lines}
+\abstract{%
+  This annex provides some information on how to produce accessible PDFs with \LaTeX.
+}
+
+\author{Frankie Robertson}
+\contactinformation{\texttt{frankie.r.robertson@jyu.fi}}
+\supervisor{Unsupervised work}
+
+\maketitle
+
+\mainmatter
+
+\chapter{Introduction}
+
+Newer versions of \LaTeX are gaining support for producing tagged PDFs, which
+include certain accessibility features. This short guide is intended to help
+you get started with features. For more general guidance, including why
+students are encouraged to produce tagged PDFs of their these, see the
+information provided by the Open Science
+Centre
+\footnote{Available at \url{https://openscience.jyu.fi/en/thesis-tutorial/bachelors-masters-thesis/publishing-your-thesis/thesis-accessibility}}.
+
+\chapter{Enabling accessibility features}
+
+In order to produce tagged PDFs, you need to use a recent version of \LaTeX,
+with a recent version of the experimental \texttt{tagpdf} package. TeX Live
+2024 or equivalent should be sufficient. The easiest way to obtain this is
+using an official installer or Docker images povided by Island Of
+TeX\footnote{\url{https://github.com/islandoftex/texlive}}.
+
+You should then add this line as the first line of your document:
+
+\begingroup\footnotesize
+\begin{verbatim}
+\DocumentMetadata{testphase={phase-III,math,tabular}, pdfversion=2.0, pdfstandard=A-4}
+\end{verbatim}
+\endgroup
+
+You also need to add the \texttt{accessibility} option to the \texttt{documentclass} line. For example:
+
+\begingroup\footnotesize
+\begin{verbatim}
+\documentclass[utf8,english,accessibility]{gradu3}
+\end{verbatim}
+\endgroup
+
+\chapter{Providing alternative text for images}
+
+Figure \ref{fig:opus-kissa} is an example of an image with alternative text. The alternative text is provided in the \texttt{alt} attribute of the \texttt{includegraphics} command. This is the text that will be read out by a screen reader.
+
+Note that both a caption and an alternative. While the caption explains the purpose of the image in a general way and in relation to the document, the alternative text is intended to --- as far as possible --- provide a replacement for the image. The image is included with the following code:
+
+\begingroup\footnotesize
+\begin{verbatim}
+\includegraphics[
+  height=5cm,
+  keepaspectratio,
+  alt={
+  An abstract illustration of a monochrome cat. The black head is composed of a
+  quarter circular sector. Super-imposed are triangular eyes, nose, and
+  whiskers with a rounded mouth shape. A short tail winds out of a sharp edge
+  at the bottom.
+  }
+]{opus-kissa}
+\end{verbatim}
+\endgroup
+
+\begin{figure}[ht]\centering
+\includegraphics[
+  height=5cm,
+  keepaspectratio,
+  alt={
+  An abstract illustration of a monochrome cat. The black head is composed of a
+  quarter circular sector. Super-imposed are triangular eyes, nose, and
+  whiskers with a rounded mouth shape. A short tail winds out of a sharp edge
+  at the bottom.
+  }
+]{opus-kissa}
+  \caption{A test image taken from \textcite{kaijanaho03:_latex_ams_latex} included to give an example of an image with alternative text.}
+  \label{fig:opus-kissa}
+\end{figure}
+
+\printbibliography
+
+\end{document}

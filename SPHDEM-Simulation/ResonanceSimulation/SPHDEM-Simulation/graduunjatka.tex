@@ -1,0 +1,39 @@
+Kyllä löytyy — alla on 4–6 vertaisarvioitua (tai vahvasti vertaisarvioituja konferensseja) vaihtoehtoa, joista saat eri geometrioilla tehtyjä, hyvin dokumentoituja validointicaseja. Mukana on myös vinkki, miten kukin sopii sinun SPH–DEM-kehikkoon.
+
+1. Suorakaiteinen/prismaattinen tankki, harmoninen pakotus (klassinen sloshing-benchmark)
+   • Trimulyono et al. validoi SPH:llä suorakaiteisen tankin harmonisesti pakotettua sloshinga ja vertasi vedenpinnan korkeuksiin ja painepiikkeihin. Hyvä “toisen geometrian” perusvalidointi ilman partikkeleita; saat taajuus–amplitudi-kartat ja mittauspisteiden sijainnit suoraan toistettaviksi. Voit käyttää tätä fluidi-osuuden (SPH) regressiokokeena ennen kuin kytket DEM:n. ([the UWA Profiles and Research Repository][1])
+
+2. “Canonical problems in sloshing” – laaja, standardoitu aineisto (sis. suorakaiteinen tankki ja jousi-massa-kytkennät)
+   • Souto-Iglesias ym. esittelevät joukon kanonisia sloshing-tehtäviä laboratoriomittauksineen (vapaan pinnan profiilit, paineet, dynaaminen vaste). Tämä toimii erinomaisena geometriariippumattomana referenssinä (mm. suorakaide + erilaisia eksitaatioita). Voi käyttää sekä puhtaan fluidin validointiin että säiliö–runko-dynamiikan tarkistukseen. (Artikkelisarja on Ocean Engineering -tasoa; linkki on yliopiston talletteen preprint/postprint.)
+
+3. Pitkän keston/vaikeiden rajatilojen sloshing tankissa (kulumisen ja numeerisen dissipaatioherkkyyden tsekki)
+   • Green et al. (Ocean Engineering, 2021) käsittelee pitkiä ajosarjoja säiliösloshauksessa ja tarjoaa mittausvertailuja, joilla voit koestaa, ettei numeerinen vaimennus vääristä pitkän simulaation tuloksia eri geometriassa kuin sylinteri. Hyödyllinen, jos raportoit vaimennussuhteita tai energiabudjetteja. ([the UWA Profiles and Research Repository][2])
+
+4. Lieriösäiliö (cylindrical) – vaihtoehtoinen säiliömuoto
+   • Caneva et al. (J. Applied Fluid Mechanics, 2020) tutkii lieriösäiliön sloshauksen dynamiikkaa. Jos haluat nimenomaan “selvästi toisen” geometrian kuin suorakaide, tämä antaa mitatun referenssin vapaapinnalle/paineille lieriössä. ([ScienceDirect][3])
+
+5. Bafflattu (välilevyillä varustettu) suorakaiteinen tankki
+   • Botía-Vera & Souto-Iglesiasin ryhmän töissä on sekä mittauksia että numeerisia vertailuja bafflatuilla säiliöillä; näitä käytetään paljon LNG-sloshauksen validointiin. Soveltuu erityisen hyvin, jos haluat testata, erottaako mallisi baffle-geometrian aiheuttamat modaalimuutokset. (ISOPE-konferenssi on referee-tason; mukana myös yliopistotalletteen postprint Ocean Engineering -sarjaan.) ([ResearchGate][4])
+
+6. SPH–DEM-yhdistelmä, kanavamainen/”flume”-geometria (hiukkas-nesterajapinnan validointi eri muodossa kuin sylinteri)
+   • Xiong et al. (J. Hydrology, 2018) validoi kaksisuuntaista SPH–DEM-mallia patomurtuman tapausta muistuttavassa suorakulmaisessa kanavassa (flume). Vaikkei tämä ole sloshing-säiliö, se tarjoaa nimenomaan kytketyn fluidi–hiukkas-vuorovaikutuksen mittauksiin perustuvan validoinnin eri geometriassa. Hyvä lisä, kun haluat osoittaa, että DEM-kytkentä toimii myös “laatikkomaisessa” domainissa. ([ResearchGate][5])
+
+Lisäksi yleisiä SPH–DEM-validointeja (ei sloshing, mutta vertaisarvioituja ja hyödyllisiä kytkennän kalibrointiin):
+• Cleary (Applied Mathematical Modelling, 2015) – laaja katsaus ja esimerkkivalidointeja virtaus–partikkeli-ongelmista. ([ScienceDirect][6])
+• Robinson, Luding & Ramaioli – kaksisuuntaisen SPH–DEM:n validointi sedimentoitumisella (arXiv-preprint, mutta viitattu laajasti ja taustaksi hyödyllinen). ([arXiv][7])
+
+Näin ottaisit nämä käyttöön käytännössä
+
+* Valitse yksi “puhdas fluidi” -case (esim. Trimulyono 2019 tai Souto-Iglesiasin kanoniset tehtävät) suorakaiteisella tankilla → säädä SPH-parametrit (c₀, Δx/h, α) niin, että saat oikein: (i) perusresonanssin taajuuden, (ii) vapaan pinnan amplitudit ja (iii) painepiikkien ajoituksen.
+* Valitse yksi kytketty hiukkas-case eri geometriassa (Xiong 2018 flume) → kalibroi DEM:n e, μ ja kytkennän drag/porositeettiparametrit niin, että saat hiukkaspilven etenemisnopeuden ja vedenpinnan kehityksen kohdalleen.
+* (Valinnainen) Testaa lieriösäiliö (Caneva 2020) tai bafflattu suorakaide (Botía-Vera/Souto-Iglesias) → osoita, että malli toistaa geometrian vaihtelun vaikutuksen modaalirakenteeseen/paineisiin.
+
+Jos haluat, voin ehdottaa sinulle valmiin “validointipaletin” (3 lyhyttä koetta) näistä lähteistä ja kirjoittaa niihin toistettavat mitoitukset (säiliön mitat, täyttöaste, eksitaatio, anturien sijainnit) suoraan LaTeX-liitteeseen.
+
+[1]: https://research-repository.uwa.edu.au/files/3214940/Rafiee_Ashkan_2011.pdf?utm_source=chatgpt.com "SPH modeling of multi–phase and energetic flows"
+[2]: https://research-repository.uwa.edu.au/en/publications/sph-simulation-of-2d-sloshing-flow-in-a-rectangular-tank/?utm_source=chatgpt.com "SPH simulation of 2D sloshing flow in a rectangular tank"
+[3]: https://www.sciencedirect.com/science/article/abs/pii/S0029801811002022?utm_source=chatgpt.com "A set of canonical problems in sloshing. Part 0"
+[4]: https://www.researchgate.net/publication/289578858_SPH_simulation_of_2D_sloshing_flow_in_a_rectangular_tank?utm_source=chatgpt.com "SPH simulation of 2D sloshing flow in a rectangular tank"
+[5]: https://www.researchgate.net/publication/335332522_Coupled_DEM-SPH_Method_for_Interaction_between_Dilated_Polyhedral_Particles_and_Fluid?utm_source=chatgpt.com "Coupled DEM-SPH Method for Interaction between Dilated ..."
+[6]: https://www.sciencedirect.com/science/article/abs/pii/S0892687514003082?utm_source=chatgpt.com "Prediction of coupled particle and fluid flows using DEM ..."
+[7]: https://arxiv.org/abs/1301.0752?utm_source=chatgpt.com "Fluid-particle flow and validation using two-way-coupled mesoscale SPH-DEM"

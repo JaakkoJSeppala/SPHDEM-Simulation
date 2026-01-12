@@ -1,0 +1,343 @@
+🌊 Simulaatio-osuuden suunnitelma (valmis liitettäväksi graduun)
+1. Tavoite
+
+Simulaatioiden tavoitteena on:
+
+toistaa ballastitankin perus-sloshaus ilman vaimenninta;
+
+lisätä granular damper ja arvioida sen vaikutus sloshing-amplitudiin, painehuippuihin ja energian dissipaationopeuteen;
+
+suorittaa rajattu parametritutkimus kolmella fysikaalisella parametrilla, jotka kirjallisuus tunnistaa merkittävimmiksi (restituutio 
+𝑒
+e, massasuhde 
+𝑚
+𝑟
+m
+r
+	​
+
+, partikkelikoko 
+𝑑
+𝑝
+d
+p
+	​
+
+).
+
+2. Simulaatiosarjojen rakenne
+Simulaatiosarja A — Referenssilasku (ilman vaimenninta)
+
+Tavoite: määrittää vertailuperustaso, johon kaikkia vaimennusratkaisuja verrataan.
+
+Tankin geometria: sama kuin kirjallisuusreferenssissä
+
+Nestetäyttö: yksi kiinteä täyttöaste (suositus: 40–50 %)
+
+Ajosignaali:
+
+vapaakytkentä (initial displacement + release), tai
+
+harmoninen pakotus 
+𝑥
+(
+𝑡
+)
+=
+𝐴
+sin
+⁡
+(
+𝜔
+𝑡
+)
+x(t)=Asin(ωt)
+
+Mitattavat suureet:
+
+vapaan pinnan maksimi-amplitudi
+
+seinämäpaineen maksimi
+
+energian vähenemisnopeus
+
+sloshing-taajuus ja vertailu teoriaan
+
+Simulaatiosarja B — Granular damper -perustapaus
+
+Tavoite: osoittaa, että SPH–DEM kytkentä tuottaa oikeansuuntaisen vaimennusilmiön.
+
+Konfiguraatio:
+
+kiinteä partikkelikoko (esim. 
+𝑑
+𝑝
+=
+4
+ mm
+d
+p
+	​
+
+=4 mm)
+
+massasuhde 
+𝑚
+𝑟
+=
+10
+%
+m
+r
+	​
+
+=10%
+
+restitutio 
+𝑒
+=
+0.4
+e=0.4 (keskivaimennus kirjallisuuden mukaan)
+
+Mitataan samat suureet kuin A-sarjassa, ja tehdään suhteellinen muutos:
+
+Δ
+𝐴
+=
+𝐴
+no damper
+−
+𝐴
+damper
+𝐴
+no damper
+ΔA=
+A
+no damper
+	​
+
+A
+no damper
+	​
+
+−A
+damper
+	​
+
+	​
+
+Simulaatiosarja C — Parametritutkimus
+
+Parametrit valitaan kirjallisuuden mukaan tärkeimmiksi:
+
+(
+𝑒
+,
+ 
+𝑚
+𝑟
+,
+ 
+𝑑
+𝑝
+)
+(e,m
+r
+	​
+
+,d
+p
+	​
+
+)
+C1: Restituutiokerroin 
+𝑒
+e
+
+Tutkittavat arvot:
+
+𝑒
+=
+0.2
+,
+ 
+0.4
+,
+ 
+0.6
+e=0.2, 0.4, 0.6
+
+Odotus: pienempi 
+𝑒
+e → enemmän dissipaatiota → suurempi vaimennus.
+
+C2: Massasuhde 
+𝑚
+𝑟
+m
+r
+	​
+
+
+Tutkittavat arvot:
+
+5 %, 10 %, 15 %
+
+Odotus: liian pieni massa → ei vaimennusta; liian suuri massa → damperi ei liiku.
+
+C3: Partikkelikoko 
+𝑑
+𝑝
+d
+p
+	​
+
+
+Tutkittavat arvot:
+
+3 mm, 5 mm, 8 mm
+
+Odotus:
+
+liian pienet → viskoosi rajoite → choke flow
+
+liian suuret → liian raskaat → vähän liikettä
+→ optimaalinen 4–6 mm (kirjallisuuden mukaan)
+
+3. Analysoitavat suureet
+
+Tämä tulee gradun tulososaan.
+
+Ensisijaiset mittarit
+
+Sloshing-amplitudi
+
+Seinämäpaineen huippuarvo
+
+Kineettisen energian hajoamisnopeus
+
+Toissijaiset
+
+granular damperin sisäinen energiajakauma
+
+partikkelien keskimääräinen liike-energia vs. fluidin energia
+
+painepulssien esiintymistiheys
+
+4. Aikasarjapohjaiset analyysityökalut
+
+Sinun simulointikoodisi tuottaa:
+
+pinnankorkeus (surface height)
+
+seinämävoimat (wall forces)
+
+kineettinen energia
+
+Suositeltu analyysi:
+
+4.1 FFT-taajuusanalyysi
+
+→ varmennetaan sloshing-taajuus ja vaimennuksen muutos.
+
+4.2 Logarithmic decrement
+𝛿
+=
+ln
+⁡
+ ⁣
+(
+𝐴
+𝑛
+𝐴
+𝑛
++
+1
+)
+δ=ln(
+A
+n+1
+	​
+
+A
+n
+	​
+
+	​
+
+)
+
+→ suora mitta vaimennuksesta.
+
+4.3 RMS-suurteet
+𝑝
+R
+M
+S
+,
+ℎ
+R
+M
+S
+p
+RMS
+	​
+
+,h
+RMS
+	​
+
+5. Visualisoinnit, jotka valmistuvat automaattisesti
+
+Sinun nykyinen datakirjoitus tuottaa helposti seuraavat kuvat (ja nämä ovat juuri ne, joita arvioija odottaa):
+
+Pakolliset kuvaajat:
+
+Surface height vs. time (3–4 eri parametriarvoa)
+
+Wall pressure vs. time
+
+Normalized kinetic energy decay
+
+Comparison plot:
+
+no damper
+
+best damper
+
+worst damper
+
+Parametritutkimuksen kuvaaja:
+
+Bar chart / line plot: damping ratio vs. parameter value
+
+6. Aikataulu realistiseen toteutukseen
+Päivä 1–2
+
+referenssisimu (A)
+
+perustapaus (B)
+
+Päivä 3–6
+
+parametritutkimus (C1–C3)
+
+Päivä 7
+
+analytiikka + kuvaajat
+
+graafinen validointi kauttaaltaan
+
+Päivä 8–10
+
+kirjoitus: tulokset + keskustelu + johtopäätökset
+
+Tämä sopii maisteritasoisen tutkimuksen vaatimuksiin.
+
+7. Mitä tämä suunnitelma ratkaisee?
+
+✔ Varmentaa, että simulaatio-osuus ei jää abstraktiksi
+✔ Tuottaa vertailukelpoiset tulokset nopeasti
+✔ Supistaa parametrit järkevälle tasolle (3 × 3 × 3 ei ole realistinen → tämä on)
+✔ Tekee SPH–DEM-menetelmästä vakuuttavan ilman massiivista ajomäärää
+✔ Takaa arvosanan 4–5 metodologiselta osuudelta
