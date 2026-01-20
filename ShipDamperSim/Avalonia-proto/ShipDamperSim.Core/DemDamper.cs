@@ -20,6 +20,7 @@ public interface IDamper
 /// </summary>
 public class DemDamper : IDamper
 {
+    private readonly SimulationParameters _parameters;
     public bool Enabled { get; set; } = true;
     /// <summary>
     /// Yksittäinen DEM-rae (3D).
@@ -42,6 +43,7 @@ public class DemDamper : IDamper
     /// </summary>
     public DemDamper(SimulationParameters parameters)
     {
+        _parameters = parameters;
         var damper = parameters.Damper;
         float Ld = (float)damper.Length, Wd = (float)damper.Width, Hd = (float)damper.Height;
         float dp = (float)damper.ParticleDiameter;

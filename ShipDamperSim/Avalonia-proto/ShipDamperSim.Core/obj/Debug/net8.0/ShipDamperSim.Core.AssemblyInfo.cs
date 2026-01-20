@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ShipDamperSim.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5447ee65a51825337ff7234d84e03d2f872a66a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d717bd31337da356b653f818499fe02666513b34")]
 [assembly: System.Reflection.AssemblyProductAttribute("ShipDamperSim.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ShipDamperSim.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

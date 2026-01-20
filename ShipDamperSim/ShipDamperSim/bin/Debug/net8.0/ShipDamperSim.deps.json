@@ -585,6 +585,9 @@
         }
       },
       "ShipDamperSim.Core/1.0.0": {
+        "dependencies": {
+          "OpenTK": "4.9.4"
+        },
         "runtime": {
           "ShipDamperSim.Core.dll": {
             "assemblyVersion": "1.0.0.0",

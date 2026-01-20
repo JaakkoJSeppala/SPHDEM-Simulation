@@ -182,3 +182,5 @@ namespace ShipDamperSim
             GL.End();
         }
     }
+}
+    
