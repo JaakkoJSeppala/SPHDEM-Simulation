@@ -1,0 +1,32 @@
+{
+  "Time": { "Dt": 0.0005, "TEnd": 20.0, "LogEvery": 20, "Seed": 1 },
+  "Tank": {
+    "Length": 1.2,
+    "Width": 0.6,
+    "Height": 0.6,
+    "FillLevel": 0.3
+  },
+  "SPH": {
+    "Resolution": 0.015,
+    "RestDensity": 1000.0,
+    "Gamma": 7.0,
+    "C0": 20.0,
+    "Mu": 3.5
+  },
+  "Damper": {
+    "Enabled": true,
+    "Length": 0.24,
+    "Width": 0.12,
+    "Height": 0.12,
+    "Position": { "X": 0.36, "Y": 0.07, "Z": 0.0 },
+    "FillFraction": 0.10,
+    "ParticleDiameter": 0.01,
+    "Density": 2500.0
+  },
+  "Excitation": {
+    "Type": "sway",
+    "Amplitude": 0.04,
+    "Frequency": 1.0
+  },
+  "Output": { "OutputDir": "out", "CsvFile": "timeseries.csv" }
+}

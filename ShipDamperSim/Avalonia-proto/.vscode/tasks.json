@@ -1,0 +1,680 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Restore NuGet packages",
+			"type": "shell",
+			"command": "dotnet restore ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build and Run ShipDamperSim with Plot",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build and Run ShipDamperSim with Plot",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (Canvas)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim (Canvas)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (Canvas)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (multi-curve)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (multi-curve)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (animation)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (animation)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (ship animation)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim (ship animation, Math fix)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (ship animation)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (animation fix)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (animation fix)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (UIThread fix)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (UIThread fix)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (2.5D ship)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim (2.5D ship)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Restore NuGet packages (OpenTK)",
+			"type": "shell",
+			"command": "dotnet restore ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim (OpenTK)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK, fixed)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK, 3D ship, camera, waves)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK, GL fix)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK, MathF fix)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK, Math fix final)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Build ShipDamperSim (OpenTK, final)",
+			"type": "shell",
+			"command": "dotnet build ShipDamperSim/ShipDamperSim.csproj",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Run ShipDamperSim 3D (OpenTK, final)",
+			"type": "shell",
+			"command": "dotnet run --project ShipDamperSim/ShipDamperSim.csproj -- --3d",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "test"
+		},
+		{
+			"label": "Clean, restore, build (OpenTK fix)",
+			"type": "shell",
+			"command": "dotnet clean && dotnet restore && dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after OpenTK install",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after OpenTK NuGet add",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after restoring physics",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after debug and position fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after debug fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after closing brace fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing extra brace",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing comment",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after adding missing brace",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after DrawBox fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after moving debug if",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after context profile fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim with DEM particles",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after DEM draw fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after DEM brace fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing last extra brace",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after DrawBox fix (final)",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after adding missing brace (final)",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing last brace (really final)",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing extra brace after OnRenderFrame",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after adding missing brace before DrawBox",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing extra brace after OnLoad",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after fixing braces",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after fixing DrawBox brace",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after fixing indentation",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after adding closing braces",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after fixing if statement semicolon",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build ShipDamperSim after removing extra closing brace",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after fixing class structure in Ship3DWindow.cs",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after removing duplicate DrawBox and extra braces",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after fixing OnRenderFrame and DrawBox braces",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after adding missing namespace closing brace",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build and test after SPH-DEM coupling code",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after fixing class/method structure",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after final class/brace fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after DrawBox fix",
+			"type": "shell",
+			"command": "dotnet build",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		}
+	]
+}

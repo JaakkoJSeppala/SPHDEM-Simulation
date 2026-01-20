@@ -1,0 +1,28 @@
+{
+  "Time": { "Dt": 0.0005, "TEnd": 20.0, "LogEvery": 20, "Seed": 1 },
+  "Ship": {
+    "Inertia": 200.0,
+    "HydroDamping": 15.0,
+    "Restoring": 120.0,
+    "Phi0Deg": 10.0,
+    "PhiDot0DegPerS": 0.0
+  },
+  "Excitation": { "Type": "none", "M0": 0.0, "FreqHz": 0.5 },
+  "Damper": {
+    "Enabled": true,
+    "CenterY": 0.8,
+    "CenterZ": 0.6,
+    "SizeY": 0.6,
+    "SizeZ": 0.4,
+    "ParticleCount": 400,
+    "Radius": 0.02,
+    "Density": 2500.0,
+    "Kn": 200000.0,
+    "Gn": 60.0,
+    "Mu": 0.5,
+    "Kt": 100000.0,
+    "Gt": 25.0,
+    "MaxParticleSpeed": 20.0
+  },
+  "Output": { "OutputDir": "out", "CsvFile": "timeseries.csv" }
+}
