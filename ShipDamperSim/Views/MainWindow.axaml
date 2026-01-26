@@ -1,0 +1,52 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ShipDamperSim.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="ShipDamperSim.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="ShipDamperSim">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="2*,3*">
+        <!-- Controls Panel -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="20" Spacing="16">
+            <TextBlock Text="Granular Damper Parameters" FontWeight="Bold" FontSize="18" Margin="0,0,0,8"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Damper Size" Width="100"/>
+                <Slider Minimum="0.1" Maximum="2.0" Value="{Binding DamperSize}" Width="180"/>
+                <TextBlock Text="{Binding DamperSize, StringFormat=F2}" Width="40"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Fill Ratio" Width="100"/>
+                <Slider Minimum="0.0" Maximum="1.0" Value="{Binding FillRatio}" Width="180"/>
+                <TextBlock Text="{Binding FillRatio, StringFormat=F2}" Width="40"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Position" Width="100"/>
+                <Slider Minimum="-1.0" Maximum="1.0" Value="{Binding DamperPosition}" Width="180"/>
+                <TextBlock Text="{Binding DamperPosition, StringFormat=F2}" Width="40"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,16,0,0">
+                <Button Content="Start" Command="{Binding StartCommand}" Width="80"/>
+                <Button Content="Stop" Command="{Binding StopCommand}" Width="80"/>
+                <Button Content="Reset" Command="{Binding ResetCommand}" Width="80"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Canvas for Ship Animation -->
+        <Canvas Grid.Row="0" Grid.Column="1" Margin="20" Height="320" Width="400" Name="ShipCanvas" />
+    </Grid>
+
+</Window>

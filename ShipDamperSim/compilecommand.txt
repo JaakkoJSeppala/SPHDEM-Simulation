@@ -1,0 +1,1 @@
+dotnet build; dotnet run example_config_single.json

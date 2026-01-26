@@ -1,0 +1,42 @@
+{
+  "Time": {
+    "Dt": 0.001,
+    "TEnd": 20.0,
+    "LogEvery": 10,
+    "Seed": 42
+  },
+  "Ship": {
+    "Inertia": 1.0,
+    "HydroDamping": 0.2,
+    "Restoring": 2.0,
+    "Phi0Deg": 10.0,
+    "PhiDot0DegPerS": 0.0
+  },
+  "Damper": {
+    "Enabled": true,
+    "CenterY": 0.8,
+    "CenterZ": 0.6,
+    "SizeY": 0.6,
+    "SizeZ": 0.4,
+    "ParticleCount": 300,
+    "FillRatio": 0.5,
+    "Radius": 0.02,
+    "Density": 2500.0,
+    "Kn": 200000.0,
+    "Gn": 50.0,
+    "Mu": 0.4,
+    "Kt": 100000.0,
+    "Gt": 20.0,
+    "MaxParticleSpeed": 20.0
+  },
+  "Excitation": {
+    "Type": "sine",
+    "M0": 0.5,
+    "FreqHz": 0.5
+  },
+  "Output": {
+    "OutputDir": "out",
+    "CsvFile": "timeseries.csv"
+  },
+  "Experiment": "roll_decay"
+}

@@ -1,0 +1,13 @@
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\bin\Debug\net8.0\ShipDamperSim.Core.deps.json
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\bin\Debug\net8.0\ShipDamperSim.Core.dll
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\bin\Debug\net8.0\ShipDamperSim.Core.pdb
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.AssemblyInfoInputs.cache
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.AssemblyInfo.cs
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.csproj.CoreCompileInputs.cache
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.sourcelink.json
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.dll
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\refint\ShipDamperSim.Core.dll
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.pdb
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ref\ShipDamperSim.Core.dll
+C:\Users\jaakk\Desktop\Gradu\ShipDamperSim\Avalonia-proto\ShipDamperSim.Core\obj\Debug\net8.0\ShipDamperSim.Core.csproj.AssemblyReference.cache
